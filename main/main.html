@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+<!-- http://htmlpreview.github.io/?https://github.com/securekim/pickme/blob/master/main/main.html -->
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,6 +9,7 @@
     <link rel="icon" href="../favicon.ico">
 
     <title>Pick Me !</title>
+
 
     <link rel="stylesheet" href="../dist/css/bootstrap.min.css">
   </head>
@@ -190,12 +192,46 @@
                                 <p></p>
                                 <H4> Private Information</H4>  
                                 <div class="form-group">
-                                    Hint for Contents :
+                                    Hint for Contents (Free for all) :
                                     <input type="text" class="form-control" id="HINT" placeholder="'Income Verification', 'Verification of Employment', 'Patent', ... "/>
                                 </div>
 
+                                
+                                <hr> <!-- ----------------------- -->
+                                <!-- TEST
+                                
+                                                    <table>
+                                                        <tr>
+                                                          <td>a</td>
+                                                          <td rowspan="2">c</td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td>d</td>
+                                                        </tr>
+                                                    </table>
+                                -->
+                                Add Contents :
+                                    <table id="addTable" width="350px" style="margin: 0px auto;"cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" border="0">
+                                        <tr>
+                                          <td>
+                                            <input type="text" name="addText" style="width:300px; height:30px;" placeholder="Content Name">
+                                          </td>
+                                          <td rowspan="2">
+                                              <button class="btn btn-outline-info my-2 my-sm-0" type=button value="추가" onClick="insRow()" style="cursor:hand; height:50px;">+</button>
+                                          </td>
+                                        </tr>
+                                        <tr style="padding-bottom:10px;">
+                                          <td style="padding-top:10px;">
+                                            <input type="text" name="addText" style="width:300px; height:30px;" placeholder="Content URL">
+                                            </td>
+                                        </tr>
+                                      </table>
 
-                              <button type="button" class="btn btn-danger save">Save Private Info</button>
+                                    <hr> <!-- ----------------------- -->
+                                <label>Gas :
+                                  <input type="text" id="GAS" placeholder="20">
+                                  <button type="button" class="btn btn-danger save">Save Private Info</button>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -211,15 +247,15 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-  
-      
-        
+    
+
     <script src="../dist/js/jquery.slim.min.js"></script>
     <script src="../dist/js/popper.min.js"></script>
     <script src="../dist/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
 
 
 
-    
+
   </body>
 </html>
