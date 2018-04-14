@@ -5,24 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
+    <link rel="icon" href="../favicon.ico">
 
-    <title>Fixed top navbar example for Bootstrap</title>
+    <title>Pick Me !</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-
-    <!-- Custom styles for this template -->
-    <link href="navbar-top-fixed.css" rel="stylesheet">
+    <link rel="stylesheet" href="../dist/css/bootstrap.min.css">
   </head>
 
   <body>
+
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="#">Pick Me</a>
       
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a type="button" href="#" class="nav-link" data-toggle="modal" data-target="#myModal">Profile</a>           
+          <button href="#" class="btn btn-outline-info my-2 my-sm-0" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"> Profile</span></button>           
         </li>
       </ul>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +32,7 @@
         
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">About Us <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="https://pickmed.github.io">About Us <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled" href="#">Favorite</a>
@@ -50,81 +48,178 @@
 
         </form>
       </div>
-
-
     </nav>
 
-    <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-    <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-    <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-    <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-  
-                  </button>
-                   <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-  
-              </div>
-              <div class="modal-body">
-                  <div role="tabpanel">
-                      <!-- Nav tabs -->
-                      <ul class="nav nav-tabs" role="tablist">
-                          <li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab" role="tab" data-toggle="tab">Upload</a>
-                          </li>
-                          <li role="presentation"><a href="#browseTab" aria-controls="browseTab" role="tab" data-toggle="tab">Browse</a>
-                          </li>
-                      </ul>
-                      <!-- Tab panes -->
-                      <div class="tab-content">
-                          <div role="tabpanel" class="tab-pane active" id="uploadTab">upload Tab</div>
-                          <div role="tabpanel" class="tab-pane" id="browseTab">browseTab</div>
-                      </div>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary save">Save changes</button>
-              </div>
-          </div>
-      </div>
-  </div>
-    <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-    <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-    <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-    <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
-    
+        
     
     
     <main role="main" class="container" style="padding-top:100px">
+
       <div class="jumbotron">
-        <h1>[Securekim Electronics]</h1>
-        <p class="lead">We seek 3 Engineers. </p>
-        <p>Please Contact to :</p>
-        <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">View Contract</a>
+          <table>
+            <td style="padding:20px">
+              <img src="https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg" alt="Samsong" height="150" width="150"></img>
+            </td>
+            <td>
+              <h4>[SAMSONG]
+                  <p class="lead">We seek 3 Engineers. Please Contact to :</p>
+                </h4>
+              <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">View Contract</a>
+            </td>
+          </table>
+        </div>
+
+      <div class="jumbotron">
+        <table>
+          <td style="padding:20px">
+            <img src="https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg" alt="Samsong" height="150" width="150"></img>
+          </td>
+          <td>
+            <h4>[SAMSONG]
+                <p class="lead">We seek 2 Marketers. Please Contact to :</p>
+              </h4>
+            <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">View Contract</a>
+          </td>
+        </table>
       </div>
 
       <div class="jumbotron">
-        <h1>[Securekim Electronics]</h1>
-        <p class="lead">We seek 2 Project Manager. </p>
-        <p class>Please Contact to :</p>
-        <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">View Contract</a>
-      </div>
-
-      <div class="jumbotron">
-        <h1>[BLCHESS]</h1>
-        <p class="lead">We Seek Just a student ! Do you want to join us ?</p>
-        <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">View Contract</a>
-      </div>
+          <table>
+            <td style="padding:20px">
+              <img src="https://d50gait2982zr.cloudfront.net/wp-content/uploads/2017/08/sb3-logo-1c-blue-p289-rgb.svg" alt="SKI" height="150" width="150"></img>
+            </td>
+            <td>
+              <h4>[SK I]
+                  <p class="lead">We seek 2 Server Engineers. Please Contact to :</p>
+                </h4>
+              <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">View Contract</a>
+            </td>
+          </table>
+        </div>
+        
+        <div class="jumbotron">
+            <table>
+              <td style="padding:20px">
+                <img src="https://openclipart.org/download/214574/lego3.svg" alt="BLCHES" height="150" width="150"></img>
+              </td>
+              <td>
+                <h4>[BLCHES]
+                    <p class="lead">We Seek Just a student ! Please Contact to :</p>
+                  </h4>
+                <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">View Contract</a>
+              </td>
+            </table>
+          </div>
   
     </main>
 
+    <!--  !!!!!!!!!!!!!!!!!!! MODAL !!!!!!!!!!!!!!!!!!!!  -->
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"> Profile</span></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+    
+                    </button>
+    
+                </div>
+                <div class="modal-body">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="public-tab" data-toggle="tab" href="#publicTab" role="tab" aria-controls="publicTab" aria-selected="true"><span class="glyphicon glyphicon-eye-open"></span>Public</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="private-tab" data-toggle="tab" href="#privateTab" role="tab" aria-controls="privateTab" aria-selected="false"><span class="glyphicon glyphicon-eye-close"></span>Private</a>
+                            </li>
+                          </ul>
+
+
+                        <div class="tab-content">
+                          
+                            <!-- Public Info -->
+                            <div role="tabpanel" class="tab-pane active" id="publicTab"> 
+                              <p></p>
+                              <H4> Necessary Information</H4>  
+                              
+                                <div class="form-group">
+                                    <label>Image URL :</label>
+                                    <input type="text" class="form-control" id="URL" placeholder="URL of Your image">
+                                </div>
+                                <div class="form-group">
+                                    Birth of Year :
+                                    <input type="text" class="form-control" id="BIRTH" placeholder="Ex) 1990">
+                                </div>
+                                <div class="form-group">
+                                    Last Job :
+                                    <input type="text" class="form-control" id="JOB" placeholder="Company, Depart, Position">
+                                </div>
+                                <div class="form-group">
+                                    Last Education :
+                                    <input type="text" class="form-control" id="EDUCATION" placeholder="School, Subject, Degree">
+                                </div>
+  
+                                <hr> <!-- ----------------------- -->
+                                <H4> Optional Information</H4>  
+                                <div class="form-group">
+                                    Past Career :
+                                    <input type="text" class="form-control" id="CAREER" placeholder="'Start Year~Final Year, Company, Depart, Position', ' ... '">
+                                </div>
+                                <div class="form-group">
+                                    Achievements :
+                                    <input type="text" class="form-control" id="ARCHIEVE" placeholder="'2016 SW Contest 1st', ' ... ' "/>
+                                </div>
+                                <div class="form-group">
+                                    Vision :
+                                    <input type="text" class="form-control" id="VISION" placeholder="'I can do everything', ' ... ' "/>
+                                </div>
+                                <hr> <!-- ----------------------- -->
+                                <label>Gas :
+                              <input type="text" id="GAS" placeholder="20">
+                              <button type="button" class="btn btn-primary save">Save Public Info</button>
+                            </label>
+                            </div>
+
+
+                            <!-- Private Info -->
+                            <div role="tabpanel" class="tab-pane" id="privateTab">
+                                <p></p>
+                                <H4> Private Information</H4>  
+                                <div class="form-group">
+                                    Hint for Contents :
+                                    <input type="text" class="form-control" id="HINT" placeholder="'Income Verification', 'Verification of Employment', 'Patent', ... "/>
+                                </div>
+
+
+                              <button type="button" class="btn btn-danger save">Save Private Info</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+      <!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  -->
+      
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  
+      
+        
+    <script src="../dist/js/jquery.slim.min.js"></script>
+    <script src="../dist/js/popper.min.js"></script>
+    <script src="../dist/js/bootstrap.min.js"></script>
+
+
+
+    
   </body>
 </html>
