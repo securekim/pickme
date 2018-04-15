@@ -211,22 +211,23 @@
                                                     </table>
                                 -->
                                 Add Contents :
+                                <div id="tables">
                                     <table id="addTable" width="350px" style="margin: 0px auto;" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" border="0">
                                         <tr>
                                           <td>
                                             <input type="text" name="addText" style="width:300px; height:30px;" placeholder="Content Name">
                                           </td>
                                           <td rowspan="2">
-                                              <button class="btn btn-outline-info my-2 my-sm-0" type=button value="추가" onClick="insRow()" style="cursor:hand; height:50px;">+</button>
+                                              <button class="btn btn-outline-info my-2 my-sm-0" type=button value="추가" onClick="insTable()" style="cursor:hand; height:50px;">┼</button>
                                           </td>
                                         </tr>
                                         <tr style="padding-bottom:10px;">
-                                          <td style="padding-top:10px;">
+                                          <td>
                                             <input type="text" name="addText" style="width:300px; height:30px;" placeholder="Content URL">
                                             </td>
                                         </tr>
                                       </table>
-
+                                  </div>
                                     <hr> <!-- ----------------------- -->
                                 <label>Gas :
                                   <input type="text" style="width:60px"  id="GAS" placeholder="20">
