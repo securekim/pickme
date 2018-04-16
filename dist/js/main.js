@@ -109,11 +109,9 @@ function removeAllJumbotrons(){
 function dummyPeople(){
   removeAllJumbotrons();
   //http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66
-  addJumbotronToMain("후지", "Security 전문가입니다.", "http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66","http://blog.securekim.com");
+  addJumbotronToMain("휴지", "Security 전문가입니다.", "http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66","http://blog.securekim.com");
   addJumbotronToMain("보겸", "SW Engineer 지원 중입니다.", "http://image.hankookilbo.com/i.aspx?Guid=0b2feec797064d63a86c6b9bdedfb4d7&Month=201602&size=640","http://blog.securekim.com");
   addJumbotronToMain("소련", "Server Engineer 입니다!", "https://www.fashionseoul.com/wp-content/uploads/2017/02/20170217_sul-3.jpg","http://blog.securekim.com");
-  addJumbotronToMain("원비", "뽑아주실거죠?", "http://cdn.namuwikiusercontent.com/s/720667d4b7f02c91ca55413ba4bb15d39d891ff69c7edce51584890a65f9fa3f73c38150b3075fc6e3969c603f1a8c30d2a8df19416d18fe0e5c86c79070f02ede3cc3383230d99398bf82d10fc86c49?e=1525295001&k=-W0zLzBcvD78iU-LBpqB9A","http://blog.securekim.com");
-  
 }
 
 function dummyCompany(){
