@@ -18,8 +18,20 @@
 
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">Pick Me</a>
-      
+    
+      <div class="btn-group">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:10px">
+          Tags
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Marketing</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Server Engineer</a>
+          <a class="dropdown-item" href="#">SW Engineer</a>
+          <div class="dropdown-divider"></div>
+            </div>
+      </div>
+
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <button href="#" class="btn btn-outline-info my-2 my-sm-0" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"> Profile</span></button>           
@@ -56,16 +68,7 @@
     
     
     <main role="main" class="container" style="padding-top:100px;">
-      <table style="margin-left:-10px">
-        <td style="padding-top:0px;position:fixed;width:80px" class="col-xs-12">
-              <ul class="list-group" style:"float:left">
-                  <li class="list-group-item">First Tag</li>
-                  <li class="list-group-item">Second Tag</li>
-                  <li class="list-group-item">Third Tag</li>
-              </ul>
-        </td>
 
-        <td style="padding-left:22%;" class="col-xs-12">
 
           <div class="jumbotron">
             <table>
@@ -122,9 +125,6 @@
                 </td>
               </table>
             </div>
-    
-        </td>
-      </table>
 
     </main>
 
