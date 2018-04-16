@@ -69,10 +69,10 @@
         
     
     
-    <main role="main" class="container" style="padding-top:100px; padding-bottom:100px;">
+    <main role="main" id="main" class="container" style="padding-top:100px; padding-bottom:100px;">
 
 
-          <div class="jumbotron">
+          <!-- <div class="jumbotron">
             <table>
               <td style="padding:20px">
                 <img src="https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg" alt="Samsong" height="120" width="120"></img>
@@ -81,7 +81,7 @@
                 <h4>[SAMSONG]
                     <p class="lead">We seek 3 Engineers. Contact to :</p>
                   </h4>
-                <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">Contract</a>
+                <a class="btn btn-lg btn-primary" href="http://blog.securekim.com">Contract</a>
               </td>
             </table>
           </div>
@@ -126,7 +126,7 @@
                   <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">Contract</a>
                 </td>
               </table>
-            </div>
+            </div> -->
 
     </main>
 
@@ -233,7 +233,7 @@
                                             <input type="text" name="addText" style="width:300px; height:30px;" placeholder="Content Name">
                                           </td>
                                           <td rowspan="2">
-                                              <button class="btn btn-outline-info my-2 my-sm-0" type=button value="추가" onClick="insTable()" style="cursor:hand; height:50px;">+</button>
+                                              <button class="btn btn-outline-info my-2 my-sm-0" type=button value="추가" onClick="insertPrivateContent()" style="cursor:hand; height:50px;">+</button>
                                           </td>
                                         </tr>
                                         <tr style="padding-bottom:10px;">
@@ -249,14 +249,6 @@
                                     <div class="file-loading btn-default btn-file">
                                         <input id="input-44" class="btn-default btn-file" name="input44[]" type="file" multiple>
                                     </div>
-                                    <script>
-                                    $(document).on('ready', function() {
-                                        $("#input-44").fileinput({
-                                            uploadUrl: '/file-upload-batch/2',
-                                            maxFilePreviewSize: 10240
-                                        });
-                                    });
-                                    </script>
 
                                     <hr> <!-- ----------------------- -->
                                 <label>Gas :
@@ -278,9 +270,9 @@
       
     <nav class="navbar navbar-expand-md navbar-dark fixed-bottom bg-dark" >
       <div class="btn-group btn-group-justified" style="margin: 0px auto;">
-        <button type="button" class="btn btn-outline-primary"><span class="glyphicon glyphicon-globe"></span> People</button>
-        <button type="button" class="btn btn-outline-primary"><span class="glyphicon glyphicon-briefcase"></span> Company</button>
-        <button type="button" class="btn btn-outline-primary"><span class="glyphicon glyphicon-check"></span> Pick Me!</button>
+        <button type="button" class="btn btn-outline-primary" onclick="dummyPeople()"><span class="glyphicon glyphicon-globe"></span> People</button>
+        <button type="button" class="btn btn-outline-primary" onclick="dummyCompany()"><span class="glyphicon glyphicon-briefcase"></span> Company</button>
+        <button type="button" class="btn btn-outline-primary" onclick="dummyPickme()"><span class="glyphicon glyphicon-check"></span> Pick Me!</button>
       </div>
     </nav>
 
@@ -296,6 +288,16 @@
     <script src="../dist/js/main.js"></script>
 
 
+    <script>
+        $(document).on('ready', function() {
+            $("#input-44").fileinput({
+                uploadUrl: '/file-upload-batch/2',
+                maxFilePreviewSize: 10240
+            });
+            
+        });
+        dummyPeople();
+    </script>
 
 
   </body>

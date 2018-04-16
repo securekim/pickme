@@ -1,0 +1,23 @@
+{
+  "name": "pickme",
+  "version": "1.0.0",
+  "description": "Pick Me Pick Me Pick Me Up !",
+  "main": "securekim.js",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/securekim/pickme.git"
+  },
+  "author": "admin@securekim.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/securekim/pickme/issues"
+  },
+  "homepage": "https://github.com/securekim/pickme#readme"
+}
