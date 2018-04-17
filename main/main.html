@@ -25,18 +25,27 @@
             <span class="glyphicon glyphicon-tag"></span> Tags
           
         </button>
+
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Marketing</a>
+          
+          <a class="dropdown-item" href="#" data-value="option1" tabIndex="-1">
+              <input type="checkbox"/> Marketing
+          </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Server Engineer</a>
-          <a class="dropdown-item" href="#">SW Engineer</a>
+          <a class="dropdown-item" href="#" data-value="option1" tabIndex="-1">
+              <input type="checkbox"/> Server Engineer
+          </a>
+          <a class="dropdown-item" href="#" data-value="option1" tabIndex="-1">
+              <input type="checkbox"/> SW Engineer
+          </a>
           <div class="dropdown-divider"></div>
         </div>
+        
       </div>
 
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <button href="#" class="btn btn-outline-info my-2 my-sm-0" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span> Profile</button>           
+          <button href="#" class="btn btn-outline-info my-2 my-sm-0" data-toggle="modal" data-target="#profileModal"><span class="glyphicon glyphicon-user"></span> Profile</button>           
         </li>
       </ul>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,14 +56,28 @@
       
         
       <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link disabled" href="https://pickmed.github.io">My Wallet <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item disabled">
+          <a class="nav-link" href="https://pickmed.github.io">Change Password <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="https://pickmed.github.io">Interview Info <span class="sr-only">(current)</span></a>
+        </li>
         <li class="nav-item active">
-          <a class="nav-link" href="https://pickmed.github.io">About Us <span class="sr-only">(current)</span></a>
+          
+            
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">My profile <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">Favorite</a>
+          <a class="nav-link disabled" href="https://pickmed.github.io">Black List <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">BlackList</a>
+          <a class="nav-link disabled" href="https://pickmed.github.io">Exchange <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Terms of Use</a>
         </li>
       </ul>
 
@@ -70,64 +93,7 @@
     
     
     <main role="main" id="main" class="container" style="padding-top:100px; padding-bottom:100px;">
-
-
-          <!-- <div class="jumbotron">
-            <table>
-              <td style="padding:20px">
-                <img src="https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg" alt="Samsong" height="120" width="120"></img>
-              </td>
-              <td>
-                <h4>[SAMSONG]
-                    <p class="lead">We seek 3 Engineers. Contact to :</p>
-                  </h4>
-                <a class="btn btn-lg btn-primary" href="http://blog.securekim.com">Contract</a>
-              </td>
-            </table>
-          </div>
-  
-        <div class="jumbotron">
-          <table>
-            <td style="padding:20px">
-              <img src="https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg" alt="Samsong" height="120" width="120"></img>
-            </td>
-            <td>
-              <h4>[SAMSONG]
-                  <p class="lead">We seek 2 Marketers. Contact to :</p>
-                </h4>
-              <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">Contract</a>
-            </td>
-          </table>
-        </div>
-  
-        <div class="jumbotron">
-            <table>
-              <td style="padding:20px">
-                <img src="https://d50gait2982zr.cloudfront.net/wp-content/uploads/2017/08/sb3-logo-1c-blue-p289-rgb.svg" alt="SKI" height="120" width="120"></img>
-              </td>
-              <td>
-                <h4>[SK I]
-                    <p class="lead">We seek 2 Server Engineers. Contact to :</p>
-                  </h4>
-                <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">Contract</a>
-              </td>
-            </table>
-          </div>
-          
-          <div class="jumbotron">
-              <table>
-                <td style="padding:20px">
-                  <img src="https://openclipart.org/download/214574/lego3.svg" alt="BLCHES" height="120" width="120"></img>
-                </td>
-                <td>
-                  <h4>[BLCHES]
-                      <p class="lead">We Seek Just a student ! Contact to :</p>
-                    </h4>
-                  <a class="btn btn-lg btn-primary" href="http://blog.securekim.com" role="button">Contract</a>
-                </td>
-              </table>
-            </div> -->
-
+      <!-- Add content Dynamically -->
     </main>
 
     <!--  !!!!!!!!!!!!!!!!!!! MODAL !!!!!!!!!!!!!!!!!!!!  -->
@@ -267,14 +233,73 @@
     </div>
       <!--  !!!!!!!!!!!!!!!!!!!MODAL!!!!!!!!!!!!!!!!!!!!  -->
     
+
+
+
+<!-- 
+
+      <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div> -->
+
+
       
-    <nav class="navbar navbar-expand-md navbar-dark fixed-bottom bg-dark" >
-      <div class="btn-group btn-group-justified" style="margin: 0px auto;">
-        <button type="button" class="btn btn-outline-primary" onclick="dummyPeople()"><span class="glyphicon glyphicon-globe"></span> People</button>
-        <button type="button" class="btn btn-outline-primary" onclick="dummyCompany()"><span class="glyphicon glyphicon-briefcase"></span> Company</button>
-        <button type="button" class="btn btn-outline-primary" onclick="dummyPickme()"><span class="glyphicon glyphicon-check"></span> Pick Me!</button>
+      <div class="container">
+          <!-- <div class="span3 well">
+              <center>
+              <a href="#aboutModal" data-toggle="modal" data-target="#profileModal"><img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R" name="aboutme" width="140" height="140" class="img-circle"></a>
+              <h3>Joe Sixpack</h3>
+              <em>click my face for more</em>
+          </center>
+          </div> -->
+          <!-- Modal -->
+          <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h4 class="modal-title" id="profileModalLabel">김병연</h4>
+                        </div>
+                      <div class="modal-body">
+                          <center>
+                              <!-- http://www.breaknews.com/imgdata/breaknews_com/200611/2006112239463307.jpg -->
+                          <img src="https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111543_viewimagem-4.jpg" name="aboutme" width="140" height="140" border="0" class="rounded-circle"></a>
+                          <h3 class="media-heading">PMC <span class="glyphicon glyphicon-fire"></span>500</h3>
+                          
+                              <span class="badge badge-pill badge-warning">Marketing</span>
+                              <span class="badge badge-pill badge-info">Security</span>
+                              <span class="badge badge-pill badge-info">Server Engineer</span>
+                              <span class="badge badge-pill badge-success">SW Engineer</span>
+                          </center>
+                          <hr>
+                          Public :
+                          ["숭일고 졸업","이화여자대학교 시각디자인과 학사 졸업","이화여자대학교 시각디자인 석사 졸업"],["삼성전자 디자인 멤버십 12.6~15.8","삼성전자 UX팀 15.8~"],["2016 서울시 장애인돕기 App공모전 동상","17년 TED (산업 디자인과 미래)"]
+                         <hr>
+                          <center>
+                          <p class="text-left"><strong>Bio: </strong><br>
+                            "저는 책을 읽고 그 책에서 배운 가치를 마음에 새기고 일상생활 속에서 그 가치를 실현하는 과정을 매우 중시합니다. 또한 정치가이자 발명가, 과학자였던 벤자민 프랭클린처럼 자신의 가능성을 능동적으로 계발하며 자신의 다재다능함의 영역을 꾸준히 확장시켰던 인물들에게 크게 공감합니다. 살아있음에 감사하는 마음을 잊지 않을 것, 배움의 기회를 찾아 바로 지금 출발할 것, 손해를 보더라도 원칙과 의리를 선택할 것, 연대와 소통의 동료애를 추구할 것 등은 해가 바뀌어도 변하지 않는 저의 신념이며, 그것이 저의 각오라는 것을 잊어버릴 만큼 현실 속에서 실현하고 싶습니다."</p>
+                          <br>
+                          </center> 
+                          <hr>
+                          250, ["[석사 논문]산업디자인과 Product의 한계와 역할.pdf", "[특허증],갤럭시 S6 AlwaysDisplay.pdf", "[상장]2016 서울시 장애인돕기 App공모전 동상"]
+                          
+                      </div>
+                      <div class="modal-footer">
+                          <center>
+                          <button type="button" class="btn btn-default" data-dismiss="modal">That's enough.</button>
+                          <button type="button" class="btn btn-info" data-dismiss="modal">More <span class="glyphicon glyphicon-fire"></span>250</button>
+                          
+                        </center>
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
-    </nav>
+
 
 
     <!-- Bootstrap core JavaScript

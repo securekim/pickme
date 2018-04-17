@@ -5,7 +5,7 @@ var http    = require('http');
 var fs     = require('fs');
 var app = express();
 
-var port = 80;
+var port = 8080;
 
 app.get('/',function(req,res){
 	
