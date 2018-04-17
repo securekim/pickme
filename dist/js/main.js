@@ -195,9 +195,11 @@ function drawPeople(){
   }
   for(var i in PEOPLES){
     if(PEOPLES[i].items["name"] != ""){
-     PEOPLESDETAIL[i] = getDetailProfile(PEOPLES[i].account);
-     PEOPLESDETAIL[i] = PEOPLESDETAIL[i].replace(/'/g, '"');
-     PEOPLESDETAIL[i] = JSON.parse(PEOPLESDETAIL[i]);
+     if(typeof PEOPLESDETAIL[i] == 'undefined'){
+      PEOPLESDETAIL[i] = getDetailProfile(PEOPLES[i].account);
+      PEOPLESDETAIL[i] = PEOPLESDETAIL[i].replace(/'/g, '"');
+      PEOPLESDETAIL[i] = JSON.parse(PEOPLESDETAIL[i]);
+      
       for(var j in PEOPLESDETAIL[i].profileInfo.careerHistory){
         PEOPLESDETAIL[i].profileInfo.careerHistory[j] = hexToString(PEOPLESDETAIL[i].profileInfo.careerHistory[j]);
       }
@@ -210,6 +212,7 @@ function drawPeople(){
       for(var j in PEOPLESDETAIL[i].hideInfo.hideInfoHint){
         PEOPLESDETAIL[i].hideInfo.hideInfoHint[j] = hexToString(PEOPLESDETAIL[i].hideInfo.hideInfoHint[j]);
       }
+     }
     }
   }
 
