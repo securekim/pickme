@@ -144,7 +144,7 @@ function iPaidForPrivateInfo(number,paid){
   //1. updatePeopleModal 에서 이 함수를 호출하도록 한다.
   //2. 이 함수에서는 내가 현재 이 아이디에 지불 혹은 완료 상태인지 확인한다.
   //3. 완료상태이면 보여주고, 아니라면 다시 로딩한다.
-
+  console.log("iPaidForPrivateInfo "+paid);
   myButton = document.getElementById("button_"+number);
   document.getElementById("modalPeoplePrivateInfoDetail").innerHTML="";
   if(paid){
@@ -153,7 +153,7 @@ function iPaidForPrivateInfo(number,paid){
     document.getElementById('modalLoader').className="loader loader-8";
     document.getElementById("modalPeopleMore").disabled = true;
   } else {
-    myButton.className = "btn btn-lg btn-secondary";
+    //myButton.className = "btn btn-lg btn-secondary";
     myButton.innerHTML = "View"
     document.getElementById('modalLoader').className="";
     document.getElementById("modalPeopleMore").disabled = false;
@@ -162,6 +162,7 @@ function iPaidForPrivateInfo(number,paid){
 }
 
 function updatePeopleModal(number){
+  console.log("updatePeopleModal !!! ");
   var items = PEOPLES[number].items
   document.getElementById('modalPeopleName').innerText=items.name;
   document.getElementById('modalPeopleImg').setAttribute("src",items.picture);
@@ -225,23 +226,28 @@ function updatePeopleModal(number){
       if(list[0][i] == PEOPLES[number].account){
         paid = true;
         document.getElementById('modalLoader').className="loader loader-8";
+        console.log("PAID : "+paid);
       }
     }
 
     if(paid) {
+      console.log("PAID1 : "+paid);
       iPaidForPrivateInfo(number,true); // 초기화
       var files = getScouterAccessHideInfoYn(HARD_CODED_SCOUTER,PEOPLES[number].account)
         if(files[0]!=""){
           //만약 접근 가능하다면,
+          console.log("files : "+files[0]);
           document.getElementById('modalLoader').className="";
           frm = "<strong>Private Detail : </strong><br>";
           for (var i in files){
-            if(files[i]!="")
+            if(files[i]!=""){
               frm += "&nbsp;"+files[i]+"<br>";
+            }
           }
           document.getElementById("modalPeoplePrivateInfoDetail").innerHTML = frm;
         } 
     } else {
+      console.log("PAID3 : "+paid);
       iPaidForPrivateInfo(number,false);
     }
 
