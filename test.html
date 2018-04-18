@@ -3,28 +3,30 @@
 <html>
 
 <!-- web3 관련 스크립트-->
-<script type="text/javascript" src="./abi/testabi.js"></script>
-<script type="text/javascript" src="./js/bignumber.min.js"></script>
-<script type="text/javascript" src="./dist/web3-light.js"></script>
-<script type="text/javascript" src="./js/web3.min.js"></script>
-<script type="text/javascript" src="./js/utf8.js"></script>
-<script type="text/javascript" src="./abi/testabi.js"></script>
-<script type="text/javascript" src="./abi/userPrivateAbi.js"></script>
-<script type="text/javascript" src="./abi/userContainerAbi.js"></script>
-<script type="text/javascript" src="./abi/companyContainerAbi.js"></script>
-<script type="text/javascript" src="./abi/companyMainAbi.js"></script>
-<script type="text/javascript" src="./abi/userMainAbi.js"></script>
-<script type="text/javascript" src="./abi/userFreeVisionAbi.js"></script>
-<script type="text/javascript" src="./abi/userProfileAbi.js"></script>
-<script type="text/javascript" src="./abi/userHideInfoAbi.js"></script>
-<script type="text/javascript" src="./abi/interestContainerAbi.js"></script>
-<script type="text/javascript" src="./abi/interestObjectAbi.js"></script>
-<script type="text/javascript" src="./abi/pmcTokenAbi.js"></script>
-<script type="text/javascript" src="./abi/recruitAbi.js"></script>
-<script type="text/javascript" src="./abi/userTransactionAbi.js"></script>
-<script type="text/javascript" src="./abi/companyDetailAbi.js"></script>
+    
+    <script type="text/javascript" src="./dist/js/bignumber.min.js"></script>
+    <script type="text/javascript" src="./dist/js/web3-light.js"></script>
+    <script type="text/javascript" src="./dist/js/web3.min.js"></script>
+    <script type="text/javascript" src="./dist/js/utf8.js"></script>
+    
+    <script type="text/javascript" src="./dist/abi/userPrivateAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/userContainerAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/companyContainerAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/companyMainAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/userMainAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/userFreeVisionAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/userProfileAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/userHideInfoAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/userHideAppendInfoAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/interestContainerAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/interestObjectAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/pmcTokenAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/recruitAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/userTransactionAbi.js"></script>
+    <script type="text/javascript" src="./dist/abi/companyDetailAbi.js"></script>
+    
 
-<script type="text/javascript" src="./js/fundcontract.js"></script>
+
 <script src="https://rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
 <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
 
@@ -42,6 +44,8 @@
 	userProfileContractAddress = "0x663216c1c8f109995dba6501f8e7ff066d5b679b";
 	userFreevisionContractAddress = "0x24d6d4a0285b639d42529964c4322d98172beece";
 	userHideInfoContractAddress = "0x91fadc97787c5102138c6765c8905f42951c225d";
+    userHideAppendInfoContractAddress = "0xba8bcbae2e2336e306a385c874483303632c4776";
+    
 
 	//관심해시태그 관련
 	interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
@@ -283,6 +287,19 @@
 
 		
     }
+
+function getHideAppendFile(_addr){
+    companyDetailContainer = web3.eth.contract(userHideAppendInfoAbi).at(userHideAppendInfoContractAddress);
+    var data = companyDetailContainer.getUserHideAppendInfo(_addr);
+    var item = new Object() ;
+    item.append0 = data[0];
+    item.append1 = data[1];
+    item.append2 = data[2];
+    item.append3 = data[3];
+    item.append4 = data[4];
+    return item;
+}
+
 </script>
 
 

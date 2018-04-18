@@ -284,6 +284,7 @@ function drawPeople(){
     userProfileContractAddress = "0x663216c1c8f109995dba6501f8e7ff066d5b679b";
     userFreevisionContractAddress = "0x24d6d4a0285b639d42529964c4322d98172beece";
     userHideInfoContractAddress = "0x91fadc97787c5102138c6765c8905f42951c225d";
+    userHideAppendInfoContractAddress = "0xba8bcbae2e2336e306a385c874483303632c4776";
 
     //관심해시태그 관련
     interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
@@ -535,3 +536,18 @@ function drawPeople(){
 
 
     }
+
+
+
+    //비공개 첨부파일 가져오기
+    function getHideAppendFile(_addr){
+      companyDetailContainer = web3.eth.contract(userHideAppendInfoAbi).at(userHideAppendInfoContractAddress);
+      var data = companyDetailContainer.getUserHideAppendInfo(_addr);
+      var item = new Object() ;
+      item.append0 = data[0];
+      item.append1 = data[1];
+      item.append2 = data[2];
+      item.append3 = data[3];
+      item.append4 = data[4];
+    return item;
+}
