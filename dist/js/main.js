@@ -374,7 +374,7 @@ function drawPeople(){
     interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
 
     //PM Token 관련
-    pmTokenContractAddress = "0xdc76436a668158c0e785613a740a4a5cc35b2e48";
+    pmTokenContractAddress = "0xbb7f74fa68c77b09c60f7f522f7d0fbe1cc3a826";
 
     //회사 관련 
     companyContainerContractAddress = "0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833";
@@ -494,7 +494,7 @@ function drawPeople(){
     
     var count = web3.eth.getTransactionCount(_from);
     const gasPriceHex = web3.toHex(gas*1000000000);
-    gasLimitHex = web3.toHex(66029);
+    gasLimitHex = web3.toHex(244747);
     var rawTransaction = {
       "from": _from,
       "nonce": web3.toHex(count),
@@ -533,6 +533,8 @@ function drawPeople(){
         });
 
   }
+
+
 
 
   // UserTransaction : 0x4d0c0f53364847349635231a125efef573bd0e6c
@@ -634,4 +636,18 @@ function drawPeople(){
     function getHideAppendFile(_addr){
       companyDetailContainer = web3.eth.contract(userHideAppendInfoAbi).at(userHideAppendInfoContractAddress);
       return companyDetailContainer.getUserHideAppendInfo(_addr);
+    }
+
+
+    
+    //스카우터가 사용자 비공개 정보 보려고 할때 판단
+    // 1. 사용자 허용리스트에 스카우터가 존재한다.
+    // 2. 스카우터 오픈 리스트에 해당 사용자가 존재한다.
+    // 3. 오픈기간 7일 이내의 접근이다.
+    function getScouterAccessHideInfoYn(scouterAddr, userAddr){
+        contractAddress = pmTokenContractAddress;
+        pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
+        var data = pmcTokenContract.getHideInfoOther(scouterAddr,userAddr);
+        return data;
+
     }
