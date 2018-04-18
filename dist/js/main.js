@@ -201,9 +201,7 @@ function updatePeopleModal(number){
 
     document.getElementById('modalPeopleMore').setAttribute("onclick","useGas("+PEOPLESDETAIL[number].hideInfo.hideInfoValue+","+number+")");
 
-    // setInterval(function() {
-    //   console.log(number);
-    // }, 3000);
+    
 }
 
 
