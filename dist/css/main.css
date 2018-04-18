@@ -193,6 +193,10 @@
     transform: scale(0);
     animation: loader8 1.5s infinite ease-in-out;
 }
+.jumbotron {
+	padding : 0px
+}
+
 .loader-8:after { animation-delay: 0.75s; }
 
     @keyframes loader8 {

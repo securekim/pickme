@@ -1,6 +1,9 @@
 
 var PEOPLES="";
 var PEOPLESDETAIL=[];
+var HARD_CODED_ACCOUNT = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
+var HARD_CODED_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
+
 
 function insertPrivateContent(){
   var tables = document.getElementById('tables');
@@ -50,23 +53,32 @@ function deletePrivateContent(td) {
 }
 
 
-function useGas(coin){
+  //value == COIN
+  //_계좌 사용자
+  //_계좌 스카우터
+  //prikey : d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a
+  //function sendPmcForOpenHideInfo(gas, value, _to, _from, priKey){
+
+function useGas(coin,number){
   alertify.prompt('<H4>'+coin+' <span class="glyphicon glyphicon-fire"></span>  will be paid.</H4> <br>And It takes some time. <br> Speed is depend on GAS :', "50",
   function(evt, value ){
     alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " <br>Will be paid for private info.",
       function(){
+        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_ACCOUNT, HARD_CODED_PRIVATEKEY)
+        iPaidForPrivateInfo(number,true);
         alertify.success('Ok');
       },
       function(){
         alertify.error('Cancel');
       });
-    
   },
   function(){
     alertify.error('Cancel');
   })
-  ;
 }
+
+
+
 
 
 function addJumbotronToMain(name, context, imageURL, number){
@@ -114,17 +126,19 @@ function removeAllJumbotrons(){
   }
 }
 
-function isPaidForPrivateInfo(number){
+function iPaidForPrivateInfo(number,paid){
   //스카우터가 돈을 지불했는가?
   //지불했고 열람 가능하다면, View Detail 을 수정한다.
-  var paid = true;
   myButton = document.getElementById("button_"+number);
   if(paid){
     myButton.className = "btn btn-lg btn-primary";
-    myButton.innerHTML = "View All"
+    myButton.innerHTML = "View"
+    document.getElementById('modalLoader').className="loader loader-8";
+    document.getElementById("modalPeopleMore").disabled = true;
   } else {
     myButton.className = "btn btn-lg btn-secondary";
     myButton.innerHTML = "View"
+    document.getElementById('modalLoader').className="";
   }
   //지불 했는데 열람 불가능한 경우
 }
@@ -184,7 +198,7 @@ function updatePeopleModal(number){
     modalPeoplePrivateInfo.innerHTML = frm;
     //frm += &nbsp;
 
-    document.getElementById('modalPeopleMore').setAttribute("onclick","useGas("+PEOPLESDETAIL[number].hideInfo.hideInfoValue+")");
+    document.getElementById('modalPeopleMore').setAttribute("onclick","useGas("+PEOPLESDETAIL[number].hideInfo.hideInfoValue+","+number+")");
 
 }
 function dummyPeople(){
@@ -432,9 +446,15 @@ function drawPeople(){
       if (!err){
         // 이걸 하고나서 팝업.
         // 성공이랑 관계가 없음.
+        // HASH - 하나의 계약서 - 트랜잭션 
+        // 해시 값..함수를 동적으로 생성해서 계속 쪼고있음
+        // pending / success
           console.log(hash);
             //sendMessage(hash);
-            alertify.success('Send transaction !');
+            alertify
+            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min)", function(){
+              //alertify.success('Success');
+            });
           }else{
             console.log(err);
           }

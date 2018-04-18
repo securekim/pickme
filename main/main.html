@@ -10,7 +10,6 @@
 
     <title>Pick Me !</title>
 
-
     <link rel="stylesheet" href="../dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../dist/css/alertify.min.css">
     <link rel="stylesheet" href="../dist/css/main.css">
@@ -249,11 +248,11 @@
         </div>
       </div> -->
 
-    <nav class="navbar navbar-expand-md navbar-dark fixed-bottom bg-dark" >
+    <nav class="navbar navbar-expand-md navbar-dark fixed-bottom" style="background: white; border-top: solid;border-top-color: gray; border-top-width: 0.2px;">
       <div class="btn-group btn-group-justified" style="margin: 0px auto;">
-        <button type="button" class="btn btn-outline-primary" onclick="drawPeople()"><span class="glyphicon glyphicon-globe"></span> People</button>
-        <button type="button" class="btn btn-outline-primary" onclick="dummyCompany()"><span class="glyphicon glyphicon-briefcase"></span> Company</button>
-        <button type="button" class="btn btn-outline-primary" onclick="dummyPickme()"><span class="glyphicon glyphicon-check"></span> Pick Me!</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="drawPeople()"><span class="glyphicon glyphicon-globe"></span> People</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="dummyCompany()"><span class="glyphicon glyphicon-briefcase"></span> Company</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="dummyPickme()"><span class="glyphicon glyphicon-check"></span> Pick Me!</button>
     </nav>
       
       <div class="container">
@@ -306,7 +305,7 @@
                           <hr>
                           <strong>Private Detail : </strong><br>
                           <p id="modalPeoplePrivateInfoDetail">
-                                      <div class="loader loader-8"></div>
+                                      <div id="modalLoader" class=""></div>
                           </p>
                       </div>
                       <div class="modal-footer">
