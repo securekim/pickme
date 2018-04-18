@@ -1,9 +1,10 @@
 
 var PEOPLES="";
 var PEOPLESDETAIL=[];
-var HARD_CODED_ACCOUNT = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
+var HARD_CODED_ACCOUNT = "0x731a765dff550d11b7c880af145066bc1bdd3127";
 var HARD_CODED_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
-
+var HARD_CODED_SCOUTER = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
+var HARD_CODED_NUMBER = 0;
 
 function insertPrivateContent(){
   var tables = document.getElementById('tables');
@@ -64,7 +65,7 @@ function useGas(coin,number){
   function(evt, value ){
     alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " <br>Will be paid for private info.",
       function(){
-        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_ACCOUNT, HARD_CODED_PRIVATEKEY)
+        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
         iPaidForPrivateInfo(number,true);
         alertify.success('Ok');
       },
@@ -76,10 +77,6 @@ function useGas(coin,number){
     alertify.error('Cancel');
   })
 }
-
-
-
-
 
 function addJumbotronToMain(name, context, imageURL, number){
   var main = document.getElementById("main");
@@ -127,8 +124,12 @@ function removeAllJumbotrons(){
 }
 
 function iPaidForPrivateInfo(number,paid){
-  //스카우터가 돈을 지불했는가?
   //지불했고 열람 가능하다면, View Detail 을 수정한다.
+
+  //1. updatePeopleModal 에서 이 함수를 호출하도록 한다.
+  //2. 이 함수에서는 내가 현재 이 아이디에 지불 혹은 완료 상태인지 확인한다.
+  //3. 완료상태이면 보여주고, 아니라면 다시 로딩한다.
+
   myButton = document.getElementById("button_"+number);
   if(paid){
     myButton.className = "btn btn-lg btn-primary";
@@ -200,7 +201,12 @@ function updatePeopleModal(number){
 
     document.getElementById('modalPeopleMore').setAttribute("onclick","useGas("+PEOPLESDETAIL[number].hideInfo.hideInfoValue+","+number+")");
 
+    // setInterval(function() {
+    //   console.log(number);
+    // }, 3000);
 }
+
+
 function dummyPeople(){
   removeAllJumbotrons();
   //http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66
@@ -228,7 +234,73 @@ function dummyPickme(){
   
 }
   
+function updateModalI(){
 
+    number = HARD_CODED_NUMBER;
+    var items = PEOPLES[HARD_CODED_NUMBER].items
+    
+    document.getElementById('modalIName').innerText=items.name;
+    document.getElementById('modalIImg').setAttribute("src",items.picture);
+    var modalPeopleInfo = document.getElementById('modalIInfo');
+    while (modalPeopleInfo.firstChild) {
+      modalPeopleInfo.removeChild(modalPeopleInfo.firstChild);
+    }
+    var h3 = document.createElement('h3');
+      h3.className = "media-heading";
+      modalPeopleInfo.appendChild(h3);
+  
+    var frm = 'PMC<span id="IPMC" class="glyphicon glyphicon-fire"></span>'+items.mvp
+      h3.innerHTML = frm;
+  
+     for(var i in items.interestItems){
+       span = document.createElement('span');
+       span.className = "badge badge-pill badge-info";
+       span.innerHTML = hexToString(items.interestItems[i]);
+       modalPeopleInfo.appendChild(span);
+     }
+  
+     var modalPeoplePublicInfo = document.getElementById("modalIPublicInfo");
+     while (modalPeoplePublicInfo.firstChild) {
+      modalPeoplePublicInfo.removeChild(modalPeoplePublicInfo.firstChild);
+    }
+  
+      frm = "<strong>Public Info : </strong><br>"
+      for (var i in PEOPLESDETAIL[number].profileInfo.educationHistory){
+        if(PEOPLESDETAIL[number].profileInfo.educationHistory[i]!="")
+          frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.educationHistory[i]+"<br>";
+      }
+      frm+="<p></p>";
+      for (var i in PEOPLESDETAIL[number].profileInfo.careerHistory){
+        if(PEOPLESDETAIL[number].profileInfo.careerHistory[i]!="")
+        frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.careerHistory[i]+"<br>";
+      }
+      frm+="<p></p>";
+      for (var i in PEOPLESDETAIL[number].profileInfo.achievements){
+        if(PEOPLESDETAIL[number].profileInfo.achievements[i]!="")
+        frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.achievements[i]+"<br>";
+      }
+      modalPeoplePublicInfo.innerHTML = frm;
+  
+      document.getElementById('modalIBio').innerHTML = "<strong>Free Vision: </strong><br>" +PEOPLESDETAIL[number].freeVision;
+  
+      var modalPeoplePrivateInfo = document.getElementById("modalIPrivateInfo");
+      frm = "<strong>Private Info : </strong><br>"
+      for (var i in PEOPLESDETAIL[number].hideInfo.hideInfoHint){
+        if(PEOPLESDETAIL[number].hideInfo.hideInfoHint[i]!="")
+        frm += "&nbsp;"+PEOPLESDETAIL[number].hideInfo.hideInfoHint[i]+"<br>";
+      }
+      modalPeoplePrivateInfo.innerHTML = frm;
+      //frm += &nbsp;
+  
+  var files = getHideAppendFile(PEOPLES[HARD_CODED_NUMBER].account);
+  frm = "";
+
+  for (var i in files){
+    if(files[i]!="")
+      frm += "&nbsp;"+files[i]+"<br>";
+  }
+  document.getElementById("modalIPrivateInfoDetail").innerHTML = frm;
+}
 
 /////////////////////////////
 
@@ -454,6 +526,7 @@ function drawPeople(){
             alertify
             .alert("Your transaction is posted ! <br>But It takes some time (1~3 min)", function(){
               //alertify.success('Success');
+              localStorage.setItem("PAID_"+_to, "PAID");
             });
           }else{
             console.log(err);
@@ -562,21 +635,5 @@ function drawPeople(){
     //비공개 첨부파일 가져오기
     function getHideAppendFile(_addr){
       companyDetailContainer = web3.eth.contract(userHideAppendInfoAbi).at(userHideAppendInfoContractAddress);
-      var data = companyDetailContainer.getUserHideAppendInfo(_addr);
-      var item = new Object() ;
-      item.append0 = data[0];
-      item.append1 = data[1];
-      item.append2 = data[2];
-      item.append3 = data[3];
-      item.append4 = data[4];
-    return item;
-    }
-
-
-    //스카우터가 사용자 비공개 정보 보려고 할때 판단
-    // 1. 사용자 허용리스트에 스카우터가 존재한다.
-    // 2. 스카우터 오픈 리스트에 해당 사용자가 존재한다.
-    // 3. 오픈기간 7일 이내의 접근이다.
-    function getScouterAccessHideInfoYn(scouterAddr, userAddr){
-        return true;
+      return companyDetailContainer.getUserHideAppendInfo(_addr);
     }
