@@ -8,7 +8,7 @@
 <script type="text/javascript" src="./dist/web3-light.js"></script>
 <script type="text/javascript" src="./js/web3.min.js"></script>
 <script type="text/javascript" src="./js/utf8.js"></script>
-<script type="text/javascript" src="./js/testabi.js"></script>
+<script type="text/javascript" src="./abi/testabi.js"></script>
 <script type="text/javascript" src="./abi/userPrivateAbi.js"></script>
 <script type="text/javascript" src="./abi/userContainerAbi.js"></script>
 <script type="text/javascript" src="./abi/companyContainerAbi.js"></script>
@@ -37,11 +37,11 @@
 
 
     //사용자 관련
-    userContainerContractAddress = "0xb0968e080c3e3758c37cbeb09b10e18ace212440";
-	userBasicInfoContractAddress = "0xf604df3b28d18922607f3f0627c39de107f6e20b"
-	userProfileContractAddress = "0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c";
+    userContainerContractAddress = "0xbaf2f72c3c970a1379a2d1f9b5e45bc26e05694e";
+	userBasicInfoContractAddress = "0x82a1a1db6990e33a0039566f64985468a32a0a98"
+	userProfileContractAddress = "0x663216c1c8f109995dba6501f8e7ff066d5b679b";
 	userFreevisionContractAddress = "0x24d6d4a0285b639d42529964c4322d98172beece";
-	userHideInfoContractAddress = "0x773ae136f1e9047c545dfc290636c5e92837d151";
+	userHideInfoContractAddress = "0x91fadc97787c5102138c6765c8905f42951c225d";
 
 	//관심해시태그 관련
 	interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
@@ -49,17 +49,23 @@
 	//PM Token 관련
 	pmTokenContractAddress = "0xdc76436a668158c0e785613a740a4a5cc35b2e48";
 
+	//회사 관련 
+	companyContainerContractAddress = "0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833";
+	companyMainContractAddress = "0x82e448165a2482e62f028baa67d076b8a50e3379";
+	companyDetailContractAddress = "0x200c91b0e868bbd305b17789beacf24cbd233270";
+	
 
     //사용자 메인 리스트에 보여줄 아이템
-    function initUser() {
+    function initUser(page) {
         
         var resList = new Array() ;
 
         userContainer = web3.eth.contract(userContainerAbi).at(userContainerContractAddress);
-        var data = userContainer.getUserList.call();
+        userBasicInfo = web3.eth.contract(userMainAbi).at(userBasicInfoContractAddress);
+        var data = userContainer.getAddr(1*page - 1, (1*page - 1) + 10);
 
         for(i=0;i<data.length;i++){
-            userBasicInfo = web3.eth.contract(userMainAbi).at(userBasicInfoContractAddress);
+            
             var userbasic = userBasicInfo.getBasicInfo(data[i]);
 
             var item = new Object();
@@ -93,22 +99,19 @@
 		userHideInfoContract = web3.eth.contract(userHideInfoAbi).at(userHideInfoContractAddress);
         
 		var item = new Object() ;
-
-
-        var data = userProfileContract.getProfileInfo(_addr);
         var vision = userFreeVisionContract.getUserFreeVision(_addr);
 		var hideInfo = userHideInfoContract.getUserHideInfo(_addr);
 		
 		var profileInfoItem = new Object();
-		profileInfoItem.educationHistory = data[0];
-		profileInfoItem.careerHistory = data[1];
-		profileInfoItem.achievements = data[2];
+		profileInfoItem.educationHistory = userProfileContract.getEducationHistoryInfo(_addr);
+		profileInfoItem.careerHistory = userProfileContract.getCareerHistoryInfo(_addr);
+		profileInfoItem.achievements = userProfileContract.getAchievementHistoryInfo(_addr);
 
 		var hideInfoItem = new Object();
 		hideInfoItem.hideInfoValue = hideInfo[0];
 		hideInfoItem.estimateValue = hideInfo[1];
 		hideInfoItem.openCount = hideInfo[2];
-		hideInfoItem.hideInfoHint = hideInfo[3];
+		hideInfoItem.hideInfoHint = userHideInfoContract.getUserHideInfoHint(_addr);
 
 
 		item.profileInfo = profileInfoItem;
@@ -215,34 +218,11 @@
 
     	var resList = new Array() ;
 
-    	companyContainer = web3.eth.contract(companyContainerAbi).at("0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833");
+    	companyContainer = web3.eth.contract(companyContainerAbi).at(companyContainerContractAddress);
     	var data = companyContainer.getCompanyList.call();
 
     	for(i=0;i<data.length;i++){
-            companyMainInfo = web3.eth.contract(companyMainAbi).at("0x0c7b3bb247553a0e2b86a75953ff109aed68ec63");
-            var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
-
-            var item = new Object() ;
-            item.account = data[i] ;
-            item.items = companyMainItem;
-
-            resList.push(item);
-        }
-
-        var jsonResult = JSON.stringify(resList);
-
-        return jsonResult;
-    }
-	//회사 메인 리스트에 보여줄 아이템
-    function getCompanyMainList2(){
-
-    	var resList = new Array() ;
-
-    	companyContainer = web3.eth.contract(companyContainerAbi).at("0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833");
-    	var data = companyContainer.getCompanyList.call();
-
-    	for(i=0;i<data.length;i++){
-            companyMainInfo = web3.eth.contract(companyMainAbi).at("0x9b022b7aa44580b1047e1a278a9abcc738ca12b0");
+            companyMainInfo = web3.eth.contract(companyMainAbi).at(companyMainContractAddress);
             var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
 
             var item = new Object() ;
@@ -257,6 +237,52 @@
         return jsonResult;
     }
 
+    function getCompanyDetailInfo(_addr){
+
+		companyDetailContainer = web3.eth.contract(companyDetailAbi).at(companyDetailContractAddress);
+		var data = companyDetailContainer.getCompanyDetailInfo(_addr);
+		        	
+		var item = new Object() ;
+            item.employeeNum = data[0].toString();
+            item.openDate = data[1];
+            item.companyType = data[2];
+            item.homepage = data[3];
+            item.logoImg = data[4];
+            item.feedImg = data[5];
+        	
+        var recruits = new Array() ;
+        for(i = 0; i< data[6].length;i++){
+        	
+        	var aaa = data[6][i];
+        	
+        	recruitContract = web3.eth.contract(recruitAbi).at(aaa);
+        	
+        	var bottom = recruitContract.getRecruitInfoUp();
+            var up = recruitContract.getRecruitInfoUp();
+
+            var recruitItem = new Object() ;
+            recruitItem.title = up[0];
+            recruitItem.interestCate = up[1];
+            recruitItem.recruitType = up[2];
+            recruitItem.minEducational = up[3];
+            recruitItem.careerLimit = up[4];
+            recruitItem.preferentialTreatment = up[5];
+            recruitItem.workType = bottom[0];
+            recruitItem.paymentIndex = bottom[1];
+            recruitItem.posibleWorkLocation = bottom[2];
+            recruitItem.startTime = bottom[3];
+            recruitItem.endTime = bottom[4];
+            recruitItem.decription = bottom[5];
+
+            recruits.push(recruitItem);
+        }
+         
+		item.recruitList = recruits;
+
+		return item;
+
+		
+    }
 </script>
 
 
@@ -286,7 +312,7 @@
 </body>
 <script>
 	if ('addEventListener' in window) {
-		initUser();
+		//initUser(1);
 		window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
 		document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
 	}
