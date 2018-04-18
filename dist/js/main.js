@@ -414,7 +414,7 @@ function drawPeople(){
     interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
 
     //PM Token 관련
-    pmTokenContractAddress = "0xbb7f74fa68c77b09c60f7f522f7d0fbe1cc3a826";
+    pmTokenContractAddress = "0x6068db71b42d99dddbc5917455659bd91f5894f7";
 
     //회사 관련 
     companyContainerContractAddress = "0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833";
