@@ -524,7 +524,7 @@ function drawPeople(){
           console.log(hash);
             //sendMessage(hash);
             alertify
-            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min)", function(){
+            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min) <br>"+hash, function(){
               //alertify.success('Success');
               localStorage.setItem("PAID_"+_to, "PAID");
             });
