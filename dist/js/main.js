@@ -182,7 +182,7 @@ function dummyPickme(){
 function drawPeople(){
   removeAllJumbotrons();
   if(PEOPLES==""){
-    PEOPLES = initUser();
+    PEOPLES = initUser(1);
     PEOPLES = PEOPLES.replace(/'/g, '"');
     PEOPLES = JSON.parse(PEOPLES);
   }
@@ -201,20 +201,25 @@ function drawPeople(){
       PEOPLESDETAIL[i] = JSON.parse(PEOPLESDETAIL[i]);
       
       for(var j in PEOPLESDETAIL[i].profileInfo.careerHistory){
-        PEOPLESDETAIL[i].profileInfo.careerHistory[j] = hexToString(PEOPLESDETAIL[i].profileInfo.careerHistory[j]);
+        
+        if( PEOPLESDETAIL[i].profileInfo.careerHistory[j] == "") continue;
+        PEOPLESDETAIL[i].profileInfo.careerHistory[j] = PEOPLESDETAIL[i].profileInfo.careerHistory[j];
       }
       for(var j in PEOPLESDETAIL[i].profileInfo.achievements){
-        PEOPLESDETAIL[i].profileInfo.achievements[j] = hexToString(PEOPLESDETAIL[i].profileInfo.achievements[j]);
+        if( PEOPLESDETAIL[i].profileInfo.achievements[j] == "") continue;
+        PEOPLESDETAIL[i].profileInfo.achievements[j] = PEOPLESDETAIL[i].profileInfo.achievements[j];
       }
       for(var j in PEOPLESDETAIL[i].profileInfo.educationHistory){
-        PEOPLESDETAIL[i].profileInfo.educationHistory[j] = hexToString(PEOPLESDETAIL[i].profileInfo.educationHistory[j]);
+        if( PEOPLESDETAIL[i].profileInfo.educationHistory[j] == "") continue;
+        PEOPLESDETAIL[i].profileInfo.educationHistory[j] = PEOPLESDETAIL[i].profileInfo.educationHistory[j];
       }
       for(var j in PEOPLESDETAIL[i].hideInfo.hideInfoHint){
-        PEOPLESDETAIL[i].hideInfo.hideInfoHint[j] = hexToString(PEOPLESDETAIL[i].hideInfo.hideInfoHint[j]);
+        if( PEOPLESDETAIL[i].hideInfo.hideInfoHint[j] == "") continue;
+        PEOPLESDETAIL[i].hideInfo.hideInfoHint[j] = PEOPLESDETAIL[i].hideInfo.hideInfoHint[j];
       }
-     }
     }
   }
+}
 
 
 }
@@ -228,145 +233,149 @@ function drawPeople(){
 
 
 
-//////////////////////////////
-
-var Web3 = require('web3');
-var web3 = new Web3();
-web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/TvuMDSQ9QbgjPihMgjvZ'));
-
-
-//사용자 관련
-userContainerContractAddress = "0xb0968e080c3e3758c37cbeb09b10e18ace212440";
-userBasicInfoContractAddress = "0xf604df3b28d18922607f3f0627c39de107f6e20b"
-userProfileContractAddress = "0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c";
-userFreevisionContractAddress = "0x24d6d4a0285b639d42529964c4322d98172beece";
-userHideInfoContractAddress = "0x773ae136f1e9047c545dfc290636c5e92837d151";
-
-//관심해시태그 관련
-interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
-
-//PM Token 관련
-pmTokenContractAddress = "0xdc76436a668158c0e785613a740a4a5cc35b2e48";
+    //////////////////////////////
+    var Web3 = require('web3');
+    var web3 = new Web3();
+    web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/TvuMDSQ9QbgjPihMgjvZ'));
 
 
-//사용자 메인 리스트에 보여줄 아이템
-function initUser() {
-    
-    var resList = new Array() ;
+    //사용자 관련
+    userContainerContractAddress = "0xbaf2f72c3c970a1379a2d1f9b5e45bc26e05694e";
+    userBasicInfoContractAddress = "0x82a1a1db6990e33a0039566f64985468a32a0a98"
+    userProfileContractAddress = "0x663216c1c8f109995dba6501f8e7ff066d5b679b";
+    userFreevisionContractAddress = "0x24d6d4a0285b639d42529964c4322d98172beece";
+    userHideInfoContractAddress = "0x91fadc97787c5102138c6765c8905f42951c225d";
 
-    userContainer = web3.eth.contract(userContainerAbi).at(userContainerContractAddress);
-    var data = userContainer.getUserList.call();
+    //관심해시태그 관련
+    interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
 
-    for(i=0;i<data.length;i++){
-        userBasicInfo = web3.eth.contract(userMainAbi).at(userBasicInfoContractAddress);
+    //PM Token 관련
+    pmTokenContractAddress = "0xdc76436a668158c0e785613a740a4a5cc35b2e48";
+
+    //회사 관련 
+    companyContainerContractAddress = "0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833";
+    companyMainContractAddress = "0x82e448165a2482e62f028baa67d076b8a50e3379";
+    companyDetailContractAddress = "0x200c91b0e868bbd305b17789beacf24cbd233270";
+  
+
+
+
+    //사용자 메인 리스트에 보여줄 아이템
+    function initUser(page) {
+
+      var resList = new Array() ;
+
+      userContainer = web3.eth.contract(userContainerAbi).at(userContainerContractAddress);
+      userBasicInfo = web3.eth.contract(userMainAbi).at(userBasicInfoContractAddress);
+      var data = userContainer.getAddr(1*page - 1, (1*page - 1) + 10);
+
+      for(i=0;i<data.length;i++){
+
         var userbasic = userBasicInfo.getBasicInfo(data[i]);
 
         var item = new Object();
         item.picture = userbasic[0];
-  item.name = userbasic[1];
-  item.job = userbasic[2];
-  item.company = userbasic[3];
-  item.interestItems = userbasic[4];
-  item.updateTime = userbasic[5];
-  item.mvp = userbasic[6];
+        item.name = userbasic[1];
+        item.job = userbasic[2];
+        item.company = userbasic[3];
+        item.interestItems = userbasic[4];
+        item.updateTime = userbasic[5];
+        item.mvp = userbasic[6];
 
 
         var itemList = new Object() ;
         itemList.account = data[i] ;
         itemList.items = item;
         resList.push(itemList);
+      }
+      var jsonResult = JSON.stringify(resList);
+
+      return jsonResult;
     }
-    var jsonResult = JSON.stringify(resList);
-
-    return jsonResult;
-}
-
-
-
-
-//사용자 디테일 프로필 조회
-function getDetailProfile (_addr){
-var resList = new Array() ;
-userProfileContract = web3.eth.contract(userProfileAbi).at(userProfileContractAddress);
-    userFreeVisionContract = web3.eth.contract(userFreeVisionAbi).at(userFreevisionContractAddress);
-userHideInfoContract = web3.eth.contract(userHideInfoAbi).at(userHideInfoContractAddress);
     
-var item = new Object() ;
 
 
-var data = userProfileContract.getProfileInfo(_addr);
-var vision = userFreeVisionContract.getUserFreeVision(_addr);
-var hideInfo = userHideInfoContract.getUserHideInfo(_addr);
 
-var profileInfoItem = new Object();
-profileInfoItem.educationHistory = data[0];
-profileInfoItem.careerHistory = data[1];
-profileInfoItem.achievements = data[2];
+    //사용자 디테일 프로필 조회
+    function getDetailProfile (_addr){
+      var resList = new Array() ;
+      userProfileContract = web3.eth.contract(userProfileAbi).at(userProfileContractAddress);
+      userFreeVisionContract = web3.eth.contract(userFreeVisionAbi).at(userFreevisionContractAddress);
+      userHideInfoContract = web3.eth.contract(userHideInfoAbi).at(userHideInfoContractAddress);
 
-var hideInfoItem = new Object();
-hideInfoItem.hideInfoValue = hideInfo[0];
-hideInfoItem.estimateValue = hideInfo[1];
-hideInfoItem.openCount = hideInfo[2];
-hideInfoItem.hideInfoHint = hideInfo[3];
+      var item = new Object() ;
+      var vision = userFreeVisionContract.getUserFreeVision(_addr);
+      var hideInfo = userHideInfoContract.getUserHideInfo(_addr);
+
+      var profileInfoItem = new Object();
+      profileInfoItem.educationHistory = userProfileContract.getEducationHistoryInfo(_addr);
+      profileInfoItem.careerHistory = userProfileContract.getCareerHistoryInfo(_addr);
+      profileInfoItem.achievements = userProfileContract.getAchievementHistoryInfo(_addr);
+
+      var hideInfoItem = new Object();
+      hideInfoItem.hideInfoValue = hideInfo[0];
+      hideInfoItem.estimateValue = hideInfo[1];
+      hideInfoItem.openCount = hideInfo[2];
+      hideInfoItem.hideInfoHint = userHideInfoContract.getUserHideInfoHint(_addr);
 
 
-item.profileInfo = profileInfoItem;
-item.freeVision = vision;
-item.hideInfo = hideInfoItem;
-var jsonResult = JSON.stringify(item);
-    return jsonResult;
-}
-
-
-function getInterestItems(){
-
-  var resList = new Array() ;
-
-  interestContainer = web3.eth.contract(interestContainerAbi).at(interestContainerContractAddress);
-  var data = interestContainer.getInterestItemList.call();
-
-for(i=0;i<data.length;i++){
-        resList.push(hexToString(data[i].toString()));
+      item.profileInfo = profileInfoItem;
+      item.freeVision = vision;
+      item.hideInfo = hideInfoItem;
+      var jsonResult = JSON.stringify(item);
+      return jsonResult;
     }
 
-    return resList;
-}
+    //관심 분야 리스트
+    function getInterestItems(){
 
- //Byte로 저장된 글자들
-function hexToString(hexx) {
-  var hex = hexx.toString();//force conversion
-  var str = '';
-  for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
-      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-  return str;
-}
+      var resList = new Array() ;
+
+      interestContainer = web3.eth.contract(interestContainerAbi).at(interestContainerContractAddress);
+      var data = interestContainer.getInterestItemList.call();
+
+      for(i=0;i<data.length;i++){
+        resList.push(hexToString(data[i].toString()));
+      }
+
+      return resList;
+    }
+
+     //Byte로 저장된 글자들
+     function hexToString(hexx) {
+      var hex = hexx.toString();//force conversion
+      var str = '';
+      for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+      return str;
+    }
+
+    //나의 PM Token 잔액 확인
+    function getPMCBalance(addr){
+      pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(pmTokenContractAddress);
+      balance = pmcTokenContract.balanceOf(addr).toNumber();
+      return balance;
+    }
 
 
-function getPMCBalance(addr){
-pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(pmTokenContractAddress);
-balance = pmcTokenContract.balanceOf(addr).toNumber();
-return balance;
-}
 
-
-
-//비공개 정보 보기위해 토큰 전달
-function sendPmcForOpenHideInfo(gas, value, _to, _from, priKey){
-contractAddress = pmTokenContractAddress;
-pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
-
-var count = web3.eth.getTransactionCount(_from);
-const gasPriceHex = web3.toHex(gas*1000000000);
-gasLimitHex = web3.toHex(66029);
-var rawTransaction = {
-        "from": _from,
-        "nonce": web3.toHex(count),
-        "gasPrice": gasPriceHex,
-        "gasLimit": gasLimitHex,
-        "to": contractAddress,
-        "value": "0x00",
-        "data": pmcTokenContract.trasferOpenHideInfo.getData(_from,_to, value),
-        "chainId": "0x03"
+  //비공개 정보 보기위해 토큰 전달
+  function sendPmcForOpenHideInfo(gas, value, _to, _from, priKey){
+    contractAddress = pmTokenContractAddress;
+    pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
+    
+    var count = web3.eth.getTransactionCount(_from);
+    const gasPriceHex = web3.toHex(gas*1000000000);
+    gasLimitHex = web3.toHex(66029);
+    var rawTransaction = {
+      "from": _from,
+      "nonce": web3.toHex(count),
+      "gasPrice": gasPriceHex,
+      "gasLimit": gasLimitHex,
+      "to": contractAddress,
+      "value": "0x00",
+      "data": pmcTokenContract.trasferOpenHideInfo.getData(_from,_to, value),
+      "chainId": "0x03"
     };
 
     var privKey = new EthJS.Buffer.Buffer(priKey, 'hex');
@@ -378,80 +387,105 @@ var rawTransaction = {
     web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, hash) {
       if (!err){
         console.log(hash);
-        //sendMessage(hash);
-      }else{
-        console.log(err);
+            //sendMessage(hash);
+          }else{
+            console.log(err);
+          }
+
+        });
+
+  }
+
+
+  // UserTransaction : 0x4d0c0f53364847349635231a125efef573bd0e6c
+  function getUserTransactionList(addr){
+    userTxContract = web3.eth.contract(userTransactionAbi).at('0x4d0c0f53364847349635231a125efef573bd0e6c');
+    data = userTxContract.getTransaction(addr);
+
+    var resList = new Array() ;
+    for(i = 0; i<data.length ;i++){
+      txReceipt = web3.eth.getTransactionReceipt(data[i]);
+      var item = new Object() ;
+      item.tx = data[i] ;
+
+      if(txReceipt.status == 0) item.status = "Pending";
+      if(txReceipt.status == 1) item.status = "Success";
+      resList.push(item);
+    }
+
+    var jsonResult = JSON.stringify(resList);
+
+    return jsonResult;
+  }
+
+    //회사 메인 리스트에 보여줄 아이템
+    function getCompanyMainList(){
+
+      var resList = new Array() ;
+
+      companyContainer = web3.eth.contract(companyContainerAbi).at(companyContainerContractAddress);
+      companyMainInfo = web3.eth.contract(companyMainAbi).at(companyMainContractAddress);
+      var data = companyContainer.getCompanyList.call();
+
+      for(i=0;i<data.length;i++){
+        
+        var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
+
+        var item = new Object() ;
+        item.account = data[i] ;
+        item.items = companyMainItem;
+
+        resList.push(item);
       }
 
-    });
+      var jsonResult = JSON.stringify(resList);
 
-}
-
-
-// UserTransaction : 0x4d0c0f53364847349635231a125efef573bd0e6c
-function getUserTransactionList(addr){
-userTxContract = web3.eth.contract(userTransactionAbi).at('0x4d0c0f53364847349635231a125efef573bd0e6c');
-data = userTxContract.getTransaction(addr);
-
-var resList = new Array() ;
-for(i = 0; i<data.length ;i++){
-  txReceipt = web3.eth.getTransactionReceipt(data[i]);
-  var item = new Object() ;
-        item.tx = data[i] ;
-
-        if(txReceipt.status == 0) item.status = "Pending";
-        if(txReceipt.status == 1) item.status = "Success";
-        resList.push(item);
-}
-
-var jsonResult = JSON.stringify(resList);
-
-    return jsonResult;
-}
-
-//회사 메인 리스트에 보여줄 아이템
-function getCompanyMainList(){
-
-  var resList = new Array() ;
-
-  companyContainer = web3.eth.contract(companyContainerAbi).at("0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833");
-  var data = companyContainer.getCompanyList.call();
-
-  for(i=0;i<data.length;i++){
-        companyMainInfo = web3.eth.contract(companyMainAbi).at("0x0c7b3bb247553a0e2b86a75953ff109aed68ec63");
-        var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
-
-        var item = new Object() ;
-        item.account = data[i] ;
-        item.items = companyMainItem;
-
-        resList.push(item);
+      return jsonResult;
     }
 
-    var jsonResult = JSON.stringify(resList);
+    function getCompanyDetailInfo(_addr){
 
-    return jsonResult;
-}
-//회사 메인 리스트에 보여줄 아이템
-function getCompanyMainList2(){
+      companyDetailContainer = web3.eth.contract(companyDetailAbi).at(companyDetailContractAddress);
+      var data = companyDetailContainer.getCompanyDetailInfo(_addr);
 
-  var resList = new Array() ;
+      var item = new Object() ;
+      item.employeeNum = data[0].toString();
+      item.openDate = data[1];
+      item.companyType = data[2];
+      item.homepage = data[3];
+      item.logoImg = data[4];
+      item.feedImg = data[5];
 
-  companyContainer = web3.eth.contract(companyContainerAbi).at("0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833");
-  var data = companyContainer.getCompanyList.call();
+      var recruits = new Array() ;
+      for(i = 0; i< data[6].length;i++){
 
-  for(i=0;i<data.length;i++){
-        companyMainInfo = web3.eth.contract(companyMainAbi).at("0x9b022b7aa44580b1047e1a278a9abcc738ca12b0");
-        var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
+        var aaa = data[6][i];
 
-        var item = new Object() ;
-        item.account = data[i] ;
-        item.items = companyMainItem;
+        recruitContract = web3.eth.contract(recruitAbi).at(aaa);
 
-        resList.push(item);
+        var bottom = recruitContract.getRecruitInfoUp();
+        var up = recruitContract.getRecruitInfoUp();
+
+        var recruitItem = new Object() ;
+        recruitItem.title = up[0];
+        recruitItem.interestCate = up[1];
+        recruitItem.recruitType = up[2];
+        recruitItem.minEducational = up[3];
+        recruitItem.careerLimit = up[4];
+        recruitItem.preferentialTreatment = up[5];
+        recruitItem.workType = bottom[0];
+        recruitItem.paymentIndex = bottom[1];
+        recruitItem.posibleWorkLocation = bottom[2];
+        recruitItem.startTime = bottom[3];
+        recruitItem.endTime = bottom[4];
+        recruitItem.decription = bottom[5];
+
+        recruits.push(recruitItem);
+      }
+
+      item.recruitList = recruits;
+
+      return item;
+
+
     }
-
-    var jsonResult = JSON.stringify(resList);
-
-    return jsonResult;
-}
