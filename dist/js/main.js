@@ -50,6 +50,25 @@ function deletePrivateContent(td) {
 }
 
 
+function useGas(coin){
+  alertify.prompt(coin+" coin will be paid. GAS is :", "20",
+  function(evt, value ){
+    alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " Will be used for this.",
+      function(){
+        alertify.success('Ok');
+      },
+      function(){
+        alertify.error('Cancel');
+      });
+    
+  },
+  function(){
+    alertify.error('Cancel');
+  })
+  ;
+}
+
+
 function addJumbotronToMain(name, context, imageURL, number){
   var main = document.getElementById("main");
   
@@ -146,6 +165,7 @@ function updatePeopleModal(number){
     modalPeoplePrivateInfo.innerHTML = frm;
     //frm += &nbsp;
 
+    document.getElementById('modalPeopleMore').setAttribute("onclick","useGas("+PEOPLESDETAIL[number].hideInfo.hideInfoValue+")");
 
 }
 function dummyPeople(){
