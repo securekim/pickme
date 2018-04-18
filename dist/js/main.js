@@ -51,9 +51,9 @@ function deletePrivateContent(td) {
 
 
 function useGas(coin){
-  alertify.prompt(coin+" coin will be paid. GAS is :", "20",
+  alertify.prompt('<H4>'+coin+' <span class="glyphicon glyphicon-fire"></span>  will be paid.</H4> <br>And It takes some time. <br> Speed is depend on GAS :', "50",
   function(evt, value ){
-    alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " Will be used for this.",
+    alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " <br>Will be paid for private info.",
       function(){
         alertify.success('Ok');
       },
@@ -97,12 +97,13 @@ function addJumbotronToMain(name, context, imageURL, number){
     h4.innerHTML=myContext;
 
   var a = document.createElement('button');
-    a.className = "btn btn-lg btn-primary";
+    a.className = "btn btn-lg btn-secondary";
     a.href="#"
     a.setAttribute("data-target","#profileModal");
     a.setAttribute("data-toggle","modal");
     a.setAttribute("onclick","updatePeopleModal("+number+")");
-    a.innerHTML = "View Detail";
+    a.id = "button_"+number;
+    a.innerHTML = "View";
     td2.appendChild(a);
 }
 
@@ -113,6 +114,20 @@ function removeAllJumbotrons(){
   }
 }
 
+function isPaidForPrivateInfo(number){
+  //스카우터가 돈을 지불했는가?
+  //지불했고 열람 가능하다면, View Detail 을 수정한다.
+  var paid = true;
+  myButton = document.getElementById("button_"+number);
+  if(paid){
+    myButton.className = "btn btn-lg btn-primary";
+    myButton.innerHTML = "View All"
+  } else {
+    myButton.className = "btn btn-lg btn-secondary";
+    myButton.innerHTML = "View"
+  }
+  //지불 했는데 열람 불가능한 경우
+}
 
 function updatePeopleModal(number){
   var items = PEOPLES[number].items
@@ -143,14 +158,17 @@ function updatePeopleModal(number){
 
     frm = "<strong>Public Info : </strong><br>"
     for (var i in PEOPLESDETAIL[number].profileInfo.educationHistory){
-      frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.educationHistory[i]+"<br>";
+      if(PEOPLESDETAIL[number].profileInfo.educationHistory[i]!="")
+        frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.educationHistory[i]+"<br>";
     }
     frm+="<p></p>";
     for (var i in PEOPLESDETAIL[number].profileInfo.careerHistory){
+      if(PEOPLESDETAIL[number].profileInfo.careerHistory[i]!="")
       frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.careerHistory[i]+"<br>";
     }
     frm+="<p></p>";
     for (var i in PEOPLESDETAIL[number].profileInfo.achievements){
+      if(PEOPLESDETAIL[number].profileInfo.achievements[i]!="")
       frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.achievements[i]+"<br>";
     }
     modalPeoplePublicInfo.innerHTML = frm;
@@ -160,6 +178,7 @@ function updatePeopleModal(number){
     var modalPeoplePrivateInfo = document.getElementById("modalPeoplePrivateInfo");
     frm = "<strong>Private Info : </strong><br>"
     for (var i in PEOPLESDETAIL[number].hideInfo.hideInfoHint){
+      if(PEOPLESDETAIL[number].hideInfo.hideInfoHint[i]!="")
       frm += "&nbsp;"+PEOPLESDETAIL[number].hideInfo.hideInfoHint[i]+"<br>";
     }
     modalPeoplePrivateInfo.innerHTML = frm;
@@ -380,6 +399,10 @@ function drawPeople(){
 
 
   //비공개 정보 보기위해 토큰 전달
+  //value == COIN
+  //_계좌 사용자
+  //_계좌 스카우터
+  //prikey : d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a
   function sendPmcForOpenHideInfo(gas, value, _to, _from, priKey){
     contractAddress = pmTokenContractAddress;
     pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
@@ -406,8 +429,11 @@ function drawPeople(){
 
     web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, hash) {
       if (!err){
-        console.log(hash);
+        // 이걸 하고나서 팝업.
+        // 성공이랑 관계가 없음.
+          console.log(hash);
             //sendMessage(hash);
+            alertify.success('Send transaction !');
           }else{
             console.log(err);
           }
