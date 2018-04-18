@@ -71,6 +71,7 @@ function useGas(coin,number){
             
         myButton = document.getElementById("button_"+number);
         myButton.className = "btn btn-lg btn-warning";
+        document.getElementById('modalLoader').className="loader loader-8";
       },
       function(){
         alertify.error('Cancel');
@@ -121,7 +122,7 @@ function addJumbotronToMain(name, context, imageURL, number){
   var list = getScouterPurchaseAccountList(HARD_CODED_SCOUTER);
   var paid = false;
   for (var i in list[0]){
-    if(list[0][i] == PEOPLES[number].account) paid = true;
+    if(typeof PEOPLES[number].account!='undefined' && list[0][i] == PEOPLES[number].account) paid = true;
   }
   if(paid) {
     a.className = "btn btn-lg btn-primary";
@@ -221,7 +222,10 @@ function updatePeopleModal(number){
     var list = getScouterPurchaseAccountList(HARD_CODED_SCOUTER);
     var paid = false;
     for (var i in list[0]){
-      if(list[0][i] == PEOPLES[number].account) paid = true;
+      if(list[0][i] == PEOPLES[number].account){
+        paid = true;
+        document.getElementById('modalLoader').className="loader loader-8";
+      }
     }
 
     if(paid) {
@@ -236,7 +240,7 @@ function updatePeopleModal(number){
               frm += "&nbsp;"+files[i]+"<br>";
           }
           document.getElementById("modalPeoplePrivateInfoDetail").innerHTML = frm;
-        }
+        } 
     } else {
       iPaidForPrivateInfo(number,false);
     }
