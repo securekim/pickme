@@ -200,6 +200,26 @@ function updatePeopleModal(number){
     //frm += &nbsp;
 
     document.getElementById('modalPeopleMore').setAttribute("onclick","useGas("+PEOPLESDETAIL[number].hideInfo.hideInfoValue+","+number+")");
+    
+
+    if(paid) {
+      var files = getScouterAccessHideInfoYn(HARD_CODED_ACCOUNT,PEOPLES[number].account)
+        if(files[0]!=""){
+          //만약 접근 가능하다면,
+          document.getElementById('modalLoader').className="";
+          frm = "";
+          for (var i in files){
+            if(files[i]!="")
+              frm += "&nbsp;"+files[i]+"<br>";
+          }
+          document.getElementById("modalPeoplePrivateInfoDetail").innerHTML = frm;
+        } else {
+          //paid 는 했으나...아직 접근 안됨
+          iPaidForPrivateInfo(number,true);
+        }
+    } else {
+      iPaidForPrivateInfo(number,false);
+    }
 
     
 }
@@ -639,7 +659,7 @@ function drawPeople(){
     }
 
 
-    
+
     //스카우터가 사용자 비공개 정보 보려고 할때 판단
     // 1. 사용자 허용리스트에 스카우터가 존재한다.
     // 2. 스카우터 오픈 리스트에 해당 사용자가 존재한다.
