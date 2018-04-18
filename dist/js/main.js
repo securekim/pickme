@@ -68,6 +68,9 @@ function useGas(coin,number){
         sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
         iPaidForPrivateInfo(number,true);
         alertify.success('Ok');
+            
+        myButton = document.getElementById("button_"+number);
+        myButton.className = "btn btn-lg btn-warning";
       },
       function(){
         alertify.error('Cancel');
@@ -114,6 +117,17 @@ function addJumbotronToMain(name, context, imageURL, number){
     a.id = "button_"+number;
     a.innerHTML = "View";
     td2.appendChild(a);
+  
+  var list = getScouterPurchaseAccountList(HARD_CODED_SCOUTER);
+  var paid = false;
+  for (var i in list[0]){
+    if(list[0][i] == PEOPLES[number].account) paid = true;
+  }
+  if(paid) {
+    a.className = "btn btn-lg btn-primary";
+    a.innerHTML = "View All"
+  }
+  
 }
 
 function removeAllJumbotrons(){
@@ -131,15 +145,17 @@ function iPaidForPrivateInfo(number,paid){
   //3. 완료상태이면 보여주고, 아니라면 다시 로딩한다.
 
   myButton = document.getElementById("button_"+number);
+  document.getElementById("modalPeoplePrivateInfoDetail").innerHTML="";
   if(paid){
     myButton.className = "btn btn-lg btn-primary";
-    myButton.innerHTML = "View"
+    myButton.innerHTML = "View All"
     document.getElementById('modalLoader').className="loader loader-8";
     document.getElementById("modalPeopleMore").disabled = true;
   } else {
     myButton.className = "btn btn-lg btn-secondary";
     myButton.innerHTML = "View"
     document.getElementById('modalLoader').className="";
+    document.getElementById("modalPeopleMore").disabled = false;
   }
   //지불 했는데 열람 불가능한 경우
 }
@@ -200,22 +216,26 @@ function updatePeopleModal(number){
     //frm += &nbsp;
 
     document.getElementById('modalPeopleMore').setAttribute("onclick","useGas("+PEOPLESDETAIL[number].hideInfo.hideInfoValue+","+number+")");
+    document.getElementById('modalPeopleMore').innerHTML = "More "+PEOPLESDETAIL[number].hideInfo.hideInfoValue+' <span class="glyphicon glyphicon-fire"></span>';
     
+    var list = getScouterPurchaseAccountList(HARD_CODED_SCOUTER);
+    var paid = false;
+    for (var i in list[0]){
+      if(list[0][i] == PEOPLES[number].account) paid = true;
+    }
 
     if(paid) {
-      var files = getScouterAccessHideInfoYn(HARD_CODED_ACCOUNT,PEOPLES[number].account)
+      iPaidForPrivateInfo(number,true); // 초기화
+      var files = getScouterAccessHideInfoYn(HARD_CODED_SCOUTER,PEOPLES[number].account)
         if(files[0]!=""){
           //만약 접근 가능하다면,
           document.getElementById('modalLoader').className="";
-          frm = "";
+          frm = "<strong>Private Detail : </strong><br>";
           for (var i in files){
             if(files[i]!="")
               frm += "&nbsp;"+files[i]+"<br>";
           }
           document.getElementById("modalPeoplePrivateInfoDetail").innerHTML = frm;
-        } else {
-          //paid 는 했으나...아직 접근 안됨
-          iPaidForPrivateInfo(number,true);
         }
     } else {
       iPaidForPrivateInfo(number,false);
@@ -542,7 +562,7 @@ function drawPeople(){
           console.log(hash);
             //sendMessage(hash);
             alertify
-            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min) <br>"+hash, function(){
+            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min) <br>CONTRACT : "+hash, function(){
               //alertify.success('Success');
               localStorage.setItem("PAID_"+_to, "PAID");
             });
@@ -669,5 +689,13 @@ function drawPeople(){
         pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
         var data = pmcTokenContract.getHideInfoOther(scouterAddr,userAddr);
         return data;
+    }
 
+
+    //스카우터가 자신이 구매한 사용자 계좌 정보
+    function getScouterPurchaseAccountList(_addr){
+        contractAddress = pmTokenContractAddress;
+        pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
+        var data = pmcTokenContract.getScouterOpenAddressList(_addr);
+        return data;
     }
