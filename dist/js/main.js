@@ -539,3 +539,12 @@ function drawPeople(){
         var data = pmcTokenContract.getHideInfoOther(scouterAddr,userAddr);
         return data;
     }
+
+
+    //스카우터가 자신이 구매한 사용자 계좌 정보
+    function getScouterPurchaseAccountList(_addr){
+        contractAddress = pmTokenContractAddress;
+        pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
+        var data = pmcTokenContract.getScouterOpenAddressList(_addr);
+        return data;
+    }
