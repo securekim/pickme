@@ -570,4 +570,13 @@ function drawPeople(){
       item.append3 = data[3];
       item.append4 = data[4];
     return item;
-}
+    }
+
+
+    //스카우터가 사용자 비공개 정보 보려고 할때 판단
+    // 1. 사용자 허용리스트에 스카우터가 존재한다.
+    // 2. 스카우터 오픈 리스트에 해당 사용자가 존재한다.
+    // 3. 오픈기간 7일 이내의 접근이다.
+    function getScouterAccessHideInfoYn(scouterAddr, userAddr){
+        return true;
+    }
