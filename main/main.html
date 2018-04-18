@@ -12,6 +12,7 @@
 
 
     <link rel="stylesheet" href="../dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../dist/css/alertify.min.css">
   </head>
 
   <body>
@@ -305,7 +306,7 @@
                       <div class="modal-footer">
                           <center>
                           <button type="button" class="btn btn-default" data-dismiss="modal">That's enough.</button>
-                          <button type="button" class="btn btn-info" data-dismiss="modal" id="modalPeopleMore">More <span class="glyphicon glyphicon-fire"></span>250</button>
+                          <button type="button" onclick="useGas(250)" class="btn btn-info" data-dismiss="modal" id="modalPeopleMore">More <span class="glyphicon glyphicon-fire"></span>250</button>
                         </center>
                       </div>
                   </div>
@@ -323,7 +324,8 @@
     <script src="../dist/js/jquery.slim.min.js"></script>
     <script src="../dist/js/popper.min.js"></script>
     <script src="../dist/js/bootstrap.min.js"></script>
-
+    
+    
       <!-- Web3 for blockchain -->
     <script type="text/javascript" src="../dist/abi/testabi.js"></script>
     <script type="text/javascript" src="../dist/js/bignumber.min.js"></script>
@@ -351,7 +353,8 @@
     <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
   
     <script src="../dist/js/main.js"></script>
-
+    <script src="../dist/js/alertify.min.js"></script>
+    
 
     <script>
         $(document).on('ready', function() {
