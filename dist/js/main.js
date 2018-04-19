@@ -66,12 +66,8 @@ function useGas(coin,number){
     alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " <br>Will be paid for private info.",
       function(){
         sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
-        iPaidForPrivateInfo(number,true);
+        setJumboButton(number,"YELLOW");
         alertify.success('Ok');
-            
-        myButton = document.getElementById("button_"+number);
-        myButton.className = "btn btn-lg btn-warning";
-        document.getElementById('modalLoader').className="loader loader-8";
       },
       function(){
         alertify.error('Cancel');
@@ -119,16 +115,51 @@ function addJumbotronToMain(name, context, imageURL, number){
     a.innerHTML = "View";
     td2.appendChild(a);
   
-  var list = getScouterPurchaseAccountList(HARD_CODED_SCOUTER);
+  drawAllItems("HARD_CODED_SCOUTER",number);
+}
+
+function drawAllItems(account,number){
+  account = HARD_CODED_SCOUTER
+  var list = getScouterPurchaseAccountList(account);
   var paid = false;
   for (var i in list[0]){
     if(typeof PEOPLES[number].account!='undefined' && list[0][i] == PEOPLES[number].account) paid = true;
   }
-  if(paid) {
-    a.className = "btn btn-lg btn-primary";
-    a.innerHTML = "View All"
-  }
-  
+    if(paid) {
+      //버튼은 노란색 아니면 파란색이되어야하고
+      //로딩바가 뿌려지거나 데이터가 뿌려져야 한다.
+      console.log("PAID !! : "+paid);
+      var files = getScouterAccessHideInfoYn(account,PEOPLES[number].account)
+        if(files[0]!=""){
+          //데이터가 있다면, 로딩바는 없애고 파란색을 틀어주고 뿌려준다
+          console.log("files : "+files);
+          setJumboButton(number,"BLUE");
+          setModalLoder(false);
+          document.getElementById('modalPeopleMore').disabled=true;
+          frm = "<strong>Private Detail : </strong><br>";
+          for (var i in files){
+            if(files[i]!=""){
+              frm += "&nbsp;"+files[i]+"<br>";
+            }
+          }
+          document.getElementById("modalPeoplePrivateInfoDetail").innerHTML = frm;
+        } else {
+          //샀는데 데이터가 없다...
+          //데이터를 지워주고 노란색을 틀어주고 로딩바를 그려준다
+          console.log("PAID, BUT NO DATA !!! ");
+          document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
+          setJumboButton(number,"YELLOW");
+          setModalLoder(true);
+          document.getElementById('modalPeopleMore').disabled=false;
+        }
+    } else {
+      //안샀음.. 로딩바 빼주고 회색 틀어준다
+      console.log("NOT PAID !!! ");
+          document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
+          setJumboButton(number,"GRAY");
+          setModalLoder(false);
+          document.getElementById('modalPeopleMore').disabled=false;
+    }
 }
 
 function removeAllJumbotrons(){
@@ -138,36 +169,43 @@ function removeAllJumbotrons(){
   }
 }
 
-function iPaidForPrivateInfo(number,paid){
-  //지불했고 열람 가능하다면, View Detail 을 수정한다.
-
-  //1. updatePeopleModal 에서 이 함수를 호출하도록 한다.
-  //2. 이 함수에서는 내가 현재 이 아이디에 지불 혹은 완료 상태인지 확인한다.
-  //3. 완료상태이면 보여주고, 아니라면 다시 로딩한다.
-  console.log("iPaidForPrivateInfo "+paid);
+function setJumboButton(number,color){
   myButton = document.getElementById("button_"+number);
-  document.getElementById("modalPeoplePrivateInfoDetail").innerHTML="";
-  if(paid){
-    myButton.className = "btn btn-lg btn-primary";
-    myButton.innerHTML = "View All"
-    document.getElementById('modalLoader').className="loader loader-8";
-    document.getElementById("modalPeopleMore").disabled = true;
-  } else {
-    //myButton.className = "btn btn-lg btn-secondary";
+  if(color == "YELLOW"){
     myButton.innerHTML = "View"
-    document.getElementById('modalLoader').className="";
-    document.getElementById("modalPeopleMore").disabled = false;
+    myButton.className = "btn btn-lg btn-warning";
+  }else if (color == "BLUE"){
+    myButton.innerHTML = "View All"
+    myButton.className = "btn btn-lg btn-primary";
+  }else if(color == "GRAY"){
+    myButton.innerHTML = "View"
+    myButton.className = "btn btn-lg btn-secondary";
+  }else if(color == "RED"){
+    myButton.innerHTML = "View"
+    myButton.className = "btn btn-lg btn-error";
   }
-  //지불 했는데 열람 불가능한 경우
 }
 
-function updatePeopleModal(number){
+function getJumboButton(number){
+  myButton = document.getElementById("button_"+number);
+  if(myButton.className == "btn btn-lg btn-warning") return "YELLOW"
+  if(myButton.className == "btn btn-lg btn-primary") return "BLUE"
+  if(myButton.className == "btn btn-lg btn-secondary") return "GRAY"
+  if(myButton.className == "btn btn-lg btn-error") return "RED"
+}
+
+function setModalLoder(loader){
+  if(loader){
+    document.getElementById('modalLoader').className="loader loader-8";
+  } else {
+    document.getElementById('modalLoader').className="";
+  }
+}
+
+
+function updatePeopleModal(number){ 
   console.log("updatePeopleModal !!! ");
   var items = PEOPLES[number].items
-
-
-
-  
   /*
       사용자 디테일은 사용자 한명한명 직접 클릭했을때 반영
   */
@@ -194,11 +232,6 @@ function updatePeopleModal(number){
       }
   }
     
-
-
-
-
-
   document.getElementById('modalPeopleName').innerText=items.name;
   document.getElementById('modalPeopleImg').setAttribute("src",items.picture);
   var modalPeopleInfo = document.getElementById('modalPeopleInfo');
@@ -253,40 +286,11 @@ function updatePeopleModal(number){
     //frm += &nbsp;
 
     document.getElementById('modalPeopleMore').setAttribute("onclick","useGas("+PEOPLESDETAIL[number].hideInfo.hideInfoValue+","+number+")");
+    //
     document.getElementById('modalPeopleMore').innerHTML = "More "+PEOPLESDETAIL[number].hideInfo.hideInfoValue+' <span class="glyphicon glyphicon-fire"></span>';
     
-    var list = getScouterPurchaseAccountList(HARD_CODED_SCOUTER);
-    var paid = false;
-    for (var i in list[0]){
-      if(list[0][i] == PEOPLES[number].account){
-        paid = true;
-        document.getElementById('modalLoader').className="loader loader-8";
-        console.log("PAID : "+paid);
-      }
-    }
-
-    if(paid) {
-      console.log("PAID1 : "+paid);
-      iPaidForPrivateInfo(number,true); // 초기화
-      var files = getScouterAccessHideInfoYn(HARD_CODED_SCOUTER,PEOPLES[number].account)
-        if(files[0]!=""){
-          //만약 접근 가능하다면,
-          console.log("files : "+files[0]);
-          document.getElementById('modalLoader').className="";
-          frm = "<strong>Private Detail : </strong><br>";
-          for (var i in files){
-            if(files[i]!=""){
-              frm += "&nbsp;"+files[i]+"<br>";
-            }
-          }
-          document.getElementById("modalPeoplePrivateInfoDetail").innerHTML = frm;
-        } 
-    } else {
-      console.log("PAID3 : "+paid);
-      iPaidForPrivateInfo(number,false);
-    }
-
-    
+  drawAllItems("HARD_CODED_SCOUTER",number);
+  
 }
 
 
@@ -736,7 +740,6 @@ function drawPeople(){
         var data = pmcTokenContract.getHideInfoOther(scouterAddr,userAddr);
         return data;
     }
-
 
     //스카우터가 자신이 구매한 사용자 계좌 정보
     function getScouterPurchaseAccountList(_addr){
