@@ -78,7 +78,7 @@ function useGas(coin,number){
   })
 }
 
-function addJumbotronToMain(name, context, imageURL, number){
+function addJumbotronToMain(name, context, imageURL, number, type){
   var main = document.getElementById("main");
   
   var jumbotron = document.createElement('div');
@@ -92,30 +92,35 @@ function addJumbotronToMain(name, context, imageURL, number){
     td1.style = "padding:20px";
     table.appendChild(td1);
 
-  var image = '<img src="'+imageURL+'" alt="'+name+'" height="120" width="120"></img>';
+  var image = '<img src="'+imageURL+'" alt="'+name+'" height="80" width="80" '
+    if(type=="PERSON") image+='class="rounded-circle"'
+    image+='></img>';
     td1.innerHTML=image;
 
   var td2 = document.createElement('td');
     td2.style = "vertical-align:middle";
     table.appendChild(td2);
     
-  var h4 = document.createElement('h4');
-    td2.appendChild(h4);
+  var h = document.createElement('h6');
+    td2.appendChild(h);
 
-  var myContext = '['+name+'] <p class="lead">'+context+'</p>';
-    h4.innerHTML=myContext;
+  var myContext = name+' <p class="lead">'+context+'</p>';
+    h.innerHTML=myContext;
 
   var a = document.createElement('button');
-    a.className = "btn btn-lg btn-secondary";
+    a.className = "btn btn btn-secondary";
     a.href="#"
     a.setAttribute("data-target","#profileModal");
     a.setAttribute("data-toggle","modal");
-    a.setAttribute("onclick","updatePeopleModal("+number+")");
     a.id = "button_"+number;
     a.innerHTML = "View";
     td2.appendChild(a);
   
-  drawAllItems("HARD_CODED_SCOUTER",number);
+    if(type=="PERSON"){
+      drawAllItems("HARD_CODED_SCOUTER",number);
+      a.setAttribute("onclick","updatePeopleModal("+number+")");
+    }
+
 }
 
 function drawAllItems(account,number){
@@ -135,7 +140,11 @@ function drawAllItems(account,number){
           console.log("files : "+files);
           setJumboButton(number,"BLUE");
           setModalLoder(false);
-          document.getElementById('modalPeopleMore').disabled=true;
+          var myButton = document.getElementById('modalPeopleMore');
+          myButton.disabled=false;
+          myButton.className="btn btn-success";
+          myButton.innerHTML="I need you !";
+          myButton.setAttribute("onclick",'iNeedYou('+number+')');
           frm = "<strong>Private Detail : </strong><br>";
           for (var i in files){
             if(files[i]!=""){
@@ -150,7 +159,7 @@ function drawAllItems(account,number){
           document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
           setJumboButton(number,"YELLOW");
           setModalLoder(true);
-          document.getElementById('modalPeopleMore').disabled=false;
+          document.getElementById('modalPeopleMore').disabled=true;
         }
     } else {
       //안샀음.. 로딩바 빼주고 회색 틀어준다
@@ -173,25 +182,17 @@ function setJumboButton(number,color){
   myButton = document.getElementById("button_"+number);
   if(color == "YELLOW"){
     myButton.innerHTML = "View"
-    myButton.className = "btn btn-lg btn-warning";
+    myButton.className = "btn btn btn-warning";
   }else if (color == "BLUE"){
     myButton.innerHTML = "View All"
-    myButton.className = "btn btn-lg btn-primary";
+    myButton.className = "btn btn btn-primary";
   }else if(color == "GRAY"){
     myButton.innerHTML = "View"
-    myButton.className = "btn btn-lg btn-secondary";
+    myButton.className = "btn btn btn-secondary";
   }else if(color == "RED"){
     myButton.innerHTML = "View"
-    myButton.className = "btn btn-lg btn-error";
+    myButton.className = "btn btn btn-error";
   }
-}
-
-function getJumboButton(number){
-  myButton = document.getElementById("button_"+number);
-  if(myButton.className == "btn btn-lg btn-warning") return "YELLOW"
-  if(myButton.className == "btn btn-lg btn-primary") return "BLUE"
-  if(myButton.className == "btn btn-lg btn-secondary") return "GRAY"
-  if(myButton.className == "btn btn-lg btn-error") return "RED"
 }
 
 function setModalLoder(loader){
@@ -297,27 +298,27 @@ function updatePeopleModal(number){
 function dummyPeople(){
   removeAllJumbotrons();
   //http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66
-  addJumbotronToMain("휴지", "Security 전문가입니다.", "http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66","http://blog.securekim.com");
-  addJumbotronToMain("보겸", "SW Engineer 지원 중입니다.", "http://image.hankookilbo.com/i.aspx?Guid=0b2feec797064d63a86c6b9bdedfb4d7&Month=201602&size=640","http://blog.securekim.com");
-  addJumbotronToMain("소련", "Server Engineer 입니다!", "https://www.fashionseoul.com/wp-content/uploads/2017/02/20170217_sul-3.jpg","http://blog.securekim.com");
+  addJumbotronToMain("휴지", "Security 전문가입니다.", "http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66","http://blog.securekim.com","PEOPLE");
+  addJumbotronToMain("보겸", "SW Engineer 지원 중입니다.", "http://image.hankookilbo.com/i.aspx?Guid=0b2feec797064d63a86c6b9bdedfb4d7&Month=201602&size=640","http://blog.securekim.com","PEOPLE");
+  addJumbotronToMain("소련", "Server Engineer 입니다!", "https://www.fashionseoul.com/wp-content/uploads/2017/02/20170217_sul-3.jpg","http://blog.securekim.com","PEOPLE");
 }
 
 function dummyCompany(){
   removeAllJumbotrons();
-  addJumbotronToMain("Samsong", "We Are The Samsong Electronics", "https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg","http://blog.securekim.com");
-  addJumbotronToMain("SKI", "Happy, Supex with SK I", "https://d50gait2982zr.cloudfront.net/wp-content/uploads/2017/08/sb3-logo-1c-blue-p289-rgb.svg","http://blog.securekim.com"); 
-  addJumbotronToMain("Blchess", "We seek 3 Students. ", "https://openclipart.org/download/214574/lego3.svg","http://blog.securekim.com");
+  addJumbotronToMain("Samsong", "We Are The Samsong Electronics", "https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg","http://blog.securekim.com","COMPANY");
+  addJumbotronToMain("SKI", "Happy, Supex with SK I", "https://d50gait2982zr.cloudfront.net/wp-content/uploads/2017/08/sb3-logo-1c-blue-p289-rgb.svg","http://blog.securekim.com","COMPANY"); 
+  addJumbotronToMain("Blchess", "We seek 3 Students. ", "https://openclipart.org/download/214574/lego3.svg","http://blog.securekim.com","COMPANY");
 }
 
 function dummyPickme(){
   removeAllJumbotrons();
-  addJumbotronToMain("SKI", "We seek 2 Server Engineers", "https://d50gait2982zr.cloudfront.net/wp-content/uploads/2017/08/sb3-logo-1c-blue-p289-rgb.svg","http://blog.securekim.com");
-  addJumbotronToMain("SKI", "We seek 3 SW Engineers", "https://d50gait2982zr.cloudfront.net/wp-content/uploads/2017/08/sb3-logo-1c-blue-p289-rgb.svg","http://blog.securekim.com");
-  addJumbotronToMain("Samsong", "We seek 1 Marketers. ", "https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg","http://blog.securekim.com");
-  addJumbotronToMain("Samsong", "We seek 3 Security Engineer. ", "https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg","http://blog.securekim.com");
-  addJumbotronToMain("Samsong", "We seek 2 Project Manager. ", "https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg","http://blog.securekim.com");
-  addJumbotronToMain("Blchess", "We seek 3 Students. ", "https://openclipart.org/download/214574/lego3.svg","http://blog.securekim.com");
-  addJumbotronToMain("Blchess", "We seek 1 Manager. ", "https://openclipart.org/download/214574/lego3.svg","http://blog.securekim.com");
+  addJumbotronToMain("SKI", "We seek 2 Server Engineers", "https://d50gait2982zr.cloudfront.net/wp-content/uploads/2017/08/sb3-logo-1c-blue-p289-rgb.svg","http://blog.securekim.com","COMPANY");
+  addJumbotronToMain("SKI", "We seek 3 SW Engineers", "https://d50gait2982zr.cloudfront.net/wp-content/uploads/2017/08/sb3-logo-1c-blue-p289-rgb.svg","http://blog.securekim.com","COMPANY");
+  addJumbotronToMain("Samsong", "We seek 1 Marketers. ", "https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg","http://blog.securekim.com","COMPANY");
+  addJumbotronToMain("Samsong", "We seek 3 Security Engineer. ", "https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg","http://blog.securekim.com","COMPANY");
+  addJumbotronToMain("Samsong", "We seek 2 Project Manager. ", "https://direct.rhapsody.com/imageserver/images/Alb.279606691/500x500.jpg","http://blog.securekim.com","COMPANY");
+  addJumbotronToMain("Blchess", "We seek 3 Students. ", "https://openclipart.org/download/214574/lego3.svg","http://blog.securekim.com","COMPANY");
+  addJumbotronToMain("Blchess", "We seek 1 Manager. ", "https://openclipart.org/download/214574/lego3.svg","http://blog.securekim.com","COMPANY");
   
 }
   
@@ -402,7 +403,7 @@ function drawPeople(){
     if(PEOPLES[i].items["name"] != ""){
       var company =  PEOPLES[i].items["company"] == "" ? "" : "'"+PEOPLES[i].items["company"]+"' 에 재직중인 "
       var job =  PEOPLES[i].items["job"] == "" ? "구직자 입니다." : "'"+PEOPLES[i].items["job"]+"' 입니다."
-      addJumbotronToMain(PEOPLES[i].items["name"], company + job, PEOPLES[i].items["picture"],i);
+      addJumbotronToMain(PEOPLES[i].items["name"], company + job, PEOPLES[i].items["picture"],i,"PERSON");
     }
   }
   /*
