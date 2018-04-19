@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     final String INIT_USER = "INIT";
     final String CERTED_JUST_USER = "CERT";
     final String PLAY_USER = "PLAY";
-
+    final String DEV_TEST = "TEST";
 
     FileUtil fileUtil = null;
 
@@ -81,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent3 = new Intent(getApplicationContext(),PickMeActivity.class);
                 intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent3);
+                finish();
+                break;
+            case DEV_TEST:
+                Intent intent4 = new Intent(getApplicationContext(),DevTestActivity.class);
+                intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent4);
                 finish();
                 break;
             default:
@@ -139,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             //파일이 존재하지 않으면 초기 파일을 생성
             if(!file.exists()){
                 file.createNewFile();
-                String msg = "{\"type\":\"kakao\",\"value\":\"niipoong\",\"privatekey\":\"b22563a7e548bf55fb6b230ef1733cd16f9b9a900a68c3258a0e922547a621c3\",\"account\":\"0xCB3f76FAb25c223653a85513D2ca42BAB68D1B21\",\"procstatus\":\"PLAY\",\"index\":\"\"}";
+                String msg = "{\"type\":\"kakao\",\"value\":\"niipoong\",\"privatekey\":\"b22563a7e548bf55fb6b230ef1733cd16f9b9a900a68c3258a0e922547a621c3\",\"account\":\"0xCB3f76FAb25c223653a85513D2ca42BAB68D1B21\",\"procstatus\":\"TEST\",\"index\":\"\"}";
                 boolean writeStatus = fileUtil.writeFile(file,msg);
 
                 if(!writeStatus) return false;

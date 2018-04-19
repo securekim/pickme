@@ -26,6 +26,7 @@
         <activity android:name=".CertificateActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".PickMeActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".MainActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".DevTestActivity" android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
