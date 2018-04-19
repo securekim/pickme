@@ -116,6 +116,35 @@ function removeAllJumbotrons(){
 
 function updatePeopleModal(number){
   var items = PEOPLES[number].items
+
+  /*
+      사용자 디테일은 사용자 한명한명 직접 클릭했을때 반영
+  */
+  if(typeof PEOPLESDETAIL[number] == 'undefined'){
+      PEOPLESDETAIL[number] = getDetailProfile(PEOPLES[number].account);
+      PEOPLESDETAIL[number] = PEOPLESDETAIL[number].replace(/'/g, '"');
+      PEOPLESDETAIL[number] = JSON.parse(PEOPLESDETAIL[number]);
+      
+      for(var j in PEOPLESDETAIL[number].profileInfo.careerHistory){
+        if( PEOPLESDETAIL[number].profileInfo.careerHistory[j] == "") continue;
+        PEOPLESDETAIL[number].profileInfo.careerHistory[j] = PEOPLESDETAIL[number].profileInfo.careerHistory[j];
+      }
+      for(var j in PEOPLESDETAIL[number].profileInfo.achievements){
+        if( PEOPLESDETAIL[number].profileInfo.achievements[j] == "") continue;
+        PEOPLESDETAIL[number].profileInfo.achievements[j] = PEOPLESDETAIL[number].profileInfo.achievements[j];
+      }
+      for(var j in PEOPLESDETAIL[number].profileInfo.educationHistory){
+        if( PEOPLESDETAIL[number].profileInfo.educationHistory[j] == "") continue;
+        PEOPLESDETAIL[number].profileInfo.educationHistory[j] = PEOPLESDETAIL[number].profileInfo.educationHistory[j];
+      }
+      for(var j in PEOPLESDETAIL[number].hideInfo.hideInfoHint){
+        if( PEOPLESDETAIL[number].hideInfo.hideInfoHint[j] == "") continue;
+        PEOPLESDETAIL[number].hideInfo.hideInfoHint[j] = PEOPLESDETAIL[number].hideInfo.hideInfoHint[j];
+      }
+    }
+    
+
+
   document.getElementById('modalPeopleName').innerText=items.name;
   document.getElementById('modalPeopleImg').setAttribute("src",items.picture);
   var modalPeopleInfo = document.getElementById('modalPeopleInfo');
@@ -213,6 +242,7 @@ function drawPeople(){
       addJumbotronToMain(PEOPLES[i].items["name"], company + job, PEOPLES[i].items["picture"],i);
     }
   }
+  /*
   for(var i in PEOPLES){
     if(PEOPLES[i].items["name"] != ""){
      if(typeof PEOPLESDETAIL[i] == 'undefined'){
@@ -240,7 +270,7 @@ function drawPeople(){
     }
   }
 }
-
+*/
 
 }
 
