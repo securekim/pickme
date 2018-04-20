@@ -165,9 +165,13 @@ function addJumbotronToMain(name, context, imageURL, number, type){
 
 function drawScout(){
   list = getRecruitRequestList(HARD_CODED_ACCOUNT,1);
+  list = list.replace(/'/g, '"');
+  list = JSON.parse(list);
   //for(var i in list){}
-  addScoutJumbotronToMain(list);
-
+  removeAllJumbotrons();
+  for(var i in list){
+    addScoutJumbotronToMain(list[i]);
+  }
 }
 
 function addScoutJumbotronToMain(myScoutersInfo){
@@ -179,17 +183,26 @@ function addScoutJumbotronToMain(myScoutersInfo){
   }
 
   var account     = myScoutersInfo.scouterAddr;
-  var name        = myScoutersInfo.companyName;
-  var url         = myScoutersInfo.companyImgUrl;
+  var name        = myScoutersInfo.company.name;
+  var url         = myScoutersInfo.company.url;
+  var categoty    = myScoutersInfo.company.category;
   var expense     = myScoutersInfo.recruitReward;
   var place       = myScoutersInfo.meetingPlace;
   var contact     = myScoutersInfo.emergencyPhoneNumber;
   var date        = myScoutersInfo.meetingDate
 
-  if(typeof url =='undefined'){
-    url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
-  }
-
+  if(typeof url =='undefined') url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
+  if(typeof category == 'undefined') category = "unknwon";
+  
+  var parameter = '"'+account+'"';
+  parameter    += ',"'+name+'"';
+  parameter    += ',"'+url+'"';
+  parameter    += ',"'+category+'"';
+  parameter    += ',"'+expense+'"';
+  parameter    += ',"'+place+'"';
+  parameter    += ',"'+contact+'"';
+  parameter    += ',"'+date+'"';
+ 
   var main = document.getElementById("main");
   
   var jumbotron = document.createElement('div');
@@ -197,7 +210,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
     jumbotron.style = "background-color: white; margin-bottom: 1rem;";
     jumbotron.href="#"
     jumbotron.id = "jumbotron_"+account;
-    jumbotron.setAttribute("onclick","viewScouter("+name+","+expense+","+place+","+contact+","+date+")");
+    jumbotron.setAttribute("onclick",'viewScouter(' +parameter+ ')');
     jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     main.appendChild(jumbotron);
 
@@ -234,6 +247,14 @@ function addScoutJumbotronToMain(myScoutersInfo){
 
 //jumbotron.setAttribute("onclick","viewScouter("+name+","+expense+","+place+","+contact+","+date+")");
 
+// var parameter = '"'+account+'"';
+// parameter    += ',"'+name+'"';
+// parameter    += ',"'+url+'"';
+// parameter    += ',"'+category+'"';
+// parameter    += ',"'+expense+'"';
+// parameter    += ',"'+place+'"';
+// parameter    += ',"'+contact+'"';
+// parameter    += ',"'+date+'"';
 
 function drawAllItems(account,number){
   account = HARD_CODED_SCOUTER
