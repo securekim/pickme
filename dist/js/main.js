@@ -935,7 +935,32 @@ function iNeedYou(number){
 
     }
 
+    function getMyProfile(_addr){
+    	var profileData = getDetailProfile(_addr);
+    	var privateData = getHideAppendFile(_addr);
+    	userBasicInfo = web3.eth.contract(userMainAbi).at(userBasicInfoContractAddress);
+		var userbasic = userBasicInfo.getBasicInfo(_addr);
 
+		var item = new Object() ;
+		
+
+		var basic = new Object();
+        basic.picture = userbasic[0];
+        basic.name = userbasic[1];
+        basic.job = userbasic[2];
+        basic.company = userbasic[3];
+        basic.interestItems = userbasic[4];
+        basic.updateTime = userbasic[5];
+        basic.mvp = userbasic[6];
+
+        item.basicInfo = basic;
+		
+		item.profileInfo = profileData;
+
+		item.privateInfo = privateData;
+
+		return item;
+    }
 
     //비공개 첨부파일 가져오기
     function getHideAppendFile(_addr){
@@ -990,7 +1015,7 @@ function iNeedYou(number){
 	        item.meetingDate = subData[3] ;
 	        item.meetingPlace = subData[4] ;
 	        item.emergencyPhoneNumber = subData[5];
-	        
+	        item.recruitStatus = subData[6];
 
 	        var companyInfo = companyMainInfo.getCompanyMainInfo(pmcTokenContract.getScouterInfo(subData[1]));
 	        var companyInfoItem = new Object() ;
