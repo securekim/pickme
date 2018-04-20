@@ -772,7 +772,7 @@ function iNeedYou(number){
     
     var count = web3.eth.getTransactionCount(_from);
     const gasPriceHex = web3.toHex(gas*1000000000);
-    gasLimitHex = web3.toHex(244747);
+    gasLimitHex = web3.toHex(244769);
     var rawTransaction = {
       "from": _from,
       "nonce": web3.toHex(count),
@@ -963,7 +963,15 @@ function iNeedYou(number){
 	        item.meetingDate = subData[3] ;
 	        item.meetingPlace = subData[4] ;
 	        item.emergencyPhoneNumber = subData[5];
-	        item.company = companyMainInfo.getCompanyMainInfo(pmcTokenContract.getScouterInfo(subData[1]));
+	        
+
+	        var companyInfo = companyMainInfo.getCompanyMainInfo(pmcTokenContract.getScouterInfo(subData[1]));
+	        var companyInfoItem = new Object() ;
+	        companyInfoItem.url = companyInfo[0];
+	        companyInfoItem.name = companyInfo[1];
+	        companyInfoItem.category = companyInfo[2];
+
+	        item.company = companyInfoItem;
 			resList.push(item);
 	      }
 
