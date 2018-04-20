@@ -525,6 +525,10 @@ function drawPeople(){
     //PM Token 관련
     pmTokenContractAddress = "0x7a49eaaf8aac6e71bb984a3158f0afd6085259b2";
 
+    //면접진행 관련
+    recruitChkContractAddress = "0xda4b29a6a10ae9eba60f2d70f39e5c153753ba0a";
+
+
     //회사 관련 
     companyContainerContractAddress = "0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833";
     companyMainContractAddress = "0x82e448165a2482e62f028baa67d076b8a50e3379";
@@ -807,3 +811,67 @@ function drawPeople(){
         var data = pmcTokenContract.getScouterOpenAddressList(_addr);
         return data;
     }
+
+
+
+
+    //면접요청 리스트 확인
+    function getRecruitRequestList(_addr, page){
+
+    var resList = new Array() ;
+
+      recruitChkContract = web3.eth.contract(recruitChkAbi).at(recruitChkContractAddress);
+      
+      var data = recruitChkContract.getMapping(_addr, 1*page - 1, (1*page - 1) + 10);
+
+      return data;
+    }
+
+
+    //스카우터가 구직자에게 면접요청 (가스, 구직자, 스카우터, 면접비, 날짜 YYYYMMDD-24MISS, , 장소, 비상연락망)
+    function requestRecruitUser(gas, _to, _from, priKey, _recruitReward,  _meetingDate,  _meetingPlace,  _emergencyPhoneNumber){
+
+	    recruitChkContract = web3.eth.contract(recruitChkAbi).at(recruitChkContractAddress);
+	    
+	    var count = web3.eth.getTransactionCount(_from);
+	    const gasPriceHex = web3.toHex(gas*1000000000);
+	    gasLimitHex = web3.toHex(563580);
+	    var rawTransaction = {
+	      "from": _from,
+	      "nonce": web3.toHex(count),
+	      "gasPrice": gasPriceHex,
+	      "gasLimit": gasLimitHex,
+	      "to": recruitChkContractAddress,
+	      "value": "0x00",
+	      "data": recruitChkContract.makeRecruit.getData(_recruitReward,_from, _to, _meetingDate, _meetingPlace, _emergencyPhoneNumber),
+	      "chainId": "0x03"
+	    };
+
+	    var privKey = new EthJS.Buffer.Buffer(priKey, 'hex');
+	    var tx = new EthJS.Tx(rawTransaction);
+
+	    tx.sign(privKey);
+	    var serializedTx = tx.serialize();
+
+	    web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, hash) {
+	      if (!err){
+	        // 이걸 하고나서 팝업.
+	        // 성공이랑 관계가 없음.
+	        // HASH - 하나의 계약서 - 트랜잭션 
+	        // 해시 값..함수를 동적으로 생성해서 계속 쪼고있음
+	        // pending / success
+	          console.log(hash);
+	            //sendMessage(hash);
+	            alertify
+	            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min) <br>CONTRACT : "+hash, function(){
+	              //alertify.success('Success');
+	              localStorage.setItem("PAID_"+_to, "PAID");
+	            });
+	          }else{
+	            console.log(err);
+	          }
+
+	        });
+    }
+
+
