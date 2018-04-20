@@ -4,7 +4,8 @@ var PEOPLESDETAIL=[];
 var HARD_CODED_ACCOUNT = "0x731a765dff550d11b7c880af145066bc1bdd3127";
 var HARD_CODED_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
 var HARD_CODED_SCOUTER = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
-var HARD_CODED_NUMBER =2 ;
+var HARD_CODED_SCOUTER_NUMBER =2 ;
+var HARD_CODED_ACCOUNT_NUMBER = 0;
 var ScouterAccessHideInfoYn = {};
 ///////////////////////////////////////////////////
 // 모두 캐시 해야 됨
@@ -223,7 +224,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
     table.appendChild(td1);
 
   var image = '<img src="'+url+'" alt="'+name+'" height="80" width="80" '
-    image+='class="rounded-circle"'
+    //image+='class="rounded-circle"'
     image+='></img>';
     td1.innerHTML=image;
 
@@ -241,7 +242,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
   var h = document.createElement('h6');
     td2.appendChild(h);
 
-  var myContext = name+' <p class="lead">'+context+'</p>';
+  var myContext = name+' <p class="lead">'+category+'</p>';
     h.innerHTML=myContext;
 }
 
@@ -255,6 +256,32 @@ function addScoutJumbotronToMain(myScoutersInfo){
 // parameter    += ',"'+place+'"';
 // parameter    += ',"'+contact+'"';
 // parameter    += ',"'+date+'"';
+function viewScouter(account,name,url,category,expense,place,contact,date){
+
+  var frame = '<H4>'+name+' 에서</H4><br>'
+  frame    += ' 친애하는 "' + PEOPLES[HARD_CODED_ACCOUNT_NUMBER].items.name + '" 님께<br>'
+  frame    += '"'+PEOPLES[HARD_CODED_ACCOUNT_NUMBER].items.name +'"님께서<br> 유로로 공개한 정보를 검토해 본 결과,<br>'
+  frame    += '면접에 초대하고 싶어서 연락 드리게 되었습니다.<br>';
+  frame    += ' 시간은 '+date+' 이고,<br>';
+  frame    += ' 장소는 '+place+' 입니다.<br>';
+  frame    += ' 참고로 시간과 장소는 유선 협의가 가능합니다.';
+  frame    += ' 또한 면접시 '+expense+' <span class="glyphicon glyphicon-fire"></span> 를 면접비로 지원하고 있습니다.<br>';
+  frame    += '저희에 대한 대략적인 정보는 <a href="'+url+'"> URL(클릭) </a> 을 참조해 주시고,<br>';
+  frame    += '궁금한 사항 있으시면 아래 번호로 연락 부탁드립니다.<br>';
+  frame    += contact;
+  
+  alertify.confirm(frame,
+  function(){
+     //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
+    alertify.success('Ok');
+  },
+  function(){
+    alertify.error('Cancel');
+  });
+
+
+
+}
 
 function drawAllItems(account,number){
   account = HARD_CODED_SCOUTER
@@ -490,8 +517,8 @@ function dummyScout(){
 
 function updateModalI(){
 
-    number = HARD_CODED_NUMBER;
-    var items = PEOPLES[HARD_CODED_NUMBER].items
+    number = HARD_CODED_SCOUTER_NUMBER;
+    var items = PEOPLES[HARD_CODED_SCOUTER_NUMBER].items
     
     document.getElementById('modalIName').innerText=items.name;
     document.getElementById('modalIImg').setAttribute("src",items.picture);
@@ -546,7 +573,7 @@ function updateModalI(){
       modalPeoplePrivateInfo.innerHTML = frm;
       //frm += &nbsp;
   
-  var files = getHideAppendFile(PEOPLES[HARD_CODED_NUMBER].account);
+  var files = getHideAppendFile(PEOPLES[HARD_CODED_SCOUTER_NUMBER].account);
   frm = "";
 
   for (var i in files){
