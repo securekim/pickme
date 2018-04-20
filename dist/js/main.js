@@ -310,7 +310,7 @@ function updatePeopleModal(number){
     h3.className = "media-heading";
     modalPeopleInfo.appendChild(h3);
 
-  var frm = 'PMC<span id="peoplePMC" class="glyphicon glyphicon-fire"></span>'+items.mvp
+  var frm = 'Trust Power<span id="peoplePMC" class="glyphicon glyphicon-flash"></span>'+items.mvp
     h3.innerHTML = frm;
 
    for(var i in items.interestItems){
@@ -404,7 +404,7 @@ function updateModalI(){
       h3.className = "media-heading";
       modalPeopleInfo.appendChild(h3);
   
-    var frm = 'PMC<span id="IPMC" class="glyphicon glyphicon-fire"></span>'+items.mvp
+    var frm = 'Trust Power<span id="IPMC" class="glyphicon glyphicon-flash"></span>'+items.mvp
       h3.innerHTML = frm;
   
      for(var i in items.interestItems){
