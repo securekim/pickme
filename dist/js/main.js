@@ -122,20 +122,12 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     jumbotron.setAttribute("data-target","#profileModal");
     jumbotron.setAttribute("data-toggle","modal");
     jumbotron.href="#"
-    jumbotron.id = "button_"+number;
+    jumbotron.id = "jumbotron_"+number;
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     main.appendChild(jumbotron);
 
-  // var a = document.createElement('button');
-  // a.className = "btn btn-secondary";
-  // a.href="#"
-  // a.setAttribute("data-target","#profileModal");
-  // a.setAttribute("data-toggle","modal");
-  // a.id = "button_"+number;
-  // a.innerHTML = "View";
-  // td2.appendChild(a);
-
-
   var table = document.createElement('table');
+    table.style="width:100%"
     jumbotron.appendChild(table);
 
   var td1 = document.createElement('td');
@@ -153,9 +145,7 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     
   var td3 = document.createElement('td');
   td3.id="load_"+number;
-  td3.style = "vertical-align:middle";
-  //document.getElementById('load_'+number).innerHTML = '<div class="loader loader-8"></div>'
-  //td3.innerHTML = '<div id="load_'+number+'"class="loader loader-8"></div>';
+  td3.style = "vertical-align:middle; height:80px; width:80px";
   table.appendChild(td3);  
 
   var h = document.createElement('h6');
@@ -163,15 +153,6 @@ function addJumbotronToMain(name, context, imageURL, number, type){
 
   var myContext = name+' <p class="lead">'+context+'</p>';
     h.innerHTML=myContext;
-
-  // var a = document.createElement('button');
-  //   a.className = "btn btn-secondary";
-  //   a.href="#"
-  //   a.setAttribute("data-target","#profileModal");
-  //   a.setAttribute("data-toggle","modal");
-  //   a.id = "button_"+number;
-  //   a.innerHTML = "View";
-  //   td2.appendChild(a);
   
     if(type=="PERSON"){
       drawAllItems("HARD_CODED_SCOUTER",number);
@@ -198,6 +179,9 @@ function drawAllItems(account,number){
           console.log("files : "+files);
           setJumboButton(number,"BLUE");
           setModalLoder(false);
+
+          document.getElementById("interview-tab").className="nav-link";
+
           var myButton = document.getElementById('modalPeopleMore');
           myButton.disabled=false;
           myButton.className="btn btn-success";
@@ -214,6 +198,12 @@ function drawAllItems(account,number){
           //샀는데 데이터가 없다...
           //데이터를 지워주고 노란색을 틀어주고 로딩바를 그려준다
           console.log("PAID, BUT NO DATA !!! ");
+          document.getElementById("interview-tab").className="nav-link fade disabled";
+          document.getElementById("profile-tab").className="nav-link active show";
+          
+          document.getElementById("profileTab").className = "tab-pane active show";
+          document.getElementById("interviewTab").className = "tab-pane";
+
           document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
           setJumboButton(number,"YELLOW");
           setModalLoder(true);
@@ -222,6 +212,12 @@ function drawAllItems(account,number){
     } else {
       //안샀음.. 로딩바 빼주고 회색 틀어준다
       console.log("NOT PAID !!! ");
+          document.getElementById("interview-tab").className="nav-link fade disabled";
+          document.getElementById("profile-tab").className="nav-link active show";
+          
+          document.getElementById("profileTab").className = "tab-pane active show";
+          document.getElementById("interviewTab").className = "tab-pane";
+
           document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
           setJumboButton(number,"GRAY");
           setModalLoder(false);
@@ -237,27 +233,27 @@ function removeAllJumbotrons(){
 }
 
 function setJumboButton(number,color){
-  myButton = document.getElementById("button_"+number);
+  jumbotron = document.getElementById("jumbotron_"+number);
   if(color == "YELLOW"){
     //myButton.innerHTML = "View"
     //myButton.className = "btn btn btn-warning";
 
     //    border: solid rgb(23, 162, 184);
     //myButton.style = "background-color:rgb(185, 147, 32);"
-    myButton.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
   }else if (color == "BLUE"){
     //myButton.innerHTML = "View All"
     //myButton.className = "btn btn btn-primary";
     //<div class="lds-heart"><div></div></div>
     document.getElementById('load_'+number).innerHTML = '<div class="lds-heart"><div></div></div>';
-    myButton.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     //myButton.style = "background-color:#17a2b8"
   }else if(color == "GRAY"){
     //myButton.innerHTML = "View"
     //myButton.className = "btn btn btn-secondary";
     document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
-    myButton.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray;border-bottom-width: 1px;border-right-width: 0.7px; ";
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray;border-bottom-width: 1px;border-right-width: 0.7px; ";
     //myButton.style = "background-color:rgb(140, 146, 152);"
   }else if(color == "RED"){
     //myButton.innerHTML = "View"
@@ -305,6 +301,7 @@ function updatePeopleModal(number){
     
   document.getElementById('modalPeopleName').innerText=items.name;
   document.getElementById('modalPeopleImg').setAttribute("src",items.picture);
+  document.getElementById('modalPeopleImg2').setAttribute("src",items.picture);
   var modalPeopleInfo = document.getElementById('modalPeopleInfo');
   while (modalPeopleInfo.firstChild) {
     modalPeopleInfo.removeChild(modalPeopleInfo.firstChild);
@@ -313,7 +310,7 @@ function updatePeopleModal(number){
     h3.className = "media-heading";
     modalPeopleInfo.appendChild(h3);
 
-  var frm = 'PMC<span id="peoplePMC" class="glyphicon glyphicon-fire"></span>'+items.mvp
+  var frm = 'Trust Power<span id="peoplePMC" class="glyphicon glyphicon-flash"></span>'+items.mvp
     h3.innerHTML = frm;
 
    for(var i in items.interestItems){
@@ -407,7 +404,7 @@ function updateModalI(){
       h3.className = "media-heading";
       modalPeopleInfo.appendChild(h3);
   
-    var frm = 'PMC<span id="IPMC" class="glyphicon glyphicon-fire"></span>'+items.mvp
+    var frm = 'Trust Power<span id="IPMC" class="glyphicon glyphicon-flash"></span>'+items.mvp
       h3.innerHTML = frm;
   
      for(var i in items.interestItems){
@@ -472,40 +469,11 @@ function drawPeople(){
   }
   for(var i in PEOPLES){
     if(PEOPLES[i].items["name"] != ""){
-      var company =  PEOPLES[i].items["company"] == "" ? "" : "'"+PEOPLES[i].items["company"]+"' 에 재직중인 "
-      var job =  PEOPLES[i].items["job"] == "" ? "구직자 입니다." : "'"+PEOPLES[i].items["job"]+"' 입니다."
+      var company =  PEOPLES[i].items["company"] == "" ? "" : "'"+PEOPLES[i].items["company"]+"' 의 <br>"
+      var job =  PEOPLES[i].items["job"] == "" ? "구직자 입니다." : "'"+PEOPLES[i].items["job"]+"'"
       addJumbotronToMain(PEOPLES[i].items["name"], company + job, PEOPLES[i].items["picture"],i,"PERSON");
     }
   }
-  /*
-  for(var i in PEOPLES){
-    if(PEOPLES[i].items["name"] != ""){
-     if(typeof PEOPLESDETAIL[i] == 'undefined'){
-      PEOPLESDETAIL[i] = getDetailProfile(PEOPLES[i].account);
-      PEOPLESDETAIL[i] = PEOPLESDETAIL[i].replace(/'/g, '"');
-      PEOPLESDETAIL[i] = JSON.parse(PEOPLESDETAIL[i]);
-      
-      for(var j in PEOPLESDETAIL[i].profileInfo.careerHistory){
-        
-        if( PEOPLESDETAIL[i].profileInfo.careerHistory[j] == "") continue;
-        PEOPLESDETAIL[i].profileInfo.careerHistory[j] = PEOPLESDETAIL[i].profileInfo.careerHistory[j];
-      }
-      for(var j in PEOPLESDETAIL[i].profileInfo.achievements){
-        if( PEOPLESDETAIL[i].profileInfo.achievements[j] == "") continue;
-        PEOPLESDETAIL[i].profileInfo.achievements[j] = PEOPLESDETAIL[i].profileInfo.achievements[j];
-      }
-      for(var j in PEOPLESDETAIL[i].profileInfo.educationHistory){
-        if( PEOPLESDETAIL[i].profileInfo.educationHistory[j] == "") continue;
-        PEOPLESDETAIL[i].profileInfo.educationHistory[j] = PEOPLESDETAIL[i].profileInfo.educationHistory[j];
-      }
-      for(var j in PEOPLESDETAIL[i].hideInfo.hideInfoHint){
-        if( PEOPLESDETAIL[i].hideInfo.hideInfoHint[j] == "") continue;
-        PEOPLESDETAIL[i].hideInfo.hideInfoHint[j] = PEOPLESDETAIL[i].hideInfo.hideInfoHint[j];
-      }
-    }
-  }
-}
-*/
 
 }
 
@@ -513,7 +481,50 @@ function drawPeople(){
 
 // }
 
+function iNeedYou(number){
+    var date = document.getElementById('DATE').value;
+    var place = document.getElementById('PLACE').value;
+    var contact = document.getElementById('CONTACT').value;
+    var expenses = document.getElementById('EXPENSES').value;
+    console.log(date);
+    console.log(place);
+    console.log(contact);
+    console.log(expenses);
 
+    if (date == "" || place == "" || contact == "" || expenses == ""){
+      alertify.error('Please input the value to interview.');
+      return;
+    }
+    
+    var message = " The interview has been scheduled for <H6>'"+date+"'</H6>";
+    message += "<br> In <H6>'"+place+"'</H6>";
+    message += "<br> Contact : <H6>"+contact+"'</H6>";
+    message += "<br> Interview expenses : <H6>"+expenses+'<span class="glyphicon glyphicon-fire"></span></H6>';
+
+    alertify.confirm("<H3>Is this right ?</H3> <br> "+message,
+    function(){
+          alertify.prompt('<H4>'+expenses+' <span class="glyphicon glyphicon-fire"></span> will be paid at the end of the interview.</H4> <br>And It takes some time. <br> Speed is depend on GAS :', "50",
+          function(evt, value ){
+            alertify.confirm("Are you sure ? EXPENSES :"+expenses+" Gas :"+value+ " <br>Will be paid for interview.",
+              function(){
+                //sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
+                //setJumboButton(number,"YELLOW");
+                 //function requestRecruitUser(gas, _to, _from, priKey, _recruitReward,  _meetingDate,  _meetingPlace,  _emergencyPhoneNumber){
+                requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_ACCOUNT, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
+                alertify.success('Ok');
+              },
+              function(){
+                alertify.error('Cancel');
+              });
+          },
+          function(){
+            alertify.error('Cancel');
+          })
+    },
+    function(){
+      alertify.error('Cancel');
+    });
+}
 
 
 
