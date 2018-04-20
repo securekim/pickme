@@ -5,6 +5,44 @@ var HARD_CODED_ACCOUNT = "0x731a765dff550d11b7c880af145066bc1bdd3127";
 var HARD_CODED_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
 var HARD_CODED_SCOUTER = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
 var HARD_CODED_NUMBER = 0;
+var ScouterAccessHideInfoYn = {};
+///////////////////////////////////////////////////
+// 모두 캐시 해야 됨
+// 이래가지고는 안된다.
+// 전부 로컬스토리지에 넣어놓고
+// 주기적으로 갱신 해야 한다
+// 구조는 ?
+
+// myaccount : {privatekey, number}
+// {account} : {구매했는지, 파일명이뭔지,  }
+// 
+//느린 주범 1. 
+// initUser
+// PEOPLES = initUser(1);
+// PEOPLES = PEOPLES.replace(/'/g, '"');
+// PEOPLES = JSON.parse(PEOPLES);
+//
+// 0. 한번 접근하면 로컬스토리지에 저장한다.
+// 1. 로컬스토리지에 접근해서 PEOPLES를 가져온다.
+// 2. 값이 없으면 initUser 진행, 값이 있으면 리턴.
+// 3. 주기적으로 initUser 를 호출해준다.
+//
+//느린 주범 2.
+//getScouterAccessHideInfoYn
+//var files = getScouterAccessHideInfoYn(account,PEOPLES[number].account)
+//if(files[0]!=""){
+//
+//느린 주범 3.
+//getScouterPurchaseAccountList
+//
+// //
+// var scouterPurchaseAccountList = getScouterPurchaseAccountList(account);
+// var paid = false;
+// for (var i in scouterPurchaseAccountList[0]){
+//   if(typeof PEOPLES[number].account!='undefined' && scouterPurchaseAccountList[0][i] == PEOPLES[number].account) paid = true;
+// }
+////////////////////////////////////////////////////
+
 
 function insertPrivateContent(){
   var tables = document.getElementById('tables');
@@ -83,7 +121,22 @@ function addJumbotronToMain(name, context, imageURL, number, type){
   
   var jumbotron = document.createElement('div');
     jumbotron.className = "jumbotron";
+    jumbotron.style = "margin-bottom: 1rem;";
+    jumbotron.setAttribute("data-target","#profileModal");
+    jumbotron.setAttribute("data-toggle","modal");
+    jumbotron.href="#"
+    jumbotron.id = "button_"+number;
     main.appendChild(jumbotron);
+
+  // var a = document.createElement('button');
+  // a.className = "btn btn-secondary";
+  // a.href="#"
+  // a.setAttribute("data-target","#profileModal");
+  // a.setAttribute("data-toggle","modal");
+  // a.id = "button_"+number;
+  // a.innerHTML = "View";
+  // td2.appendChild(a);
+
 
   var table = document.createElement('table');
     jumbotron.appendChild(table);
@@ -107,28 +160,29 @@ function addJumbotronToMain(name, context, imageURL, number, type){
   var myContext = name+' <p class="lead">'+context+'</p>';
     h.innerHTML=myContext;
 
-  var a = document.createElement('button');
-    a.className = "btn btn btn-secondary";
-    a.href="#"
-    a.setAttribute("data-target","#profileModal");
-    a.setAttribute("data-toggle","modal");
-    a.id = "button_"+number;
-    a.innerHTML = "View";
-    td2.appendChild(a);
+  // var a = document.createElement('button');
+  //   a.className = "btn btn-secondary";
+  //   a.href="#"
+  //   a.setAttribute("data-target","#profileModal");
+  //   a.setAttribute("data-toggle","modal");
+  //   a.id = "button_"+number;
+  //   a.innerHTML = "View";
+  //   td2.appendChild(a);
   
     if(type=="PERSON"){
       drawAllItems("HARD_CODED_SCOUTER",number);
-      a.setAttribute("onclick","updatePeopleModal("+number+")");
+      jumbotron.setAttribute("onclick","updatePeopleModal("+number+")");
     }
 
 }
 
+
 function drawAllItems(account,number){
   account = HARD_CODED_SCOUTER
-  var list = getScouterPurchaseAccountList(account);
+  var scouterPurchaseAccountList = getScouterPurchaseAccountList(account);
   var paid = false;
-  for (var i in list[0]){
-    if(typeof PEOPLES[number].account!='undefined' && list[0][i] == PEOPLES[number].account) paid = true;
+  for (var i in scouterPurchaseAccountList[0]){
+    if(typeof PEOPLES[number].account!='undefined' && scouterPurchaseAccountList[0][i] == PEOPLES[number].account) paid = true;
   }
     if(paid) {
       //버튼은 노란색 아니면 파란색이되어야하고
@@ -181,17 +235,20 @@ function removeAllJumbotrons(){
 function setJumboButton(number,color){
   myButton = document.getElementById("button_"+number);
   if(color == "YELLOW"){
-    myButton.innerHTML = "View"
-    myButton.className = "btn btn btn-warning";
+    //myButton.innerHTML = "View"
+    //myButton.className = "btn btn btn-warning";
+    myButton.style = "background-color:rgb(185, 147, 32);"
   }else if (color == "BLUE"){
-    myButton.innerHTML = "View All"
-    myButton.className = "btn btn btn-primary";
+    //myButton.innerHTML = "View All"
+    //myButton.className = "btn btn btn-primary";
+    myButton.style = "background-color:#17a2b8"
   }else if(color == "GRAY"){
-    myButton.innerHTML = "View"
-    myButton.className = "btn btn btn-secondary";
+    //myButton.innerHTML = "View"
+    //myButton.className = "btn btn btn-secondary";
+    myButton.style = "background-color:rgb(140, 146, 152);"
   }else if(color == "RED"){
-    myButton.innerHTML = "View"
-    myButton.className = "btn btn btn-error";
+    //myButton.innerHTML = "View"
+    //myButton.className = "btn btn btn-error";
   }
 }
 
@@ -395,6 +452,7 @@ function updateModalI(){
 function drawPeople(){
   removeAllJumbotrons();
   if(PEOPLES==""){
+    console.log("initUser !");
     PEOPLES = initUser(1);
     PEOPLES = PEOPLES.replace(/'/g, '"');
     PEOPLES = JSON.parse(PEOPLES);
