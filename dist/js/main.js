@@ -122,6 +122,7 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     jumbotron.setAttribute("data-target","#profileModal");
     jumbotron.setAttribute("data-toggle","modal");
     jumbotron.href="#"
+  
     jumbotron.id = "jumbotron_"+number;
     jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     main.appendChild(jumbotron);
@@ -143,10 +144,12 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     td2.style = "vertical-align:middle";
     table.appendChild(td2);
     
-  var td3 = document.createElement('td');
-  td3.id="load_"+number;
-  td3.style = "vertical-align:middle; height:80px; width:80px";
-  table.appendChild(td3);  
+  if(type=="PERSON"){
+    var td3 = document.createElement('td');
+    td3.id="load_"+number;
+    td3.style = "vertical-align:middle; height:80px; width:80px";
+    table.appendChild(td3);  
+  }
 
   var h = document.createElement('h6');
     td2.appendChild(h);
@@ -157,9 +160,79 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     if(type=="PERSON"){
       drawAllItems("HARD_CODED_SCOUTER",number);
       jumbotron.setAttribute("onclick","updatePeopleModal("+number+")");
-    }
+    } 
+}
+
+function drawScout(){
+  list = getRecruitRequestList(HARD_CODED_ACCOUNT,1);
+  //for(var i in list){}
+  addScoutJumbotronToMain(list);
 
 }
+
+function addScoutJumbotronToMain(myScoutersInfo){
+  //내 어카운트를 넣으면 면접정보가 나온다
+  //그 정보 전체를 여기에 넣어준다
+  if(myScoutersInfo=="" || typeof myScoutersInfo=='undefined') {
+    console.log("There is no data in myScoutersInfo");
+    return;
+  }
+
+  var account     = myScoutersInfo.scouterAddr;
+  var name        = myScoutersInfo.companyName;
+  var url         = myScoutersInfo.companyImgUrl;
+  var expense     = myScoutersInfo.recruitReward;
+  var place       = myScoutersInfo.meetingPlace;
+  var contact     = myScoutersInfo.emergencyPhoneNumber;
+  var date        = myScoutersInfo.meetingDate
+
+  if(typeof url =='undefined'){
+    url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
+  }
+
+  var main = document.getElementById("main");
+  
+  var jumbotron = document.createElement('div');
+    jumbotron.className = "jumbotron";
+    jumbotron.style = "background-color: white; margin-bottom: 1rem;";
+    jumbotron.href="#"
+    jumbotron.id = "jumbotron_"+account;
+    jumbotron.setAttribute("onclick","viewScouter("+name+","+expense+","+place+","+contact+","+date+")");
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
+    main.appendChild(jumbotron);
+
+  var table = document.createElement('table');
+    table.style="width:100%"
+    jumbotron.appendChild(table);
+
+  var td1 = document.createElement('td');
+    td1.style = "padding:20px";
+    table.appendChild(td1);
+
+  var image = '<img src="'+url+'" alt="'+name+'" height="80" width="80" '
+    image+='class="rounded-circle"'
+    image+='></img>';
+    td1.innerHTML=image;
+
+  var td2 = document.createElement('td');
+    td2.style = "vertical-align:middle";
+    table.appendChild(td2);
+    
+  if(false){
+    var td3 = document.createElement('td');
+    td3.id="load_"+number;
+    td3.style = "vertical-align:middle; height:80px; width:80px";
+    table.appendChild(td3);  
+  }
+
+  var h = document.createElement('h6');
+    td2.appendChild(h);
+
+  var myContext = name+' <p class="lead">'+context+'</p>';
+    h.innerHTML=myContext;
+}
+
+//jumbotron.setAttribute("onclick","viewScouter("+name+","+expense+","+place+","+contact+","+date+")");
 
 
 function drawAllItems(account,number){
@@ -366,8 +439,6 @@ function dummyPeople(){
   removeAllJumbotrons();
   //http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66
   addJumbotronToMain("휴지", "Security 전문가입니다.", "http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66","http://blog.securekim.com","PEOPLE");
-  addJumbotronToMain("보겸", "SW Engineer 지원 중입니다.", "http://image.hankookilbo.com/i.aspx?Guid=0b2feec797064d63a86c6b9bdedfb4d7&Month=201602&size=640","http://blog.securekim.com","PEOPLE");
-  addJumbotronToMain("소련", "Server Engineer 입니다!", "https://www.fashionseoul.com/wp-content/uploads/2017/02/20170217_sul-3.jpg","http://blog.securekim.com","PEOPLE");
 }
 
 function dummyCompany(){
@@ -389,6 +460,13 @@ function dummyPickme(){
   
 }
   
+
+function dummyScout(){
+  removeAllJumbotrons();
+  addJumbotronToMain("휴지", "HeadHunter 입니다.", "http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66","http://blog.securekim.com","SCOUTER");
+  
+}
+
 function updateModalI(){
 
     number = HARD_CODED_NUMBER;
