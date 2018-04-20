@@ -539,7 +539,7 @@ function drawPeople(){
     pmTokenContractAddress = "0x7a49eaaf8aac6e71bb984a3158f0afd6085259b2";
 
     //면접진행 관련
-    recruitChkContractAddress = "0xda4b29a6a10ae9eba60f2d70f39e5c153753ba0a";
+    recruitChkContractAddress = "0x34592b1822a246486ceec413c86cc728fa8af354";
 
 
     //회사 관련 
@@ -831,13 +831,27 @@ function drawPeople(){
     //면접요청 리스트 확인
     function getRecruitRequestList(_addr, page){
 
-    var resList = new Array() ;
-
+    
+    	var item = new Object() ;
       recruitChkContract = web3.eth.contract(recruitChkAbi).at(recruitChkContractAddress);
       
       var data = recruitChkContract.getMapping(_addr, 1*page - 1, (1*page - 1) + 10);
 
-      return data;
+      for(i = 0; i<data.length; i++){
+		recruitAppointmentContract = web3.eth.contract(recruitAppointmentAbi).at(data[i]);
+
+		var subData = recruitAppointmentContract.getRecruitInfo()
+		
+		item.recruitReward = subData[0].toNumber() ;
+        item.scouterAddr = subData[1] ;
+        item.userAddr = subData[2] ;
+        item.meetingDate = subData[3] ;
+        item.meetingPlace = subData[4] ;
+        item.emergencyPhoneNumber = subData[5];
+
+      }
+
+      return item;
     }
 
 
@@ -848,7 +862,7 @@ function drawPeople(){
 	    
 	    var count = web3.eth.getTransactionCount(_from);
 	    const gasPriceHex = web3.toHex(gas*1000000000);
-	    gasLimitHex = web3.toHex(563580);
+	    gasLimitHex = web3.toHex(782605);
 	    var rawTransaction = {
 	      "from": _from,
 	      "nonce": web3.toHex(count),
