@@ -672,7 +672,7 @@ function iNeedYou(number){
     
     var count = web3.eth.getTransactionCount(_from);
     const gasPriceHex = web3.toHex(gas*1000000000);
-    gasLimitHex = web3.toHex(244747);
+    gasLimitHex = web3.toHex(244769);
     var rawTransaction = {
       "from": _from,
       "nonce": web3.toHex(count),
