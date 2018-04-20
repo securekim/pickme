@@ -469,40 +469,11 @@ function drawPeople(){
   }
   for(var i in PEOPLES){
     if(PEOPLES[i].items["name"] != ""){
-      var company =  PEOPLES[i].items["company"] == "" ? "" : "'"+PEOPLES[i].items["company"]+"' 의 "
+      var company =  PEOPLES[i].items["company"] == "" ? "" : "'"+PEOPLES[i].items["company"]+"' 의 <br>"
       var job =  PEOPLES[i].items["job"] == "" ? "구직자 입니다." : "'"+PEOPLES[i].items["job"]+"'"
       addJumbotronToMain(PEOPLES[i].items["name"], company + job, PEOPLES[i].items["picture"],i,"PERSON");
     }
   }
-  /*
-  for(var i in PEOPLES){
-    if(PEOPLES[i].items["name"] != ""){
-     if(typeof PEOPLESDETAIL[i] == 'undefined'){
-      PEOPLESDETAIL[i] = getDetailProfile(PEOPLES[i].account);
-      PEOPLESDETAIL[i] = PEOPLESDETAIL[i].replace(/'/g, '"');
-      PEOPLESDETAIL[i] = JSON.parse(PEOPLESDETAIL[i]);
-      
-      for(var j in PEOPLESDETAIL[i].profileInfo.careerHistory){
-        
-        if( PEOPLESDETAIL[i].profileInfo.careerHistory[j] == "") continue;
-        PEOPLESDETAIL[i].profileInfo.careerHistory[j] = PEOPLESDETAIL[i].profileInfo.careerHistory[j];
-      }
-      for(var j in PEOPLESDETAIL[i].profileInfo.achievements){
-        if( PEOPLESDETAIL[i].profileInfo.achievements[j] == "") continue;
-        PEOPLESDETAIL[i].profileInfo.achievements[j] = PEOPLESDETAIL[i].profileInfo.achievements[j];
-      }
-      for(var j in PEOPLESDETAIL[i].profileInfo.educationHistory){
-        if( PEOPLESDETAIL[i].profileInfo.educationHistory[j] == "") continue;
-        PEOPLESDETAIL[i].profileInfo.educationHistory[j] = PEOPLESDETAIL[i].profileInfo.educationHistory[j];
-      }
-      for(var j in PEOPLESDETAIL[i].hideInfo.hideInfoHint){
-        if( PEOPLESDETAIL[i].hideInfo.hideInfoHint[j] == "") continue;
-        PEOPLESDETAIL[i].hideInfo.hideInfoHint[j] = PEOPLESDETAIL[i].hideInfo.hideInfoHint[j];
-      }
-    }
-  }
-}
-*/
 
 }
 
@@ -510,7 +481,50 @@ function drawPeople(){
 
 // }
 
+function iNeedYou(number){
+    var date = document.getElementById('DATE').value;
+    var place = document.getElementById('PLACE').value;
+    var contact = document.getElementById('CONTACT').value;
+    var expenses = document.getElementById('EXPENSES').value;
+    console.log(date);
+    console.log(place);
+    console.log(contact);
+    console.log(expenses);
 
+    if (date == "" || place == "" || contact == "" || expenses == ""){
+      alertify.error('Please input the value to interview.');
+      return;
+    }
+    
+    var message = " The interview has been scheduled for <H6>'"+date+"'</H6>";
+    message += "<br> In <H6>'"+place+"'</H6>";
+    message += "<br> Contact : <H6>"+contact+"'</H6>";
+    message += "<br> Interview expenses : <H6>"+expenses+'<span class="glyphicon glyphicon-fire"></span></H6>';
+
+    alertify.confirm("<H3>Is this right ?</H3> <br> "+message,
+    function(){
+          alertify.prompt('<H4>'+expenses+' <span class="glyphicon glyphicon-fire"></span> will be paid at the end of the interview.</H4> <br>And It takes some time. <br> Speed is depend on GAS :', "50",
+          function(evt, value ){
+            alertify.confirm("Are you sure ? EXPENSES :"+expenses+" Gas :"+value+ " <br>Will be paid for interview.",
+              function(){
+                //sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
+                //setJumboButton(number,"YELLOW");
+                 //function requestRecruitUser(gas, _to, _from, priKey, _recruitReward,  _meetingDate,  _meetingPlace,  _emergencyPhoneNumber){
+                requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_ACCOUNT, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
+                alertify.success('Ok');
+              },
+              function(){
+                alertify.error('Cancel');
+              });
+          },
+          function(){
+            alertify.error('Cancel');
+          })
+    },
+    function(){
+      alertify.error('Cancel');
+    });
+}
 
 
 
