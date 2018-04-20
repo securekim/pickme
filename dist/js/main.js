@@ -547,7 +547,7 @@ function iNeedYou(number){
     interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
 
     //PM Token 관련
-    pmTokenContractAddress = "0x7a49eaaf8aac6e71bb984a3158f0afd6085259b2";
+    pmTokenContractAddress = "0xdb719479b205cb5260f2d2e0411a1de82e1b7a98";
 
     //면접진행 관련
     recruitChkContractAddress = "0x34592b1822a246486ceec413c86cc728fa8af354";
@@ -843,27 +843,33 @@ function iNeedYou(number){
     //면접요청 리스트 확인
     function getRecruitRequestList(_addr, page){
 
+		var resList = new Array() ;
     
     	var item = new Object() ;
-      recruitChkContract = web3.eth.contract(recruitChkAbi).at(recruitChkContractAddress);
-      
-      var data = recruitChkContract.getMapping(_addr, 1*page - 1, (1*page - 1) + 10);
+      	recruitChkContract = web3.eth.contract(recruitChkAbi).at(recruitChkContractAddress);
+      	pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
+      	companyMainInfo = web3.eth.contract(companyMainAbi).at(companyMainContractAddress);
 
-      for(i = 0; i<data.length; i++){
-		recruitAppointmentContract = web3.eth.contract(recruitAppointmentAbi).at(data[i]);
+      	var data = recruitChkContract.getMapping(_addr, 1*page - 1, (1*page - 1) + 10);
 
-		var subData = recruitAppointmentContract.getRecruitInfo()
-		
-		item.recruitReward = subData[0].toNumber() ;
-        item.scouterAddr = subData[1] ;
-        item.userAddr = subData[2] ;
-        item.meetingDate = subData[3] ;
-        item.meetingPlace = subData[4] ;
-        item.emergencyPhoneNumber = subData[5];
+	      for(i = 0; i<data.length; i++){
+			recruitAppointmentContract = web3.eth.contract(recruitAppointmentAbi).at(data[i]);
 
-      }
+			var subData = recruitAppointmentContract.getRecruitInfo()
+			
+			item.recruitReward = subData[0].toNumber() ;
+	        item.scouterAddr = subData[1] ;
+	        item.userAddr = subData[2] ;
+	        item.meetingDate = subData[3] ;
+	        item.meetingPlace = subData[4] ;
+	        item.emergencyPhoneNumber = subData[5];
+	        item.company = companyMainInfo.getCompanyMainInfo(pmcTokenContract.getScouterInfo(subData[1]));
+			resList.push(item);
+	      }
 
-      return item;
+	       var jsonResult = JSON.stringify(resList);
+
+	    return jsonResult;
     }
 
 
