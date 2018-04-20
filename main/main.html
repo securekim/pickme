@@ -60,27 +60,27 @@
         
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link disabled" href="https://pickmed.github.io">My Wallet <span class="sr-only">(current)</span></a>
+          <a class="nav-link disabled" href="https://pickmed.github.io" style="color:gray">My Wallet <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item disabled">
-          <a class="nav-link" href="https://pickmed.github.io">Change Password <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="https://pickmed.github.io" style="color:gray">Change Password <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="https://pickmed.github.io">Interview Info <span class="sr-only">(current)</span></a>
+          <a class="nav-link disabled" href="https://pickmed.github.io" style="color:gray">Interview <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
           
             
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">My profile <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal" style="color:rgb(56, 56, 56)">My profile <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="https://pickmed.github.io">Black List <span class="sr-only">(current)</span></a>
+          <a class="nav-link disabled" href="https://pickmed.github.io" style="color:gray">Black List <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="https://pickmed.github.io">Exchange <span class="sr-only">(current)</span></a>
+          <a class="nav-link disabled" href="https://pickmed.github.io" style="color:gray">Exchange <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">Terms of Use</a>
+          <a class="nav-link disabled" href="#" style="color:gray">Terms of Use</a>
         </li>
       </ul>
 
@@ -109,7 +109,6 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
     
                     </button>
-    
                 </div>
                 <div class="modal-body">
                     <div role="tabpanel">
@@ -126,7 +125,6 @@
 
 
                         <div class="tab-content">
-                          
                             <!-- Public Info -->
                             <div role="tabpanel" class="tab-pane active" id="publicTab"> 
                               <p></p>
@@ -182,18 +180,7 @@
 
                                 
                                 <hr> <!-- ----------------------- -->
-                                <!-- TEST
                                 
-                                                    <table>
-                                                        <tr>
-                                                          <td>a</td>
-                                                          <td rowspan="2">c</td>
-                                                        </tr>
-                                                        <tr>
-                                                          <td>d</td>
-                                                        </tr>
-                                                    </table>
-                                -->
                                 Add Contents :
                                 <div id="tables">
                                     <table id="addTable" class="contents_table" width="350px" style="margin: 0px auto;" bgcolor="#FFFFFF" border="0">
@@ -256,71 +243,108 @@
         <button type="button" class="btn btn-outline-secondary" onclick="dummyPickme()"><span class="glyphicon glyphicon-check"></span> Pick Me!</button>
     </nav>
       
+          <!-- <ul class="nav nav-tabs" id="profileTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profileTab" role="tab" aria-controls="profileTab" aria-selected="true"> Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="interview-tab" data-toggle="tab" href="#interviewTab" role="tab" aria-controls="interviewTab" aria-selected="false"> Private</a>
+              </li>
+            </ul> -->
 
-    <div class="lds-default"></div>
-
-      <div class="container">
+        <div class="container">
           <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="modalPeopleName" aria-hidden="true">
               <div class="modal-dialog">
                   <div class="modal-content">
-                      <div class="modal-header">
-                          <h4 class="modal-title" id="modalPeopleName">김병연</h4>
-                        </div>
-                      <div class="modal-body">
-                          <center>
-                              <!-- http://www.breaknews.com/imgdata/breaknews_com/200611/2006112239463307.jpg -->
-                          <img id = "modalPeopleImg" src="https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111543_viewimagem-4.jpg" name="aboutme" width="140" height="140" border="0" class="rounded-circle"></a>
-                          <div id="modalPeopleInfo">
-                            <h3 class="media-heading">PMC 
-                              <span id="peoplePMC" class="glyphicon glyphicon-fire"></span>500
-                            </h3>
-                              <span class="badge badge-pill badge-warning">Marketing</span>
-                              <span class="badge badge-pill badge-info">Security</span>
-                              <span class="badge badge-pill badge-info">Server Engineer</span>
-                              <span class="badge badge-pill badge-success">SW Engineer</span>
-                            </div>
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modalPeopleName">김병연</h4>
+                          </div>
+                        <div class="modal-body">
+                            <div role="tabpanel">
+                              <ul class="nav nav-tabs" role="tablist">
+                                  <li class="nav-item">
+                                    <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profileTab" role="tab" aria-controls="profileTab" aria-selected="true">Profile</a>
+                                  </li>
+                                  <li class="nav-item" id="interview-item">
+                                    <a class="nav-link" id="interview-tab" data-toggle="tab" href="#interviewTab" role="tab" aria-controls="interviewTab" aria-selected="false">Interview</a>
+                                  </li>
+                                </ul>
+                              <div class="tab-content">
+                                  <div role="tabpanel" class="tab-pane active" id="profileTab" style="padding-top:50px"> 
+                                    <center>
+                                    <img id = "modalPeopleImg" src="https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111543_viewimagem-4.jpg" name="aboutme" width="140" height="140" border="0" class="rounded-circle"></a>
+                                    <div id="modalPeopleInfo">
+                                      <h3 class="media-heading">PMC 
+                                        <span id="peoplePMC" class="glyphicon glyphicon-fire"></span>500
+                                      </h3>
+                                        <span class="badge badge-pill badge-warning">Marketing</span>
+                                        <span class="badge badge-pill badge-info">Security</span>
+                                        <span class="badge badge-pill badge-info">Server Engineer</span>
+                                        <span class="badge badge-pill badge-success">SW Engineer</span>
+                                      </div>
+                                    </center>
+                                    <hr>
+                                    <div id="modalPeoplePublicInfo">
+                                      <p>
+                                        <strong>Public Info : </strong><br>
+                                        &nbsp;No data.<br>
+                                      </p>
+                                  </div>
+                                  <hr>
+                                    <center>
+                                    <p id="modalPeopleBio"><strong>Free Vision: </strong><br>
+                                      "No data."
+                                    </p>
+                                    <br>
+                                    </center> 
+                                    <hr>
+                                    <p id="modalPeoplePrivateInfo">
+                                    <strong>Private Info : </strong><br>
+                                      "No data."
+                                    </p>
+                                    <hr>
+                                    <p id="modalPeoplePrivateInfoDetail">
+                                    </p>
+                                    <div id="modalLoader" class=""></div>
+                                </div><!-- tabpanel -->
+
+                                <div role="tabpanel" class="tab-pane" id="interviewTab" style="padding-top:50px">
+                                    <center>
+                                        <img id = "modalPeopleImg2" src="" name="aboutme" width="140" height="140" border="0" class="rounded-circle"></a>
+                                    </center>
+                                    
+                                        <div class="form-group">
+                                            <label>Interview has been scheduled for :</label>
+                                            <input type="text" class="form-control" id="DATE" placeholder="Ex) Date">
+                                        </div>
+                                        <div class="form-group">
+                                            Place for interview :
+                                            <input type="text" class="form-control" id="PLACE" placeholder="Ex) Seoul ">
+                                        </div>
+                                        <div class="form-group">
+                                            Contact :
+                                            <input type="text" class="form-control" id="CONTACT" placeholder="Company, Depart, Position">
+                                        </div>
+                                        <div class="form-group">
+                                            Last Education :
+                                            <input type="text" class="form-control" id="EDUCATION" placeholder="School, Subject, Degree">
+                                        </div>
+  
+
+                                </div>
+                          </div> <!-- tabcontent -->
+                        </div><!-- modalbody -->
+
+                        <div class="modal-footer">
+                            <center>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">That's enough.</button>
+                            <button type="button" onclick="useGas(250)" class="btn btn-info" data-dismiss="modal" id="modalPeopleMore">More 250<span class="glyphicon glyphicon-fire"></span></button>
                           </center>
-                          <hr>
-                          <div id="modalPeoplePublicInfo">
-                            <p>
-                              <strong>Public Info : </strong><br>
-                              &nbsp;숭일고 졸업<br>
-                              &nbsp;이화여자대학교 시각디자인과 학사 졸업<br>
-                              <p></p>
-                              &nbsp;삼성전자 디자인 멤버십 12.6~15.8<br>
-                              &nbsp;삼성전자 UX팀 15.8~<br>
-                              <p></p>
-                              &nbsp;2016 서울시 장애인돕기 App공모전 동상<br>
-                              &nbsp;17년 TED (산업 디자인과 미래)<br>
-                            </p>
                         </div>
-                         <hr>
-                          <center>
-                          <p id="modalPeopleBio"><strong>Free Vision: </strong><br>
-                            "저는 책을 읽고 그 책에서 배운 가치를 마음에 새기고 일상생활 속에서 그 가치를 실현하는 과정을 매우 중시합니다. 또한 정치가이자 발명가, 과학자였던 벤자민 프랭클린처럼 자신의 가능성을 능동적으로 계발하며 자신의 다재다능함의 영역을 꾸준히 확장시켰던 인물들에게 크게 공감합니다. 살아있음에 감사하는 마음을 잊지 않을 것, 배움의 기회를 찾아 바로 지금 출발할 것, 손해를 보더라도 원칙과 의리를 선택할 것, 연대와 소통의 동료애를 추구할 것 등은 해가 바뀌어도 변하지 않는 저의 신념이며, 그것이 저의 각오라는 것을 잊어버릴 만큼 현실 속에서 실현하고 싶습니다."
-                          </p>
-                          <br>
-                          </center> 
-                          <hr>
-                          <p id="modalPeoplePrivateInfo">
-                          <strong>Private Info : </strong><br>
-                          250, ["[석사 논문]산업디자인과 Product의 한계와 역할.pdf", "[특허증],갤럭시 S6 AlwaysDisplay.pdf", "[상장]2016 서울시 장애인돕기 App공모전 동상"]
-                          </p>
-                          <hr>
-                          <p id="modalPeoplePrivateInfoDetail">
-                          </p>
-                          <div id="modalLoader" class=""></div>
-                      </div>
-                      <div class="modal-footer">
-                          <center>
-                          <button type="button" class="btn btn-default" data-dismiss="modal">That's enough.</button>
-                          <button type="button" onclick="useGas(250)" class="btn btn-info" data-dismiss="modal" id="modalPeopleMore">More 250<span class="glyphicon glyphicon-fire"></span></button>
-                        </center>
-                      </div>
-                  </div>
               </div>
+            </div>
           </div>
-      </div>
+        </div>
 
 
       <div class="container">
@@ -394,6 +418,7 @@
     <script src="../dist/js/popper.min.js"></script>
     <script src="../dist/js/bootstrap.min.js"></script>
     
+    <script src="../dist/js/alertify.min.js"></script>
     
       <!-- Web3 for blockchain -->
     <script type="text/javascript" src="../dist/js/bignumber.min.js"></script>
@@ -419,9 +444,8 @@
     <script src="https://rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
     <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
   
-    <script src="../dist/js/main.js"></script>
-    <script src="../dist/js/alertify.min.js"></script>
     
+    <script src="../dist/js/main.js"></script>
 
     <script>
         $(document).on('ready', function() {

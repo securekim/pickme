@@ -122,20 +122,12 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     jumbotron.setAttribute("data-target","#profileModal");
     jumbotron.setAttribute("data-toggle","modal");
     jumbotron.href="#"
-    jumbotron.id = "button_"+number;
+    jumbotron.id = "jumbotron_"+number;
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     main.appendChild(jumbotron);
 
-  // var a = document.createElement('button');
-  // a.className = "btn btn-secondary";
-  // a.href="#"
-  // a.setAttribute("data-target","#profileModal");
-  // a.setAttribute("data-toggle","modal");
-  // a.id = "button_"+number;
-  // a.innerHTML = "View";
-  // td2.appendChild(a);
-
-
   var table = document.createElement('table');
+    table.style="width:100%"
     jumbotron.appendChild(table);
 
   var td1 = document.createElement('td');
@@ -153,9 +145,7 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     
   var td3 = document.createElement('td');
   td3.id="load_"+number;
-  td3.style = "vertical-align:middle";
-  //document.getElementById('load_'+number).innerHTML = '<div class="loader loader-8"></div>'
-  //td3.innerHTML = '<div id="load_'+number+'"class="loader loader-8"></div>';
+  td3.style = "vertical-align:middle; height:80px; width:80px";
   table.appendChild(td3);  
 
   var h = document.createElement('h6');
@@ -163,15 +153,6 @@ function addJumbotronToMain(name, context, imageURL, number, type){
 
   var myContext = name+' <p class="lead">'+context+'</p>';
     h.innerHTML=myContext;
-
-  // var a = document.createElement('button');
-  //   a.className = "btn btn-secondary";
-  //   a.href="#"
-  //   a.setAttribute("data-target","#profileModal");
-  //   a.setAttribute("data-toggle","modal");
-  //   a.id = "button_"+number;
-  //   a.innerHTML = "View";
-  //   td2.appendChild(a);
   
     if(type=="PERSON"){
       drawAllItems("HARD_CODED_SCOUTER",number);
@@ -198,6 +179,9 @@ function drawAllItems(account,number){
           console.log("files : "+files);
           setJumboButton(number,"BLUE");
           setModalLoder(false);
+
+          document.getElementById("interview-tab").className="nav-link";
+
           var myButton = document.getElementById('modalPeopleMore');
           myButton.disabled=false;
           myButton.className="btn btn-success";
@@ -214,6 +198,7 @@ function drawAllItems(account,number){
           //샀는데 데이터가 없다...
           //데이터를 지워주고 노란색을 틀어주고 로딩바를 그려준다
           console.log("PAID, BUT NO DATA !!! ");
+          document.getElementById("interview-tab").className="nav-link fade disabled";
           document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
           setJumboButton(number,"YELLOW");
           setModalLoder(true);
@@ -222,6 +207,7 @@ function drawAllItems(account,number){
     } else {
       //안샀음.. 로딩바 빼주고 회색 틀어준다
       console.log("NOT PAID !!! ");
+          document.getElementById("interview-tab").className="nav-link fade disabled";
           document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
           setJumboButton(number,"GRAY");
           setModalLoder(false);
@@ -237,27 +223,27 @@ function removeAllJumbotrons(){
 }
 
 function setJumboButton(number,color){
-  myButton = document.getElementById("button_"+number);
+  jumbotron = document.getElementById("jumbotron_"+number);
   if(color == "YELLOW"){
     //myButton.innerHTML = "View"
     //myButton.className = "btn btn btn-warning";
 
     //    border: solid rgb(23, 162, 184);
     //myButton.style = "background-color:rgb(185, 147, 32);"
-    myButton.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
   }else if (color == "BLUE"){
     //myButton.innerHTML = "View All"
     //myButton.className = "btn btn btn-primary";
     //<div class="lds-heart"><div></div></div>
     document.getElementById('load_'+number).innerHTML = '<div class="lds-heart"><div></div></div>';
-    myButton.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     //myButton.style = "background-color:#17a2b8"
   }else if(color == "GRAY"){
     //myButton.innerHTML = "View"
     //myButton.className = "btn btn btn-secondary";
     document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
-    myButton.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray;border-bottom-width: 1px;border-right-width: 0.7px; ";
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray;border-bottom-width: 1px;border-right-width: 0.7px; ";
     //myButton.style = "background-color:rgb(140, 146, 152);"
   }else if(color == "RED"){
     //myButton.innerHTML = "View"
@@ -305,6 +291,7 @@ function updatePeopleModal(number){
     
   document.getElementById('modalPeopleName').innerText=items.name;
   document.getElementById('modalPeopleImg').setAttribute("src",items.picture);
+  document.getElementById('modalPeopleImg2').setAttribute("src",items.picture);
   var modalPeopleInfo = document.getElementById('modalPeopleInfo');
   while (modalPeopleInfo.firstChild) {
     modalPeopleInfo.removeChild(modalPeopleInfo.firstChild);
@@ -472,8 +459,8 @@ function drawPeople(){
   }
   for(var i in PEOPLES){
     if(PEOPLES[i].items["name"] != ""){
-      var company =  PEOPLES[i].items["company"] == "" ? "" : "'"+PEOPLES[i].items["company"]+"' 에 재직중인 "
-      var job =  PEOPLES[i].items["job"] == "" ? "구직자 입니다." : "'"+PEOPLES[i].items["job"]+"' 입니다."
+      var company =  PEOPLES[i].items["company"] == "" ? "" : "'"+PEOPLES[i].items["company"]+"' 의 "
+      var job =  PEOPLES[i].items["job"] == "" ? "구직자 입니다." : "'"+PEOPLES[i].items["job"]+"'"
       addJumbotronToMain(PEOPLES[i].items["name"], company + job, PEOPLES[i].items["picture"],i,"PERSON");
     }
   }
