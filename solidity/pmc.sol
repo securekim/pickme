@@ -396,7 +396,7 @@ contract RecruitAppointments{
     
     bool private appointMentYn;
     uint private recruitStatus = 0;
-    // 0 - ing, 1 - quit, 2 - yes, 3 - sorry
+    // 0-wait,  1 - ing, 2 - quit, 2 - yes, 3 - sorry
     
     bool private createYn;
     
@@ -425,8 +425,11 @@ contract RecruitAppointments{
     function assignAppointment(){
         appointMentYn = true;
     }
-        
     
+    
+    function getRecruitInfo() constant returns(uint , address, address, string , string, string){
+        return (recruitReward, scouter, user, meetingDate, meetingPlace, emergencyPhoneNumber);
+    }
 }
 
 
