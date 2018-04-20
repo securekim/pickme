@@ -863,7 +863,15 @@ function iNeedYou(number){
 	        item.meetingDate = subData[3] ;
 	        item.meetingPlace = subData[4] ;
 	        item.emergencyPhoneNumber = subData[5];
-	        item.company = companyMainInfo.getCompanyMainInfo(pmcTokenContract.getScouterInfo(subData[1]));
+	        
+
+	        var companyInfo = companyMainInfo.getCompanyMainInfo(pmcTokenContract.getScouterInfo(subData[1]));
+	        var companyInfoItem = new Object() ;
+	        companyInfoItem.url = companyInfo[0];
+	        companyInfoItem.name = companyInfo[1];
+	        companyInfoItem.category = companyInfo[2];
+
+	        item.company = companyInfoItem;
 			resList.push(item);
 	      }
 

@@ -27,6 +27,10 @@ recruitAppointmentAbi = [
 			{
 				"name": "",
 				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
