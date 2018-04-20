@@ -4,7 +4,7 @@ var PEOPLESDETAIL=[];
 var HARD_CODED_ACCOUNT = "0x731a765dff550d11b7c880af145066bc1bdd3127";
 var HARD_CODED_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
 var HARD_CODED_SCOUTER = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
-var HARD_CODED_NUMBER = 0;
+var HARD_CODED_NUMBER =2 ;
 var ScouterAccessHideInfoYn = {};
 ///////////////////////////////////////////////////
 // 모두 캐시 해야 됨
@@ -510,7 +510,8 @@ function iNeedYou(number){
                 //sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
                 //setJumboButton(number,"YELLOW");
                  //function requestRecruitUser(gas, _to, _from, priKey, _recruitReward,  _meetingDate,  _meetingPlace,  _emergencyPhoneNumber){
-                requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_ACCOUNT, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
+                 
+                 requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
                 alertify.success('Ok');
               },
               function(){
