@@ -78,9 +78,6 @@ function insertPrivateContent(){
     tr2.style="padding-bottom:10px";
     tbody.appendChild(tr2);
 
-  var td3 = document.createElement('td');
-    tr2.appendChild(td3);  
-
   var frmTag3 = '<input type=text name=addText style="width:300px; height:30px;" placeholder="Content URL">';
     td3.innerHTML=frmTag3;  
 
@@ -121,7 +118,7 @@ function addJumbotronToMain(name, context, imageURL, number, type){
   
   var jumbotron = document.createElement('div');
     jumbotron.className = "jumbotron";
-    jumbotron.style = "margin-bottom: 1rem;";
+    jumbotron.style = "background-color: white; margin-bottom: 1rem;";
     jumbotron.setAttribute("data-target","#profileModal");
     jumbotron.setAttribute("data-toggle","modal");
     jumbotron.href="#"
@@ -154,6 +151,13 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     td2.style = "vertical-align:middle";
     table.appendChild(td2);
     
+  var td3 = document.createElement('td');
+  td3.id="load_"+number;
+  td3.style = "vertical-align:middle";
+  //document.getElementById('load_'+number).innerHTML = '<div class="loader loader-8"></div>'
+  //td3.innerHTML = '<div id="load_'+number+'"class="loader loader-8"></div>';
+  table.appendChild(td3);  
+
   var h = document.createElement('h6');
     td2.appendChild(h);
 
@@ -237,15 +241,24 @@ function setJumboButton(number,color){
   if(color == "YELLOW"){
     //myButton.innerHTML = "View"
     //myButton.className = "btn btn btn-warning";
-    myButton.style = "background-color:rgb(185, 147, 32);"
+
+    //    border: solid rgb(23, 162, 184);
+    //myButton.style = "background-color:rgb(185, 147, 32);"
+    myButton.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
+    document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
   }else if (color == "BLUE"){
     //myButton.innerHTML = "View All"
     //myButton.className = "btn btn btn-primary";
-    myButton.style = "background-color:#17a2b8"
+    //<div class="lds-heart"><div></div></div>
+    document.getElementById('load_'+number).innerHTML = '<div class="lds-heart"><div></div></div>';
+    myButton.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
+    //myButton.style = "background-color:#17a2b8"
   }else if(color == "GRAY"){
     //myButton.innerHTML = "View"
     //myButton.className = "btn btn btn-secondary";
-    myButton.style = "background-color:rgb(140, 146, 152);"
+    document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+    myButton.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray;border-bottom-width: 1px;border-right-width: 0.7px; ";
+    //myButton.style = "background-color:rgb(140, 146, 152);"
   }else if(color == "RED"){
     //myButton.innerHTML = "View"
     //myButton.className = "btn btn btn-error";
