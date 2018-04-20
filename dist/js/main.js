@@ -199,6 +199,11 @@ function drawAllItems(account,number){
           //데이터를 지워주고 노란색을 틀어주고 로딩바를 그려준다
           console.log("PAID, BUT NO DATA !!! ");
           document.getElementById("interview-tab").className="nav-link fade disabled";
+          document.getElementById("profile-tab").className="nav-link active show";
+          
+          document.getElementById("profileTab").className = "tab-pane active show";
+          document.getElementById("interviewTab").className = "tab-pane";
+
           document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
           setJumboButton(number,"YELLOW");
           setModalLoder(true);
@@ -208,6 +213,11 @@ function drawAllItems(account,number){
       //안샀음.. 로딩바 빼주고 회색 틀어준다
       console.log("NOT PAID !!! ");
           document.getElementById("interview-tab").className="nav-link fade disabled";
+          document.getElementById("profile-tab").className="nav-link active show";
+          
+          document.getElementById("profileTab").className = "tab-pane active show";
+          document.getElementById("interviewTab").className = "tab-pane";
+
           document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
           setJumboButton(number,"GRAY");
           setModalLoder(false);
