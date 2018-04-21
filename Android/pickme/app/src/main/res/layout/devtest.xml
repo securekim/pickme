@@ -20,6 +20,13 @@
             android:text="Scouter 유재석 start"
             />
         <Button
+            android:id="@+id/btn_user2"
+            android:layout_width="310dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:text="Scouter 마동석 start"
+            />
+        <Button
             android:id="@+id/btn_user"
             android:layout_width="310dp"
             android:layout_height="50dp"
