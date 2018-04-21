@@ -3,6 +3,10 @@ var PEOPLES="";
 var PEOPLESDETAIL=[];
 var MYPROFILE="";
 
+var MYACCOUNT;
+var MYPRIVATEKEY;
+
+
 var HARD_CODED_ACCOUNT = "0x731a765dff550d11b7c880af145066bc1bdd3127";
 var HARD_CODED_ACCOUNT_PRIVATEKEY = "2269b98525af6803b23779eefee1d1ee7293547cca8cb14f1ca12df9bfbfb7f5";
 
@@ -115,7 +119,7 @@ function useGas(coin,number){
   function(evt, value ){
     alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " <br>Will be paid for private info.",
       function(){
-        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY)
+        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, MYACCOUNT, MYPRIVATEKEY)
         setJumboButton(number,"YELLOW");
         alertify.success('Ok');
       },
@@ -179,7 +183,7 @@ function addJumbotronToMain(name, context, imageURL, number, type){
 }
 
 function drawScout(){
-  list = getRecruitRequestList(HARD_CODED_ACCOUNT,1);
+  list = getRecruitRequestList(MYACCOUNT,1);
   list = list.replace(/'/g, '"');
   list = JSON.parse(list);
   //for(var i in list){}
@@ -200,11 +204,14 @@ function addScoutJumbotronToMain(myScoutersInfo){
   var account     = myScoutersInfo.scouterAddr;
   var name        = myScoutersInfo.company.name;
   var url         = myScoutersInfo.company.url;
-  var categoty    = myScoutersInfo.company.category;
+  var category    = myScoutersInfo.company.category;
   var expense     = myScoutersInfo.recruitReward;
   var place       = myScoutersInfo.meetingPlace;
   var contact     = myScoutersInfo.emergencyPhoneNumber;
-  var date        = myScoutersInfo.meetingDate
+  var date        = myScoutersInfo.meetingDate;
+  var recruitAddr = myScoutersInfo.recruitAddr;
+  var userName    = myScoutersInfo.userName;
+  var scouterName = myScoutersInfo.scouterName;
 
   
   if(typeof url =='undefined') url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
@@ -218,6 +225,9 @@ function addScoutJumbotronToMain(myScoutersInfo){
   parameter    += ',"'+place+'"';
   parameter    += ',"'+contact+'"';
   parameter    += ',"'+date+'"';
+  parameter    += ',"'+recruitAddr+'"';
+  parameter    += ',"'+userName+'"';
+  parameter    += ',"'+scouterName+'"';
  
   var main = document.getElementById("main");
   
@@ -226,6 +236,8 @@ function addScoutJumbotronToMain(myScoutersInfo){
     jumbotron.style = "background-color: white; margin-bottom: 1rem;";
     jumbotron.href="#"
     jumbotron.id = "jumbotron_"+account;
+
+    //HASH값 필요
     jumbotron.setAttribute("onclick",'viewScouter(' +parameter+ ')');
     jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     main.appendChild(jumbotron);
@@ -248,15 +260,15 @@ function addScoutJumbotronToMain(myScoutersInfo){
     table.appendChild(td2);
     
     var td3 = document.createElement('td');
-    td3.id="load_"+number;
+    td3.id="load_"+account;
     td3.style = "vertical-align:middle; height:80px; width:80px";
     table.appendChild(td3);  
   
 
   var h = document.createElement('h6');
     td2.appendChild(h);
-
-  var myContext = name+' <p class="lead">'+category+'</p>';
+  var myContext = name+' - '+category+' <p class="lead"><span class="glyphicon glyphicon-briefcase"></span> '+scouterName+'<br>'
+      myContext+= '<span class="glyphicon glyphicon-hand-right"></span> '+userName+''+'</p>';
     h.innerHTML=myContext;
 }
 
@@ -270,7 +282,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
 // parameter    += ',"'+place+'"';
 // parameter    += ',"'+contact+'"';
 // parameter    += ',"'+date+'"';
-function viewScouter(account,name,url,category,expense,place,contact,date){
+function viewScouter(account,name,url,category,expense,place,contact,date,recruitAddr,userName,scouterName){
 
   var frame = '<H4>'+name+' 에서</H4><br>'
   frame    += ' 친애하는 "' + PEOPLES[HARD_CODED_ACCOUNT_NUMBER].items.name + '" 님께<br>'
@@ -533,29 +545,22 @@ function dummyScout(){
 }
 
 function updateModalI(){
-    var account = HARD_CODED_ACCOUNT;
 
     if(MYPROFILE==""){
-      profile = getMyProfile(account);
+      profile = getMyProfile(HARD_CODED_ACCOUNT);
+      MYPROFILE.account = HARD_CODED_ACCOUNT;
       MYPROFILE.picture = profile.basicInfo.picture;
-      MYPROFILE.
+      MYPROFILE.name = profile.basicInfo.name;
+      MYPROFILE.interestItems = profile.basicInfo.interestItems;
+      MYPROFILE.mvp = profile.basicInfo.mvp.c[0];
+      MYPROFILE.peoplesDetail = profile.profileInfo;
+      MYPROFILE.peoplesDetail = MYPROFILE.peoplesDetail.replace(/'/g, '"');
+      MYPROFILE.peoplesDetail = JSON.parse(MYPROFILE.peoplesDetail);
 
-
-      var picture = profile.basicInfo.picture;
-      var name = profile.basicInfo.name;
-      var interestItems = profile.basicInfo.interestItems;
-      var mvp = profile.basicInfo.mvp.c[0];
-      var peoplesDetail = profile.profileInfo;
-      peoplesDetail = peoplesDetail.replace(/'/g, '"');
-      peoplesDetail = JSON.parse(peoplesDetail);
-    } else {
-      profile = MYPROFILE;
-
-    }
-
+    } 
     
-    document.getElementById('modalIName').innerText=name;
-    document.getElementById('modalIImg').setAttribute("src",picture);
+    document.getElementById('modalIName').innerText=MYPROFILE.name;
+    document.getElementById('modalIImg').setAttribute("src",MYPROFILE.picture);
     var modalPeopleInfo = document.getElementById('modalIInfo');
     while (modalPeopleInfo.firstChild) {
       modalPeopleInfo.removeChild(modalPeopleInfo.firstChild);
@@ -564,13 +569,13 @@ function updateModalI(){
       h3.className = "media-heading";
       modalPeopleInfo.appendChild(h3);
   
-    var frm = 'Trust Power<span id="IPMC" class="glyphicon glyphicon-flash"></span>'+mvp
+    var frm = 'Trust Power<span id="IPMC" class="glyphicon glyphicon-flash"></span>'+MYPROFILE.mvp
       h3.innerHTML = frm;
   
-     for(var i in interestItems){
+     for(var i in MYPROFILE.interestItems){
        span = document.createElement('span');
        span.className = "badge badge-pill badge-info";
-       span.innerHTML = hexToString(interestItems[i]);
+       span.innerHTML = hexToString(MYPROFILE.interestItems[i]);
        modalPeopleInfo.appendChild(span);
      }
   
@@ -580,34 +585,34 @@ function updateModalI(){
     }
   
       frm = "<strong>Public Info : </strong><br>"
-      for (var i in peoplesDetail.profileInfo.educationHistory){
-        if(peoplesDetail.profileInfo.educationHistory[i]!="")
-          frm += "&nbsp;"+peoplesDetail.profileInfo.educationHistory[i]+"<br>";
+      for (var i in MYPROFILE.peoplesDetail.profileInfo.educationHistory){
+        if(MYPROFILE.peoplesDetail.profileInfo.educationHistory[i]!="")
+          frm += "&nbsp;"+MYPROFILE.peoplesDetail.profileInfo.educationHistory[i]+"<br>";
       }
       frm+="<p></p>";
-      for (var i in peoplesDetail.profileInfo.careerHistory){
-        if(peoplesDetail.profileInfo.careerHistory[i]!="")
-        frm += "&nbsp;"+peoplesDetail.profileInfo.careerHistory[i]+"<br>";
+      for (var i in MYPROFILE.peoplesDetail.profileInfo.careerHistory){
+        if(MYPROFILE.peoplesDetail.profileInfo.careerHistory[i]!="")
+        frm += "&nbsp;"+MYPROFILE.peoplesDetail.profileInfo.careerHistory[i]+"<br>";
       }
       frm+="<p></p>";
-      for (var i in peoplesDetail.profileInfo.achievements){
-        if(peoplesDetail.profileInfo.achievements[i]!="")
-        frm += "&nbsp;"+peoplesDetail.profileInfo.achievements[i]+"<br>";
+      for (var i in MYPROFILE.peoplesDetail.profileInfo.achievements){
+        if(MYPROFILE.peoplesDetail.profileInfo.achievements[i]!="")
+        frm += "&nbsp;"+MYPROFILE.peoplesDetail.profileInfo.achievements[i]+"<br>";
       }
       modalPeoplePublicInfo.innerHTML = frm;
   
-      document.getElementById('modalIBio').innerHTML = "<strong>Free Vision: </strong><br>" +peoplesDetail.freeVision;
+      document.getElementById('modalIBio').innerHTML = "<strong>Free Vision: </strong><br>" +MYPROFILE.peoplesDetail.freeVision;
   
       var modalPeoplePrivateInfo = document.getElementById("modalIPrivateInfo");
       frm = "<strong>Private Info : </strong><br>"
-      for (var i in peoplesDetail.hideInfo.hideInfoHint){
-        if(peoplesDetail.hideInfo.hideInfoHint[i]!="")
-        frm += "&nbsp;"+peoplesDetail.hideInfo.hideInfoHint[i]+"<br>";
+      for (var i in MYPROFILE.peoplesDetail.hideInfo.hideInfoHint){
+        if(MYPROFILE.peoplesDetail.hideInfo.hideInfoHint[i]!="")
+        frm += "&nbsp;"+MYPROFILE.peoplesDetail.hideInfo.hideInfoHint[i]+"<br>";
       }
       modalPeoplePrivateInfo.innerHTML = frm;
       //frm += &nbsp;
   
-  var files = getHideAppendFile(account);
+  var files = getHideAppendFile(MYPROFILE.account);
   frm = "";
 
   for (var i in files){
@@ -707,7 +712,7 @@ function iNeedYou(number){
     pmTokenContractAddress = "0xdb719479b205cb5260f2d2e0411a1de82e1b7a98";
 
     //면접진행 관련
-    recruitChkContractAddress = "0x0535cae9af613c8bd2c44a6cbf8c4e30ae87225f";
+    recruitChkContractAddress = "0x4bd6c243551cbff7359f34ade8fb3502aa5d1186";
 
 
     //회사 관련 
@@ -1137,13 +1142,6 @@ function iNeedYou(number){
     }
 
 
-	// 유재석 , 최유정, 결과 (합 불만 3,4 중 하나), 유재석prikey, 면접주소
-    function noticeJobInterviewResult(gas, scouter, user, res, priKey, recruitAddr){
-    	recruitAppointmentContract = web3.eth.contract(recruitAppointmentAbi).at(recruitAddr);
-    	var sendItemData = recruitAppointmentContract.setResultRecruit.getData(pmTokenContractAddress,scouter,user,res);
-
-    	sendTransaction(gas, user, scouter, priKey, sendItemData, recruitAddr);
-    }
 
 
     //함수 통일
@@ -1187,7 +1185,7 @@ function iNeedYou(number){
 	            alertify
 	            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min) <br>CONTRACT : "+hash, function(){
 	              //alertify.success('Success');
-	              localStorage.setItem("PAID_"+_to, "PAID");
+	              //localStorage.setItem("PAID_"+_to, "PAID");
 	            });
 	          }else{
 	            console.log(err);
@@ -1198,5 +1196,12 @@ function iNeedYou(number){
 
     //현재 로그인 해당 함수를 android에서 넘겨줌
     function setLoginInfo(priKey, account, id){
+
+    }
+
+    function setSCOUTER(){
+
+    }
+    function setINTERVIEE(){
 
     }
