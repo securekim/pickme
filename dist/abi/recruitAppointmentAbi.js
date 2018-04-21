@@ -1,40 +1,20 @@
-recruitAppointmentAbi = [
+recruitAppointmentAbi =[
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "getRecruitInfo",
-		"outputs": [
+		"constant": false,
+		"inputs": [
 			{
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"name": "",
+				"name": "_user",
 				"type": "address"
 			},
 			{
-				"name": "",
+				"name": "_scouter",
 				"type": "address"
-			},
-			{
-				"name": "",
-				"type": "string"
-			},
-			{
-				"name": "",
-				"type": "string"
-			},
-			{
-				"name": "",
-				"type": "string"
-			},
-			{
-				"name": "",
-				"type": "uint256"
 			}
 		],
+		"name": "assignAppointment",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -72,15 +52,6 @@ recruitAppointmentAbi = [
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [],
-		"name": "assignAppointment",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"name": "_recruitReward",
@@ -110,5 +81,43 @@ recruitAppointmentAbi = [
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getRecruitInfo",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	}
 ]
