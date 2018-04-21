@@ -64,7 +64,6 @@ function timeStamp() {
 
 app.get('/',function(req,res){
 	
-	console.log("["+timeStamp()+"]["+getUserIP(req)+"]"+' Server get / ');
 	fs.appendFile('../log.txt', "["+timeStamp()+"]["+getUserIP(req)+"]"+' Server get / \n', function (err) {
 	  if (err) throw err;
 	});
@@ -82,14 +81,12 @@ app.get('/',function(req,res){
   });
 
 app.get('/*', function(req, res) { 
-//´Ù¸¥ °æ·Î¸¦ ¿äÃ»ÇßÀ»¶§, ½ÇÁ¦ ±× °æ·Î¿¡ ÀÖ´Â ÆÄÀÏÀ» Àü´ÞÇÕ´Ï´Ù.
+//ï¿½Ù¸ï¿½ ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 	
 	fs.appendFile('../log.txt', "["+timeStamp()+"]["+getUserIP(req)+"] - "+__dirname+ req.url+"\n", function (err) {
 	  if (err) throw err;
 	});
-  console.log("["+timeStamp()+"]["+getUserIP(req)+"] - "+__dirname+ req.url);
  res.sendfile(__dirname+ req.url,function(err){
-  console.log(err);
   res.end();
  });
 });

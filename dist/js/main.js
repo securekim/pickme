@@ -415,12 +415,13 @@ function secondConfirm(addr) {
 
 
 function drawAllItems(account,number){
-  account = MYPROFILE.account
-  var scouterPurchaseAccountList = getScouterPurchaseAccountList(account);
-  var paid = false;
-  for (var i in scouterPurchaseAccountList[0]){
-    if(typeof PEOPLES[number].account!='undefined' && scouterPurchaseAccountList[0][i] == PEOPLES[number].account) paid = true;
-  }
+  account = MYPROFILE.account;
+  if(true){
+    var scouterPurchaseAccountList = getScouterPurchaseAccountList(account);
+    var paid = false;
+    for (var i in scouterPurchaseAccountList[0]){
+      if(typeof PEOPLES[number].account!='undefined' && scouterPurchaseAccountList[0][i] == PEOPLES[number].account) paid = true;
+    }
     if(paid) {
       //버튼은 노란색 아니면 파란색이되어야하고
       //로딩바가 뿌려지거나 데이터가 뿌려져야 한다.
@@ -475,6 +476,7 @@ function drawAllItems(account,number){
           setModalLoder(false);
           document.getElementById('modalPeopleMore').disabled=false;
     }
+  }
 }
 
 function removeAllJumbotrons(){
@@ -1341,9 +1343,9 @@ function iNeedYou(number){
       //},100);
     }
 
-    function setSCOUTER(){
+    function setINTERVIEWER(){
       setLoginInfo(HARD_CODED_SCOUTER_PRIVATEKEY,HARD_CODED_SCOUTER,"");
     }
-    function setINTERVIEE(){
+    function setINTERVIEWEE(){
       setLoginInfo(HARD_CODED_ACCOUNT_PRIVATEKEY,HARD_CODED_ACCOUNT,"");
     }
