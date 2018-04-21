@@ -200,42 +200,40 @@ function addScoutJumbotronToMain(myScoutersInfo){
     console.log("There is no data in myScoutersInfo");
     return;
   }
+  // var account     = myScoutersInfo.scouterAddr;
+  // var name        = myScoutersInfo.company.name;
+  // var url         = myScoutersInfo.company.url;
+  // var category    = myScoutersInfo.company.category;
+  // var expense     = myScoutersInfo.recruitReward;
+  // var place       = myScoutersInfo.meetingPlace;
+  // var contact     = myScoutersInfo.emergencyPhoneNumber;
+  // var date        = myScoutersInfo.meetingDate;
+  // var recruitAddr = myScoutersInfo.recruitAddr;
+  // var userName    = myScoutersInfo.userName;
+  // var scouterName = myScoutersInfo.scouterName;
 
-  var account     = myScoutersInfo.scouterAddr;
-  var name        = myScoutersInfo.company.name;
-  var url         = myScoutersInfo.company.url;
-  var category    = myScoutersInfo.company.category;
-  var expense     = myScoutersInfo.recruitReward;
-  var place       = myScoutersInfo.meetingPlace;
-  var contact     = myScoutersInfo.emergencyPhoneNumber;
-  var date        = myScoutersInfo.meetingDate;
-  var recruitAddr = myScoutersInfo.recruitAddr;
-  var userName    = myScoutersInfo.userName;
-  var scouterName = myScoutersInfo.scouterName;
-
+  if(typeof myScoutersInfo.company.url =='undefined') myScoutersInfo.company.url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
+  if(typeof myScoutersInfo.company.category == 'undefined') myScoutersInfo.company.category = "unknwon";
   
-  if(typeof url =='undefined') url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
-  if(typeof category == 'undefined') category = "unknwon";
-  
-  var parameter = '"'+account+'"';
-  parameter    += ',"'+name+'"';
-  parameter    += ',"'+url+'"';
-  parameter    += ',"'+category+'"';
-  parameter    += ',"'+expense+'"';
-  parameter    += ',"'+place+'"';
-  parameter    += ',"'+contact+'"';
-  parameter    += ',"'+date+'"';
-  parameter    += ',"'+recruitAddr+'"';
-  parameter    += ',"'+userName+'"';
-  parameter    += ',"'+scouterName+'"';
+  var parameter =  '"'+myScoutersInfo.scouterAddr+'"';
+  parameter    += ',"'+myScoutersInfo.company.name+'"';
+  parameter    += ',"'+myScoutersInfo.company.url+'"';
+  parameter    += ',"'+myScoutersInfo.company.category+'"';
+  parameter    += ',"'+myScoutersInfo.recruitReward+'"';
+  parameter    += ',"'+myScoutersInfo.meetingPlace+'"';
+  parameter    += ',"'+myScoutersInfo.emergencyPhoneNumber+'"';
+  parameter    += ',"'+myScoutersInfo.meetingDate+'"';
+  parameter    += ',"'+myScoutersInfo.recruitAddr+'"';
+  parameter    += ',"'+myScoutersInfo.userName+'"';
+  parameter    += ',"'+myScoutersInfo.scouterName+'"';
  
   var main = document.getElementById("main");
-  
+
   var jumbotron = document.createElement('div');
     jumbotron.className = "jumbotron";
     jumbotron.style = "background-color: white; margin-bottom: 1rem;";
     jumbotron.href="#"
-    jumbotron.id = "jumbotron_"+account;
+    jumbotron.id = "jumbotron_"+myScoutersInfo.recruitAddr;
 
     //HASH값 필요
     jumbotron.setAttribute("onclick",'viewScouter(' +parameter+ ')');
@@ -250,7 +248,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
     td1.style = "padding:20px";
     table.appendChild(td1);
 
-  var image = '<img src="'+url+'" alt="'+name+'" height="70" '
+  var image = '<img src="'+myScoutersInfo.company.url+'" alt="'+myScoutersInfo.company.name+'" height="70" '
     //image+='class="rounded-circle"'
     image+='></img>';
     td1.innerHTML=image;
@@ -260,15 +258,15 @@ function addScoutJumbotronToMain(myScoutersInfo){
     table.appendChild(td2);
     
     var td3 = document.createElement('td');
-    td3.id="load_"+account;
+    td3.id="load_"+myScoutersInfo.recruitAddr;
     td3.style = "vertical-align:middle; height:80px; width:80px";
     table.appendChild(td3);  
   
 
   var h = document.createElement('h6');
     td2.appendChild(h);
-  var myContext = name+' - '+category+' <p class="lead"><span class="glyphicon glyphicon-briefcase"></span> '+scouterName+'<br>'
-      myContext+= '<span class="glyphicon glyphicon-hand-right"></span> '+userName+''+'</p>';
+  var myContext = myScoutersInfo.company.name+' - '+myScoutersInfo.company.category+' <p class="lead"><span class="glyphicon glyphicon-briefcase"></span> '+myScoutersInfo.scouterName+'<br>'
+      myContext+= '<span class="glyphicon glyphicon-hand-right"></span> '+myScoutersInfo.userName+''+'</p>';
     h.innerHTML=myContext;
 }
 
@@ -285,19 +283,22 @@ function addScoutJumbotronToMain(myScoutersInfo){
 function viewScouter(account,name,url,category,expense,place,contact,date,recruitAddr,userName,scouterName){
 
   var frame = '<H4>'+name+' 에서</H4><br>'
-  frame    += ' 친애하는 "' + PEOPLES[HARD_CODED_ACCOUNT_NUMBER].items.name + '" 님께<br>'
-  frame    += '"'+PEOPLES[HARD_CODED_ACCOUNT_NUMBER].items.name +'"님께서<br> 유로로 공개한 정보를 검토해 본 결과,<br>'
+  frame    += ' 친애하는 "' + userName + '" 님께<br><br>'
+  frame    += '"'+userName +'"님께서<br> 유로로 공개한 정보를 검토해 본 결과,<br>'
   frame    += '면접에 초대하고 싶어서 연락 드리게 되었습니다.<br>';
-  frame    += ' 시간은 '+date+' 이고,<br>';
-  frame    += ' 장소는 '+place+' 입니다.<br>';
-  frame    += ' 참고로 시간과 장소는 유선 협의가 가능합니다.';
-  frame    += ' 또한 면접시 '+expense+' <span class="glyphicon glyphicon-fire"></span> 를 면접비로 지원하고 있습니다.<br>';
-  frame    += '저희에 대한 대략적인 정보는 <a href="'+url+'"> URL(클릭) </a> 을 참조해 주시고,<br>';
-  frame    += '궁금한 사항 있으시면 아래 번호로 연락 부탁드립니다.<br>';
-  frame    += contact;
-  
+  frame    += '"'+scouterName+'" 드림.<br><br>';
+  frame    += '<hr>';
+  frame    += ' 면접 정보 요약 :<br>';
+  frame    += '<span class="glyphicon glyphicon-time"></span> '+date+' <br>';
+  frame    += '<span class="glyphicon glyphicon-home"></span> '+place+' <br>';
+  frame    += '<span class="glyphicon glyphicon-phone-alt"> '+contact+'</span><br>';
+  frame    += '<span class="glyphicon glyphicon-link"></span><a href="'+url+'"> URL(Click) </a><br>'
+  frame    += '<hr>';
+  frame    += expense+' <span class="glyphicon glyphicon-fire"></span> 가 면접비로 지원 됩니다.<br>';
+
+  var FLAG = 1;
   alertify.confirm(frame,
-  function(){
+  function myconfirm(){
      //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
         alertify.prompt('It takes some time. <br> Speed is depend on GAS :', "50",
         function(evt, value ){
@@ -316,11 +317,35 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
           alertify.error('Cancel');
         })
   },
-  function(){
-    alertify.error('Cancel');
+  function mycancel(){
+    //SET FLAG FOR INFINITY LOOP...
+      if(FLAG){
+        FLAG = 0;
+        secondConfirm(recruitAddr);
+      }
   });
 
 }
+
+var G_recruitAddr
+function secondConfirm(addr) {
+  G_recruitAddr = addr;
+  var tmp = setTimeout(function myOtherCancel() {
+      alertify.confirm("<h5>Caution !</h5>정말로 이 면접을 취소하시겠습니까 ? <br> 되돌릴 수 없습니다.<br> 면접 번호 :<br>"+G_recruitAddr, function (e) {
+          if (e) {
+              //Done
+              alertify.error("면접을 취소했습니다.");
+              tmp = null;
+          } else {
+              // user clicked "cancel"
+              console.log("Cancel...");
+              alertify.success("면접이 취소되지 않았습니다.");
+          }
+      });
+  }, 500); // I went as low as 300 ms, but higher value is safer :)
+  return true;
+}
+
 
 function drawAllItems(account,number){
   account = HARD_CODED_SCOUTER
@@ -1196,12 +1221,13 @@ function iNeedYou(number){
 
     //현재 로그인 해당 함수를 android에서 넘겨줌
     function setLoginInfo(priKey, account, id){
-
+      MYACCOUNT = account;
+      MYPRIVATEKEY = priKey;
     }
 
     function setSCOUTER(){
-
+      setLoginInfo(HARD_CODED_SCOUTER_PRIVATEKEY,HARD_CODED_SCOUTER,"");
     }
     function setINTERVIEE(){
-
+      setLoginInfo(HARD_CODED_ACCOUNT,HARD_CODED_ACCOUNT_PRIVATEKEY,"");
     }
