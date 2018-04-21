@@ -99,8 +99,6 @@ function insertPrivateContent(){
 
   var frmTag3 = '<input type=text name=addText style="width:300px; height:30px;" placeholder="Content URL">';
     td3.innerHTML=frmTag3;  
-
-
 }
 
 function deletePrivateContent(td) {
@@ -227,6 +225,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
   parameter    += ',"'+myScoutersInfo.recruitAddr+'"';
   parameter    += ',"'+myScoutersInfo.userName+'"';
   parameter    += ',"'+myScoutersInfo.scouterName+'"';
+  parameter    += ',"'+myScoutersInfo.recruitStatus+'"';
  
   var main = document.getElementById("main");
 
@@ -272,8 +271,6 @@ function addScoutJumbotronToMain(myScoutersInfo){
     h.innerHTML=myContext;
 }
 
-//jumbotron.setAttribute("onclick","viewScouter("+name+","+expense+","+place+","+contact+","+date+")");
-
 // var parameter = '"'+account+'"';
 // parameter    += ',"'+name+'"';
 // parameter    += ',"'+url+'"';
@@ -282,7 +279,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
 // parameter    += ',"'+place+'"';
 // parameter    += ',"'+contact+'"';
 // parameter    += ',"'+date+'"';
-function viewScouter(account,name,url,category,expense,place,contact,date,recruitAddr,userName,scouterName){
+function viewScouter(account,name,url,category,expense,place,contact,date,recruitAddr,userName,scouterName,recruitStatus){
 
   var frame = '<H4>'+name+' 에서</H4><br>'
   frame    += ' 친애하는 "' + userName + '" 님께<br><br>'
@@ -297,11 +294,28 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
   frame    += '<span class="glyphicon glyphicon-link"></span><a href="'+url+'"> URL(Click) </a><br>'
   frame    += '<hr>';
   frame    += expense+' <span class="glyphicon glyphicon-fire"></span> 가 면접비로 지원 됩니다.<br>';
+  if(recruitStatus == ING){
+    frame    += '<hr>';
+    frame    += '"'+userName+'" 님께서 면접에 동의하셨습니다.';
+  } 
+  if (recruitStatus == QUIT){
+    frame    += '<hr>';
+    frame    += '부득이한 사정으로 면접이 종료되었습니다.';
+  } 
+  if (recruitStatus == PASS){
+    frame    += '<hr>';
+    frame    += 'Pass 입니다. 함께 일할 수 있게 되어 영광입니다.';
+  } 
+  if (recruitStatus == FAIL){
+    frame    += '<hr>';
+    frame    += '부득이한 사정으로 함께 일할 수 없게 되어 죄송합니다. ';
+  }
 
   var FLAG = 1;
   alertify.confirm(frame,
   function myconfirm(){
-    if(account != MYPROFILE.account){
+    if(account != MYPROFILE.account && recruitStatus!=ING){
+
      //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
         alertify.prompt('Your Contact will be posted for interview. <br>And It takes some time. <br> Speed is depend on GAS :', "50",
         function(evt, value ){
@@ -319,6 +333,10 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
         function(){
           alertify.error('Cancel');
         })
+
+      } else if (account == MYPROFILE.account && recruitStatus==ING){
+
+
       }
   },
   function mycancel(){
@@ -327,7 +345,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
         FLAG = 0;
         secondConfirm(recruitAddr);
       }
-  }).set('labels', {ok:'다음 스텝', cancel:'인터뷰 취소'});
+  }).set('labels', {ok:'알겠습니다.', cancel:'인터뷰 취소'});
 
 }
 
