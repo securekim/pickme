@@ -36,8 +36,8 @@ public class DevTestActivity extends Activity implements View.OnClickListener{
         String id = "";
         switch (v.getId()){
             case R.id.btn_scouter:
-                account = "0xCB3f76FAb25c223653a85513D2ca42BAB68D1B21";
-                priKey = "b22563a7e548bf55fb6b230ef1733cd16f9b9a900a68c3258a0e922547a621c3";
+                account = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
+                priKey = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
                 id = "jaesuk";
                 break;
             case R.id.btn_user:

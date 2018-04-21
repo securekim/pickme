@@ -677,7 +677,7 @@ function iNeedYou(number){
     pmTokenContractAddress = "0xdb719479b205cb5260f2d2e0411a1de82e1b7a98";
 
     //면접진행 관련
-    recruitChkContractAddress = "0x34592b1822a246486ceec413c86cc728fa8af354";
+    recruitChkContractAddress = "0x9bb5d43266efd5385b800cf3f4fc100ebfb23118";
 
 
     //회사 관련 
@@ -1040,7 +1040,11 @@ function iNeedYou(number){
 	    
 	    var count = web3.eth.getTransactionCount(_from);
 	    const gasPriceHex = web3.toHex(gas*1000000000);
-	    gasLimitHex = web3.toHex(782605);
+	    gasLimitHex = web3.toHex(800000);
+
+
+
+
 	    var rawTransaction = {
 	      "from": _from,
 	      "nonce": web3.toHex(count),
@@ -1080,3 +1084,7 @@ function iNeedYou(number){
     }
 
 
+    //현재 로그인 해당 함수를 android에서 넘겨줌
+    function setLoginInfo(priKey, account, id){
+
+    }
