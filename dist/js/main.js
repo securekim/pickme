@@ -869,7 +869,7 @@ function iNeedYou(number){
     
 
     function getScouterYn(_addr){
-        pmtokenContract = web3.eth.contract(pmcTokenAbi).at(pmTokenContractAddress);
+        pmctokenContract = web3.eth.contract(pmcTokenAbi).at(pmTokenContractAddress);
         
         return pmtokenContract.isScouterYn(_addr);
     }
