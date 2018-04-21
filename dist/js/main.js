@@ -18,9 +18,9 @@ var HARD_CODED_ACCOUNT_NUMBER = 0;
 var ScouterAccessHideInfoYn = {};
 
 ///////////INTERVIEW STATUS
-  var ING=1;                    //INTERVEWEE ONLY
-  var QUIT=2;                   //INTERVIEWER & SCOUTER  
-  var WAIT =0; PASS=3; FAIL=4;  //SCOUTER ONLY
+  var ING="1";                    //INTERVEWEE ONLY
+  var QUIT="2";                   //INTERVIEWER & SCOUTER  
+  var WAIT ="0"; PASS="3"; FAIL="4";  //SCOUTER ONLY
   
     
   
@@ -262,6 +262,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
     td3.style = "vertical-align:middle; height:80px; width:80px";
     table.appendChild(td3);  
   
+    setJumboButton(myScoutersInfo.recruitAddr,myScoutersInfo.recruitStatus);
 
   var h = document.createElement('h6');
     td2.appendChild(h);
@@ -301,9 +302,9 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
   function myconfirm(){
     if(account != MYPROFILE.account){
      //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
-        alertify.prompt('It takes some time. <br> Speed is depend on GAS :', "50",
+        alertify.prompt('Your Contact will be posted for interview. <br>And It takes some time. <br> Speed is depend on GAS :', "50",
         function(evt, value ){
-          alertify.confirm("Are you sure ? Gas :"+value+ " <br>Will be paid for interview.",
+          alertify.confirm("Are you sure ? Gas :"+value+ " <br>Will be paid for interview.<br>And Your Contact will be posted for interview",
             function(){
               //setJumboButton(number,"YELLOW");
               //가스 , 유재석, 최유정, 최유정개인키, 면접주소
@@ -312,7 +313,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
             },
             function(){
               alertify.error('Cancel');
-            });
+            }).set('labels', {ok:'Confirm', cancel:'cancel'});;
         },
         function(){
           alertify.error('Cancel');
@@ -325,7 +326,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
         FLAG = 0;
         secondConfirm(recruitAddr);
       }
-  });
+  }).set('labels', {ok:'다음 스텝', cancel:'인터뷰 취소'});
 
 }
 
@@ -343,7 +344,7 @@ function secondConfirm(addr) {
               console.log("Cancel...");
               alertify.success("면접이 취소되지 않았습니다.");
           }
-      });
+      }).set('labels', {ok:'인터뷰를 취소 합니다.', cancel:'더 생각해 볼게요.'});
   }, 500); // I went as low as 300 ms, but higher value is safer :)
   return true;
 }
@@ -425,13 +426,15 @@ function setJumboButton(number,color){
   if(color == "YELLOW"){
     //    border: solid rgb(23, 162, 184);
      document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
-  }else if (color == "BLUE" || color == "PASS"){
+  }else if (color == "BLUE"){
     //<div class="lds-heart"><div></div></div>
-    document.getElementById('load_'+number).innerHTML = '<div class="lds-heart"><div></div></div>';
-  }else if(color == "GRAY" || color =="WAIT"){
+    //<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    //<div class="lds-facebook"><div></div><div></div><div></div></div>
     document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
-  }else if(color == "ING"){
-    document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+  }else if(color == "GRAY" || color ==WAIT){
+    document.getElementById('load_'+number).innerHTML = '';
+  }else if(color == ING){
+    document.getElementById('load_'+number).innerHTML = '<div class="lds-facebook"><div></div><div></div><div></div></div>';
     
 // //INTERVEWEE ONLY
 // ING=1; 
@@ -441,9 +444,11 @@ function setJumboButton(number,color){
 
 // //SCOUTER ONLY
 // var PASS=3; FAIL=4;
-  }else if(color == "QUIT"){
+  }else if(color == QUIT){
 
-  }else if (color == "FAIL"){
+  }else if (color == FAIL){
+
+  }else if (color == PASS){
 
   }
 }
@@ -1244,14 +1249,17 @@ function iNeedYou(number){
       MYACCOUNT = account;
       MYPRIVATEKEY = priKey;
 
-      // profile = getMyProfile(MYACCOUNT);
-      // MYPROFILE.account = MYACCOUNT;
-      // MYPROFILE.picture = profile.basicInfo.picture;
-      // MYPROFILE.name = profile.basicInfo.name;
-      // MYPROFILE.interestItems = profile.basicInfo.interestItems;
-      // MYPROFILE.mvp = profile.basicInfo.mvp.c[0];
-      // tmp = profile.profileInfo.replace(/'/g, '"')
-      // MYPROFILE.peoplesDetail = JSON.parse(tmp);
+      setTimeout(function(){
+        //This is for non-block
+        profile = getMyProfile(MYACCOUNT);
+        MYPROFILE.account = MYACCOUNT;
+        MYPROFILE.picture = profile.basicInfo.picture;
+        MYPROFILE.name = profile.basicInfo.name;
+        MYPROFILE.interestItems = profile.basicInfo.interestItems;
+        MYPROFILE.mvp = profile.basicInfo.mvp.c[0];
+        tmp = profile.profileInfo.replace(/'/g, '"')
+        MYPROFILE.peoplesDetail = JSON.parse(tmp);
+      },100);
     }
 
     function setSCOUTER(){
