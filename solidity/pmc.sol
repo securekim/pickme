@@ -337,6 +337,7 @@ contract RecruitChk {
     
     mapping (address => RecruitAppointments) mapItem;
     mapping (address => RecruitAppointments[]) recruitList;
+    
     mapping (address => bool[]) recruitChk;
     
     mapping (address => uint256) recruitIndex;
@@ -344,10 +345,6 @@ contract RecruitChk {
     
      mapping(address => TokenERC20) userToken;
      
-     
-     function assignRecruit(){
-         
-     }
      
      function setToken(TokenERC20 _token, address _scouter, address _user) constant returns(uint256){
          
@@ -375,7 +372,7 @@ contract RecruitChk {
         recruitList[_user][recruitIndex[_user]]= recruit;
         recruitIndex[_user]++;
     }
-        
+
         
     function getMapping(address _addr , uint256 start, uint256 end) constant returns(RecruitAppointments[]){
         RecruitAppointments[] list = recruitList[_addr];
@@ -400,20 +397,20 @@ contract RecruitChk {
 
 contract RecruitAppointments{
     
+    mapping(address => TokenERC20) userToken;
 
-    
     address private scouter;
     address private user;
     address private companyRecruitAddr;
 
-    uint private recruitReward;
+    uint256 private recruitReward;
     string private meetingDate;
     string private meetingPlace;
     string private meetingPlaceUrl;
     string private emergencyPhoneNumber;
     
     bool private appointMentYn;
-    uint256 private recruitStatus;
+    uint256 private recruitStatus = 0;
     // 0-wait,  1 - ing, 2 - quit, 2 - yes, 3 - sorry
     
     bool private createYn;
@@ -440,14 +437,24 @@ contract RecruitAppointments{
         
     }
     
-    function assignAppointment(){
+    function assignAppointment(address _user, address _scouter){
         appointMentYn = true;
+        recruitStatus = 1;
     }
     
+         
+    function setResultRecruit(TokenERC20 _token, address _scouter, address _user, uint256 result){
+         
+        TokenERC20 token = TokenERC20(_token);
+        token._transfer(_scouter, _user, recruitReward);
+         
+        recruitStatus = result;
+     }
     
     function getRecruitInfo() constant returns(uint , address, address, string , string, string, uint256){
         return (recruitReward, scouter, user, meetingDate, meetingPlace, emergencyPhoneNumber,recruitStatus);
     }
+    
 }
 
 

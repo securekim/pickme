@@ -809,7 +809,7 @@ function iNeedYou(number){
 	})
 
 
-    gasLimitHex = web3.toHex(244769);
+    gasLimitHex = web3.toHex(estimateGasResult);
     var rawTransaction = {
       "from": _from,
       "nonce": web3.toHex(count),
@@ -974,8 +974,11 @@ function iNeedYou(number){
 
     //비공개 첨부파일 가져오기
     function getHideAppendFile(_addr){
-      companyDetailContainer = web3.eth.contract(userHideAppendInfoAbi).at(userHideAppendInfoContractAddress);
-      return companyDetailContainer.getUserHideAppendInfo(_addr);
+  //    companyDetailContainer = web3.eth.contract(userHideAppendInfoAbi).at(userHideAppendInfoContractAddress);
+//      return companyDetailContainer.getUserHideAppendInfo(_addr);
+
+      pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
+      return pmcTokenContract.getUserHideAppend(_addr);
     }
 
 
@@ -1011,6 +1014,8 @@ function iNeedYou(number){
       	recruitChkContract = web3.eth.contract(recruitChkAbi).at(recruitChkContractAddress);
       	pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
       	companyMainInfo = web3.eth.contract(companyMainAbi).at(companyMainContractAddress);
+      	userBasicInfo = web3.eth.contract(userMainAbi).at(userBasicInfoContractAddress);
+
 
       	var data = recruitChkContract.getMapping(_addr, 1*page - 1, (1*page - 1) + 10);
 
@@ -1022,11 +1027,14 @@ function iNeedYou(number){
 			item.recruitAddr = data[i] ;
 			item.recruitReward = subData[0].toNumber() ;
 	        item.scouterAddr = subData[1] ;
+	        item.scouterName = userBasicInfo.getBasicInfo(subData[1])[1];
 	        item.userAddr = subData[2] ;
+	        item.userName = userBasicInfo.getBasicInfo(subData[2])[1];
 	        item.meetingDate = subData[3] ;
 	        item.meetingPlace = subData[4] ;
 	        item.emergencyPhoneNumber = subData[5];
 	        item.recruitStatus = subData[6];
+
 
 	        var companyInfo = companyMainInfo.getCompanyMainInfo(pmcTokenContract.getScouterInfo(subData[1]));
 	        var companyInfoItem = new Object() ;
