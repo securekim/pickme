@@ -708,7 +708,7 @@ function iNeedYou(number){
     pmTokenContractAddress = "0xdb719479b205cb5260f2d2e0411a1de82e1b7a98";
 
     //면접진행 관련
-    recruitChkContractAddress = "0x34592b1822a246486ceec413c86cc728fa8af354";
+    recruitChkContractAddress = "0x4bd6c243551cbff7359f34ade8fb3502aa5d1186";
 
 
     //회사 관련 
@@ -830,6 +830,16 @@ function iNeedYou(number){
     
     var count = web3.eth.getTransactionCount(_from);
     const gasPriceHex = web3.toHex(gas*1000000000);
+
+   	
+    var sendItemData = pmcTokenContract.trasferOpenHideInfo.getData(_from,_to, value);
+
+   	var estimateGasResult = web3.eth.estimateGas({
+			"to": recruitChkContractAddress,
+			"data" : sendItemData
+	})
+
+
     gasLimitHex = web3.toHex(244769);
     var rawTransaction = {
       "from": _from,
@@ -838,7 +848,7 @@ function iNeedYou(number){
       "gasLimit": gasLimitHex,
       "to": contractAddress,
       "value": "0x00",
-      "data": pmcTokenContract.trasferOpenHideInfo.getData(_from,_to, value),
+      "data": sendItemData,
       "chainId": "0x03"
     };
 
@@ -1040,6 +1050,7 @@ function iNeedYou(number){
 
 			var subData = recruitAppointmentContract.getRecruitInfo()
 			
+			item.recruitAddr = data[i] ;
 			item.recruitReward = subData[0].toNumber() ;
 	        item.scouterAddr = subData[1] ;
 	        item.userAddr = subData[2] ;
@@ -1071,7 +1082,15 @@ function iNeedYou(number){
 	    
 	    var count = web3.eth.getTransactionCount(_from);
 	    const gasPriceHex = web3.toHex(gas*1000000000);
-	    gasLimitHex = web3.toHex(782605);
+	    
+	    var sendItemData = recruitChkContract.makeRecruit.getData(_recruitReward, _from, _to,_meetingDate, _meetingPlace, _emergencyPhoneNumber);
+	    var estimateGasResult = web3.eth.estimateGas({
+			"to": recruitChkContractAddress,
+			"data" : sendItemData
+		})
+
+	    gasLimitHex = web3.toHex(estimateGasResult);
+
 	    var rawTransaction = {
 	      "from": _from,
 	      "nonce": web3.toHex(count),
@@ -1079,7 +1098,7 @@ function iNeedYou(number){
 	      "gasLimit": gasLimitHex,
 	      "to": recruitChkContractAddress,
 	      "value": "0x00",
-	      "data": recruitChkContract.makeRecruit.getData(_recruitReward,_from, _to, _meetingDate, _meetingPlace, _emergencyPhoneNumber),
+	      "data": sendItemData,
 	      "chainId": "0x03"
 	    };
 
@@ -1110,4 +1129,68 @@ function iNeedYou(number){
 	        });
     }
 
+    //가스 , 유재석, 최유정, 최유정개인키, 면접주소
+    function assignRecruitRequest(gas, _to, _from, priKey, recruitAddr){
+    	recruitAppointmentContract = web3.eth.contract(recruitAppointmentAbi).at(recruitAddr);
+    	var sendItemData = recruitAppointmentContract.assignAppointment.getData(_to,_from);
 
+    	sendTransaction(gas, _to, _from, priKey, sendItemData, recruitAddr);
+    }
+
+
+
+
+    //함수 통일
+    function sendTransaction(gas, _to, _from, priKey, sendItemData, Addr){
+    	
+    	var count = web3.eth.getTransactionCount(_from);
+    	const gasPriceHex = web3.toHex(gas*1000000000);
+    	 
+	    var estimateGasResult = web3.eth.estimateGas({
+			"to": Addr,
+			"data" : sendItemData
+		})
+
+		gasLimitHex = web3.toHex(estimateGasResult);
+
+	    var rawTransaction = {
+	      "from": _from,
+	      "nonce": web3.toHex(count),
+	      "gasPrice": gasPriceHex,
+	      "gasLimit": gasLimitHex,
+	      "to": Addr,
+	      "value": "0x00",
+	      "data": sendItemData,
+	      "chainId": "0x03"
+	    };
+	    var privKey = new EthJS.Buffer.Buffer(priKey, 'hex');
+	    var tx = new EthJS.Tx(rawTransaction);
+
+	    tx.sign(privKey);
+	    var serializedTx = tx.serialize();
+
+	    web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, hash) {
+	      if (!err){
+	        // 이걸 하고나서 팝업.
+	        // 성공이랑 관계가 없음.
+	        // HASH - 하나의 계약서 - 트랜잭션 
+	        // 해시 값..함수를 동적으로 생성해서 계속 쪼고있음
+	        // pending / success
+	          console.log(hash);
+	            //sendMessage(hash);
+	            alertify
+	            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min) <br>CONTRACT : "+hash, function(){
+	              //alertify.success('Success');
+	              localStorage.setItem("PAID_"+_to, "PAID");
+	            });
+	          }else{
+	            console.log(err);
+	          }
+
+	        });
+    }
+
+    //현재 로그인 해당 함수를 android에서 넘겨줌
+    function setLoginInfo(priKey, account, id){
+
+    }

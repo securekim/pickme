@@ -59,5 +59,32 @@ recruitChkAbi = [
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_token",
+				"type": "address"
+			},
+			{
+				"name": "_scouter",
+				"type": "address"
+			},
+			{
+				"name": "_user",
+				"type": "address"
+			}
+		],
+		"name": "setToken",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	}
 ]
