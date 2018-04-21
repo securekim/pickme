@@ -64,9 +64,16 @@ var ScouterAccessHideInfoYn = {};
 ////////////////////////////////////////////////////
 
 
+function initMyPMC(){
+  if(typeof MYPROFILE.myPMC=='undefined'){
+    MYPROFILE.myPMC=getPMCBalance(MYPROFILE.account);
+    document.getElementById('myPMC').innerHTML='My PMC : '+MYPROFILE.myPMC+' <span class="glyphicon glyphicon-fire"></span>';
+  }
+}
+
 function updateMyPMC(){
-  mypmc=getPMCBalance(MYPROFILE.account);
-  document.getElementById('myPMC').innerHTML='My PMC : '+mypmc+' <span class="glyphicon glyphicon-fire"></span>';
+  MYPROFILE.myPMC=getPMCBalance(MYPROFILE.account);
+  document.getElementById('myPMC').innerHTML='My PMC : '+MYPROFILE.myPMC+' <span class="glyphicon glyphicon-fire"></span>';
 }
 
 function insertPrivateContent(){
@@ -780,7 +787,7 @@ function iNeedYou(number){
               },
               function(){
                 alertify.error('Cancel');
-              }).set('labels', {ok:'Comfirm', cancel:'Cancel'});;
+              }).set('labels', {ok:'Comfirm', cancel:'Cancel'});
           },
           function(){
             alertify.error('Cancel');
@@ -788,7 +795,7 @@ function iNeedYou(number){
     },
     function(){
       alertify.error('Cancel');
-    });
+    }).set('labels', {ok:'Comfirm', cancel:'Cancel'});
 }
 
 
@@ -932,6 +939,9 @@ function iNeedYou(number){
   //_계좌 스카우터
   //prikey : d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a
   function sendPmcForOpenHideInfo(gas, value, _to, _from, priKey){
+    
+    //updateMyPMC();
+
     contractAddress = pmTokenContractAddress;
     pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
     
@@ -1231,11 +1241,12 @@ function iNeedYou(number){
 	        // 해시 값..함수를 동적으로 생성해서 계속 쪼고있음
 	        // pending / success
 	          console.log(hash);
-	            //sendMessage(hash);
+              //sendMessage(hash);
+              //updateMyPMC();
 	            alertify
 	            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min) <br>CONTRACT : "+hash, function(){
 	              //alertify.success('Success');
-	              localStorage.setItem("PAID_"+_to, "PAID");
+	              //localStorage.setItem("PAID_"+_to, "PAID");
 	            });
 	          }else{
 	            console.log(err);
