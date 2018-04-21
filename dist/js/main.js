@@ -870,7 +870,11 @@ function iNeedYou(number){
     }
     
 
-
+    function getScouterYn(_addr){
+        pmctokenContract = web3.eth.contract(pmcTokenAbi).at(pmTokenContractAddress);
+        
+        return pmtokenContract.isScouterYn(_addr);
+    }
 
     //사용자 디테일 프로필 조회
     function getDetailProfile (_addr){
