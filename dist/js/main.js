@@ -4,7 +4,8 @@ var PEOPLESDETAIL=[];
 var HARD_CODED_ACCOUNT = "0x731a765dff550d11b7c880af145066bc1bdd3127";
 var HARD_CODED_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
 var HARD_CODED_SCOUTER = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
-var HARD_CODED_NUMBER = 0;
+var HARD_CODED_SCOUTER_NUMBER =2 ;
+var HARD_CODED_ACCOUNT_NUMBER = 0;
 var ScouterAccessHideInfoYn = {};
 ///////////////////////////////////////////////////
 // 모두 캐시 해야 됨
@@ -122,6 +123,7 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     jumbotron.setAttribute("data-target","#profileModal");
     jumbotron.setAttribute("data-toggle","modal");
     jumbotron.href="#"
+  
     jumbotron.id = "jumbotron_"+number;
     jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     main.appendChild(jumbotron);
@@ -143,10 +145,12 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     td2.style = "vertical-align:middle";
     table.appendChild(td2);
     
-  var td3 = document.createElement('td');
-  td3.id="load_"+number;
-  td3.style = "vertical-align:middle; height:80px; width:80px";
-  table.appendChild(td3);  
+  if(type=="PERSON"){
+    var td3 = document.createElement('td');
+    td3.id="load_"+number;
+    td3.style = "vertical-align:middle; height:80px; width:80px";
+    table.appendChild(td3);  
+  }
 
   var h = document.createElement('h6');
     td2.appendChild(h);
@@ -157,10 +161,127 @@ function addJumbotronToMain(name, context, imageURL, number, type){
     if(type=="PERSON"){
       drawAllItems("HARD_CODED_SCOUTER",number);
       jumbotron.setAttribute("onclick","updatePeopleModal("+number+")");
-    }
-
+    } 
 }
 
+function drawScout(){
+  list = getRecruitRequestList(HARD_CODED_ACCOUNT,1);
+  list = list.replace(/'/g, '"');
+  list = JSON.parse(list);
+  //for(var i in list){}
+  removeAllJumbotrons();
+  for(var i in list){
+    addScoutJumbotronToMain(list[i]);
+  }
+}
+
+function addScoutJumbotronToMain(myScoutersInfo){
+  //내 어카운트를 넣으면 면접정보가 나온다
+  //그 정보 전체를 여기에 넣어준다
+  if(myScoutersInfo=="" || typeof myScoutersInfo=='undefined') {
+    console.log("There is no data in myScoutersInfo");
+    return;
+  }
+
+  var account     = myScoutersInfo.scouterAddr;
+  var name        = myScoutersInfo.company.name;
+  var url         = myScoutersInfo.company.url;
+  var categoty    = myScoutersInfo.company.category;
+  var expense     = myScoutersInfo.recruitReward;
+  var place       = myScoutersInfo.meetingPlace;
+  var contact     = myScoutersInfo.emergencyPhoneNumber;
+  var date        = myScoutersInfo.meetingDate
+
+  if(typeof url =='undefined') url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
+  if(typeof category == 'undefined') category = "unknwon";
+  
+  var parameter = '"'+account+'"';
+  parameter    += ',"'+name+'"';
+  parameter    += ',"'+url+'"';
+  parameter    += ',"'+category+'"';
+  parameter    += ',"'+expense+'"';
+  parameter    += ',"'+place+'"';
+  parameter    += ',"'+contact+'"';
+  parameter    += ',"'+date+'"';
+ 
+  var main = document.getElementById("main");
+  
+  var jumbotron = document.createElement('div');
+    jumbotron.className = "jumbotron";
+    jumbotron.style = "background-color: white; margin-bottom: 1rem;";
+    jumbotron.href="#"
+    jumbotron.id = "jumbotron_"+account;
+    jumbotron.setAttribute("onclick",'viewScouter(' +parameter+ ')');
+    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
+    main.appendChild(jumbotron);
+
+  var table = document.createElement('table');
+    table.style="width:100%"
+    jumbotron.appendChild(table);
+
+  var td1 = document.createElement('td');
+    td1.style = "padding:20px";
+    table.appendChild(td1);
+
+  var image = '<img src="'+url+'" alt="'+name+'" height="80" width="80" '
+    //image+='class="rounded-circle"'
+    image+='></img>';
+    td1.innerHTML=image;
+
+  var td2 = document.createElement('td');
+    td2.style = "vertical-align:middle";
+    table.appendChild(td2);
+    
+  if(false){
+    var td3 = document.createElement('td');
+    td3.id="load_"+number;
+    td3.style = "vertical-align:middle; height:80px; width:80px";
+    table.appendChild(td3);  
+  }
+
+  var h = document.createElement('h6');
+    td2.appendChild(h);
+
+  var myContext = name+' <p class="lead">'+category+'</p>';
+    h.innerHTML=myContext;
+}
+
+//jumbotron.setAttribute("onclick","viewScouter("+name+","+expense+","+place+","+contact+","+date+")");
+
+// var parameter = '"'+account+'"';
+// parameter    += ',"'+name+'"';
+// parameter    += ',"'+url+'"';
+// parameter    += ',"'+category+'"';
+// parameter    += ',"'+expense+'"';
+// parameter    += ',"'+place+'"';
+// parameter    += ',"'+contact+'"';
+// parameter    += ',"'+date+'"';
+function viewScouter(account,name,url,category,expense,place,contact,date){
+
+  var frame = '<H4>'+name+' 에서</H4><br>'
+  frame    += ' 친애하는 "' + PEOPLES[HARD_CODED_ACCOUNT_NUMBER].items.name + '" 님께<br>'
+  frame    += '"'+PEOPLES[HARD_CODED_ACCOUNT_NUMBER].items.name +'"님께서<br> 유로로 공개한 정보를 검토해 본 결과,<br>'
+  frame    += '면접에 초대하고 싶어서 연락 드리게 되었습니다.<br>';
+  frame    += ' 시간은 '+date+' 이고,<br>';
+  frame    += ' 장소는 '+place+' 입니다.<br>';
+  frame    += ' 참고로 시간과 장소는 유선 협의가 가능합니다.';
+  frame    += ' 또한 면접시 '+expense+' <span class="glyphicon glyphicon-fire"></span> 를 면접비로 지원하고 있습니다.<br>';
+  frame    += '저희에 대한 대략적인 정보는 <a href="'+url+'"> URL(클릭) </a> 을 참조해 주시고,<br>';
+  frame    += '궁금한 사항 있으시면 아래 번호로 연락 부탁드립니다.<br>';
+  frame    += contact;
+  
+  alertify.confirm(frame,
+  function(){
+     //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
+    alertify.success('Ok');
+  },
+  function(){
+    alertify.error('Cancel');
+  });
+
+
+
+}
 
 function drawAllItems(account,number){
   account = HARD_CODED_SCOUTER
@@ -366,8 +487,6 @@ function dummyPeople(){
   removeAllJumbotrons();
   //http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66
   addJumbotronToMain("휴지", "Security 전문가입니다.", "http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66","http://blog.securekim.com","PEOPLE");
-  addJumbotronToMain("보겸", "SW Engineer 지원 중입니다.", "http://image.hankookilbo.com/i.aspx?Guid=0b2feec797064d63a86c6b9bdedfb4d7&Month=201602&size=640","http://blog.securekim.com","PEOPLE");
-  addJumbotronToMain("소련", "Server Engineer 입니다!", "https://www.fashionseoul.com/wp-content/uploads/2017/02/20170217_sul-3.jpg","http://blog.securekim.com","PEOPLE");
 }
 
 function dummyCompany(){
@@ -389,10 +508,17 @@ function dummyPickme(){
   
 }
   
+
+function dummyScout(){
+  removeAllJumbotrons();
+  addJumbotronToMain("휴지", "HeadHunter 입니다.", "http://cfile5.uf.tistory.com/image/99E8E33359DB49394B6E66","http://blog.securekim.com","SCOUTER");
+  
+}
+
 function updateModalI(){
 
-    number = HARD_CODED_NUMBER;
-    var items = PEOPLES[HARD_CODED_NUMBER].items
+    number = HARD_CODED_SCOUTER_NUMBER;
+    var items = PEOPLES[HARD_CODED_SCOUTER_NUMBER].items
     
     document.getElementById('modalIName').innerText=items.name;
     document.getElementById('modalIImg').setAttribute("src",items.picture);
@@ -447,7 +573,7 @@ function updateModalI(){
       modalPeoplePrivateInfo.innerHTML = frm;
       //frm += &nbsp;
   
-  var files = getHideAppendFile(PEOPLES[HARD_CODED_NUMBER].account);
+  var files = getHideAppendFile(PEOPLES[HARD_CODED_SCOUTER_NUMBER].account);
   frm = "";
 
   for (var i in files){
@@ -510,7 +636,8 @@ function iNeedYou(number){
                 //sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
                 //setJumboButton(number,"YELLOW");
                  //function requestRecruitUser(gas, _to, _from, priKey, _recruitReward,  _meetingDate,  _meetingPlace,  _emergencyPhoneNumber){
-                requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_ACCOUNT, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
+                 
+                 requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
                 alertify.success('Ok');
               },
               function(){
