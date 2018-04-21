@@ -64,6 +64,11 @@ var ScouterAccessHideInfoYn = {};
 ////////////////////////////////////////////////////
 
 
+function updateMyPMC(){
+  mypmc=getPMCBalance(MYPROFILE.account);
+  document.getElementById('myPMC').innerHTML='My PMC : '+mypmc+' <span class="glyphicon glyphicon-fire"></span>';
+}
+
 function insertPrivateContent(){
   var tables = document.getElementById('tables');
   
