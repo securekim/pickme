@@ -430,7 +430,7 @@ function drawAllItems(account,number){
           frm = "<strong>Private Detail : </strong><br>";
           for (var i in files){
             if(files[i]!=""){
-              frm += '&nbsp;<a href="'+files[i]+'">Private Data '+i+'</a><br>'; 
+              frm += '&nbsp;<a href="'+files[i]+'">첨부링크 클릭 '+i+'</a><br>'; 
             }
           }
           document.getElementById("modalPeoplePrivateInfoDetail").innerHTML = frm;
@@ -715,7 +715,7 @@ function updateModalI(){
 
   for (var i in files){
     if(files[i]!="")
-      frm += '&nbsp;<a href="'+files[i]+'">Private Data '+i+'</a><br>'; 
+      frm += '&nbsp;<a href="'+files[i]+'">첨부링크 클릭 '+i+'</a><br>'; 
   }
   document.getElementById("modalIPrivateInfoDetail").innerHTML = frm;
 }
