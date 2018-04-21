@@ -416,7 +416,7 @@ function secondConfirm(addr) {
 
 function drawAllItems(account,number){
   account = MYPROFILE.account;
-  if(true){
+  if(getScouterYn(account)){
     var scouterPurchaseAccountList = getScouterPurchaseAccountList(account);
     var paid = false;
     for (var i in scouterPurchaseAccountList[0]){
