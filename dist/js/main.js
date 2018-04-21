@@ -773,7 +773,7 @@ function iNeedYou(number){
     pmTokenContractAddress = "0x4abf34571dd79585f704dfca616b129eed04a52b";
 
     //면접진행 관련
-    recruitChkContractAddress = "0x4bd6c243551cbff7359f34ade8fb3502aa5d1186";
+    recruitChkContractAddress = "0x763d1f92536a9245d779c43a60a37338f8e43129";
 
 
     //회사 관련 
@@ -900,7 +900,7 @@ function iNeedYou(number){
     var sendItemData = pmcTokenContract.trasferOpenHideInfo.getData(_from,_to, value);
 
    	var estimateGasResult = web3.eth.estimateGas({
-			"to": recruitChkContractAddress,
+			"to": pmTokenContractAddress,
 			"data" : sendItemData
 	})
 
@@ -1210,7 +1210,13 @@ function iNeedYou(number){
     	sendTransaction(gas, _to, _from, priKey, sendItemData, recruitAddr);
     }
 
+    
+   function noticeJobInterviewResult(gas, scouter, user, res, priKey, recruitAddr){
+    	recruitAppointmentContract = web3.eth.contract(recruitAppointmentAbi).at(recruitAddr);
+    	var sendItemData = recruitAppointmentContract.setResultRecruit.getData(pmTokenContractAddress,scouter,user,res);
 
+    	sendTransaction(gas, user, scouter, priKey, sendItemData, recruitAddr);
+    }
 
 
     //함수 통일
