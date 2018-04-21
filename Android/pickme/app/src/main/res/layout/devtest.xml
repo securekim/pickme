@@ -18,19 +18,21 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             android:text="Scouter 유재석 start"
+            android:textSize="20dp"
             />
         <Button
             android:id="@+id/btn_user2"
             android:layout_width="310dp"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
-            android:text="Scouter 마동석 start"
+            android:text="사용자 마동석 start"
+            android:textSize="20dp"
             />
         <Button
             android:id="@+id/btn_user"
             android:layout_width="310dp"
             android:layout_height="50dp"
-
-            android:text="user 최유정 start"/>
+            android:textSize="20dp"
+            android:text="사용자 최유정 start"/>
     </LinearLayout>
 </RelativeLayout>

@@ -68,7 +68,7 @@ public class PickMeActivity extends Activity {
 
 
         mWebView.addJavascriptInterface(new PickMeActivity.AndroidBridge(), "android");
-        mWebView.loadUrl("http://securekim.com/");
+        mWebView.loadUrl("http://172.30.1.24:8080/");
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
