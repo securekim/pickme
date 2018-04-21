@@ -746,7 +746,7 @@ function iNeedYou(number){
     interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
 
     //PM Token 관련
-    pmTokenContractAddress = "0x818745556d9fd3dca1c5b9221d00d113620b51fd";
+    pmTokenContractAddress = "0x4abf34571dd79585f704dfca616b129eed04a52b";
 
     //면접진행 관련
     recruitChkContractAddress = "0x4bd6c243551cbff7359f34ade8fb3502aa5d1186";
