@@ -12,6 +12,15 @@ var HARD_CODED_SCOUTER_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf
 var HARD_CODED_SCOUTER_NUMBER =2 ;
 var HARD_CODED_ACCOUNT_NUMBER = 0;
 var ScouterAccessHideInfoYn = {};
+
+///////////INTERVIEW STATUS
+  var ING=1;                    //INTERVEWEE ONLY
+  var QUIT=2;                   //INTERVIEWER & SCOUTER  
+  var WAIT =0; PASS=3; FAIL=4;  //SCOUTER ONLY
+  
+    
+  
+
 ///////////////////////////////////////////////////
 // 모두 캐시 해야 됨
 // 이래가지고는 안된다.
@@ -198,16 +207,6 @@ function addScoutJumbotronToMain(myScoutersInfo){
   var date        = myScoutersInfo.meetingDate
 
   
-  //INTERVEWEE ONLY
-  ING=1; 
-
-  //INTERVIEWER / SCOUTER
-  QUIT=2; 
-  
-  //SCOUTER ONLY
-  var WAIT =0; PASS=3; FAIL=4;
-  
-
   if(typeof url =='undefined') url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
   if(typeof category == 'undefined') category = "unknwon";
   
@@ -293,6 +292,8 @@ function viewScouter(account,name,url,category,expense,place,contact,date){
           alertify.confirm("Are you sure ? Gas :"+value+ " <br>Will be paid for interview.",
             function(){
               //setJumboButton(number,"YELLOW");
+              //가스 , 유재석, 최유정, 최유정개인키, 면접주소
+              assignRecruitRequest(value, HARD_CODED_SCOUTER, HARD_CODED_ACCOUNT, HARD_CODED_ACCOUNT_PRIVATEKEY, recruitAddr);
               alertify.success('Ok');
             },
             function(){
@@ -393,7 +394,9 @@ function setJumboButton(number,color){
   }else if(color == "RED"){
 
 
-  }else if()
+  }else if(color == "RED"){
+
+  }
 }
 
 function setModalLoder(loader){
@@ -664,10 +667,6 @@ function iNeedYou(number){
           function(evt, value ){
             alertify.confirm("Are you sure ? EXPENSES :"+expenses+" Gas :"+value+ " <br>Will be paid for interview.",
               function(){
-                //sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY)
-                //setJumboButton(number,"YELLOW");
-                 //function requestRecruitUser(gas, _to, _from, priKey, _recruitReward,  _meetingDate,  _meetingPlace,  _emergencyPhoneNumber){
-                 
                  requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
                 alertify.success('Ok');
               },
