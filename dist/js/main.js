@@ -476,6 +476,19 @@ function drawAllItems(account,number){
           setModalLoder(false);
           document.getElementById('modalPeopleMore').disabled=false;
     }
+  } else {
+    console.log("NOT PAID !!! ");
+        document.getElementById("interview-tab").className="nav-link fade disabled";
+        document.getElementById("profile-tab").className="nav-link active show";
+        
+        document.getElementById("profileTab").className = "tab-pane active show";
+        document.getElementById("interviewTab").className = "tab-pane";
+
+        document.getElementById('modalPeoplePrivateInfoDetail').innerHTML="";
+        setJumboButton(number,"GRAY");
+        setModalLoder(false);
+        document.getElementById('modalPeopleMore').disabled=false;
+
   }
 }
 
@@ -873,7 +886,7 @@ function iNeedYou(number){
     function getScouterYn(_addr){
         pmctokenContract = web3.eth.contract(pmcTokenAbi).at(pmTokenContractAddress);
         
-        return pmtokenContract.isScouterYn(_addr);
+        return pmctokenContract.isScouterYn(_addr);
     }
 
     //사용자 디테일 프로필 조회
