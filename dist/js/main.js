@@ -1,9 +1,14 @@
 
 var PEOPLES="";
 var PEOPLESDETAIL=[];
+var MYPROFILE="";
+
 var HARD_CODED_ACCOUNT = "0x731a765dff550d11b7c880af145066bc1bdd3127";
-var HARD_CODED_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
+var HARD_CODED_ACCOUNT_PRIVATEKEY = "2269b98525af6803b23779eefee1d1ee7293547cca8cb14f1ca12df9bfbfb7f5";
+
 var HARD_CODED_SCOUTER = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
+var HARD_CODED_SCOUTER_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
+
 var HARD_CODED_SCOUTER_NUMBER =2 ;
 var HARD_CODED_ACCOUNT_NUMBER = 0;
 var ScouterAccessHideInfoYn = {};
@@ -101,7 +106,7 @@ function useGas(coin,number){
   function(evt, value ){
     alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " <br>Will be paid for private info.",
       function(){
-        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
+        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY)
         setJumboButton(number,"YELLOW");
         alertify.success('Ok');
       },
@@ -192,6 +197,17 @@ function addScoutJumbotronToMain(myScoutersInfo){
   var contact     = myScoutersInfo.emergencyPhoneNumber;
   var date        = myScoutersInfo.meetingDate
 
+  
+  //INTERVEWEE ONLY
+  ING=1; 
+
+  //INTERVIEWER / SCOUTER
+  QUIT=2; 
+  
+  //SCOUTER ONLY
+  var WAIT =0; PASS=3; FAIL=4;
+  
+
   if(typeof url =='undefined') url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
   if(typeof category == 'undefined') category = "unknwon";
   
@@ -223,7 +239,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
     td1.style = "padding:20px";
     table.appendChild(td1);
 
-  var image = '<img src="'+url+'" alt="'+name+'" height="80" width="80" '
+  var image = '<img src="'+url+'" alt="'+name+'" height="70" '
     //image+='class="rounded-circle"'
     image+='></img>';
     td1.innerHTML=image;
@@ -232,12 +248,11 @@ function addScoutJumbotronToMain(myScoutersInfo){
     td2.style = "vertical-align:middle";
     table.appendChild(td2);
     
-  if(false){
     var td3 = document.createElement('td');
     td3.id="load_"+number;
     td3.style = "vertical-align:middle; height:80px; width:80px";
     table.appendChild(td3);  
-  }
+  
 
   var h = document.createElement('h6');
     td2.appendChild(h);
@@ -272,14 +287,25 @@ function viewScouter(account,name,url,category,expense,place,contact,date){
   
   alertify.confirm(frame,
   function(){
-     //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
-    alertify.success('Ok');
+     //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
+        alertify.prompt('It takes some time. <br> Speed is depend on GAS :', "50",
+        function(evt, value ){
+          alertify.confirm("Are you sure ? Gas :"+value+ " <br>Will be paid for interview.",
+            function(){
+              //setJumboButton(number,"YELLOW");
+              alertify.success('Ok');
+            },
+            function(){
+              alertify.error('Cancel');
+            });
+        },
+        function(){
+          alertify.error('Cancel');
+        })
   },
   function(){
     alertify.error('Cancel');
   });
-
-
 
 }
 
@@ -355,31 +381,19 @@ function removeAllJumbotrons(){
 
 function setJumboButton(number,color){
   jumbotron = document.getElementById("jumbotron_"+number);
+  
   if(color == "YELLOW"){
-    //myButton.innerHTML = "View"
-    //myButton.className = "btn btn btn-warning";
-
     //    border: solid rgb(23, 162, 184);
-    //myButton.style = "background-color:rgb(185, 147, 32);"
-    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
-    document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+     document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
   }else if (color == "BLUE"){
-    //myButton.innerHTML = "View All"
-    //myButton.className = "btn btn btn-primary";
     //<div class="lds-heart"><div></div></div>
     document.getElementById('load_'+number).innerHTML = '<div class="lds-heart"><div></div></div>';
-    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
-    //myButton.style = "background-color:#17a2b8"
   }else if(color == "GRAY"){
-    //myButton.innerHTML = "View"
-    //myButton.className = "btn btn btn-secondary";
     document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
-    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray;border-bottom-width: 1px;border-right-width: 0.7px; ";
-    //myButton.style = "background-color:rgb(140, 146, 152);"
   }else if(color == "RED"){
-    //myButton.innerHTML = "View"
-    //myButton.className = "btn btn btn-error";
-  }
+
+
+  }else if()
 }
 
 function setModalLoder(loader){
@@ -516,12 +530,29 @@ function dummyScout(){
 }
 
 function updateModalI(){
+    var account = HARD_CODED_ACCOUNT;
 
-    number = HARD_CODED_SCOUTER_NUMBER;
-    var items = PEOPLES[HARD_CODED_SCOUTER_NUMBER].items
+    if(MYPROFILE==""){
+      profile = getMyProfile(account);
+      MYPROFILE.picture = profile.basicInfo.picture;
+      MYPROFILE.
+
+
+      var picture = profile.basicInfo.picture;
+      var name = profile.basicInfo.name;
+      var interestItems = profile.basicInfo.interestItems;
+      var mvp = profile.basicInfo.mvp.c[0];
+      var peoplesDetail = profile.profileInfo;
+      peoplesDetail = peoplesDetail.replace(/'/g, '"');
+      peoplesDetail = JSON.parse(peoplesDetail);
+    } else {
+      profile = MYPROFILE;
+
+    }
+
     
-    document.getElementById('modalIName').innerText=items.name;
-    document.getElementById('modalIImg').setAttribute("src",items.picture);
+    document.getElementById('modalIName').innerText=name;
+    document.getElementById('modalIImg').setAttribute("src",picture);
     var modalPeopleInfo = document.getElementById('modalIInfo');
     while (modalPeopleInfo.firstChild) {
       modalPeopleInfo.removeChild(modalPeopleInfo.firstChild);
@@ -530,13 +561,13 @@ function updateModalI(){
       h3.className = "media-heading";
       modalPeopleInfo.appendChild(h3);
   
-    var frm = 'Trust Power<span id="IPMC" class="glyphicon glyphicon-flash"></span>'+items.mvp
+    var frm = 'Trust Power<span id="IPMC" class="glyphicon glyphicon-flash"></span>'+mvp
       h3.innerHTML = frm;
   
-     for(var i in items.interestItems){
+     for(var i in interestItems){
        span = document.createElement('span');
        span.className = "badge badge-pill badge-info";
-       span.innerHTML = hexToString(items.interestItems[i]);
+       span.innerHTML = hexToString(interestItems[i]);
        modalPeopleInfo.appendChild(span);
      }
   
@@ -546,34 +577,34 @@ function updateModalI(){
     }
   
       frm = "<strong>Public Info : </strong><br>"
-      for (var i in PEOPLESDETAIL[number].profileInfo.educationHistory){
-        if(PEOPLESDETAIL[number].profileInfo.educationHistory[i]!="")
-          frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.educationHistory[i]+"<br>";
+      for (var i in peoplesDetail.profileInfo.educationHistory){
+        if(peoplesDetail.profileInfo.educationHistory[i]!="")
+          frm += "&nbsp;"+peoplesDetail.profileInfo.educationHistory[i]+"<br>";
       }
       frm+="<p></p>";
-      for (var i in PEOPLESDETAIL[number].profileInfo.careerHistory){
-        if(PEOPLESDETAIL[number].profileInfo.careerHistory[i]!="")
-        frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.careerHistory[i]+"<br>";
+      for (var i in peoplesDetail.profileInfo.careerHistory){
+        if(peoplesDetail.profileInfo.careerHistory[i]!="")
+        frm += "&nbsp;"+peoplesDetail.profileInfo.careerHistory[i]+"<br>";
       }
       frm+="<p></p>";
-      for (var i in PEOPLESDETAIL[number].profileInfo.achievements){
-        if(PEOPLESDETAIL[number].profileInfo.achievements[i]!="")
-        frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.achievements[i]+"<br>";
+      for (var i in peoplesDetail.profileInfo.achievements){
+        if(peoplesDetail.profileInfo.achievements[i]!="")
+        frm += "&nbsp;"+peoplesDetail.profileInfo.achievements[i]+"<br>";
       }
       modalPeoplePublicInfo.innerHTML = frm;
   
-      document.getElementById('modalIBio').innerHTML = "<strong>Free Vision: </strong><br>" +PEOPLESDETAIL[number].freeVision;
+      document.getElementById('modalIBio').innerHTML = "<strong>Free Vision: </strong><br>" +peoplesDetail.freeVision;
   
       var modalPeoplePrivateInfo = document.getElementById("modalIPrivateInfo");
       frm = "<strong>Private Info : </strong><br>"
-      for (var i in PEOPLESDETAIL[number].hideInfo.hideInfoHint){
-        if(PEOPLESDETAIL[number].hideInfo.hideInfoHint[i]!="")
-        frm += "&nbsp;"+PEOPLESDETAIL[number].hideInfo.hideInfoHint[i]+"<br>";
+      for (var i in peoplesDetail.hideInfo.hideInfoHint){
+        if(peoplesDetail.hideInfo.hideInfoHint[i]!="")
+        frm += "&nbsp;"+peoplesDetail.hideInfo.hideInfoHint[i]+"<br>";
       }
       modalPeoplePrivateInfo.innerHTML = frm;
       //frm += &nbsp;
   
-  var files = getHideAppendFile(PEOPLES[HARD_CODED_SCOUTER_NUMBER].account);
+  var files = getHideAppendFile(account);
   frm = "";
 
   for (var i in files){
@@ -633,11 +664,11 @@ function iNeedYou(number){
           function(evt, value ){
             alertify.confirm("Are you sure ? EXPENSES :"+expenses+" Gas :"+value+ " <br>Will be paid for interview.",
               function(){
-                //sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
+                //sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY)
                 //setJumboButton(number,"YELLOW");
                  //function requestRecruitUser(gas, _to, _from, priKey, _recruitReward,  _meetingDate,  _meetingPlace,  _emergencyPhoneNumber){
                  
-                 requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
+                 requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
                 alertify.success('Ok');
               },
               function(){
