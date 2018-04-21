@@ -26,6 +26,7 @@ var ScouterAccessHideInfoYn = {};
   
 
 ///////////////////////////////////////////////////
+//https://loading.io/css/
 // 모두 캐시 해야 됨
 // 이래가지고는 안된다.
 // 전부 로컬스토리지에 넣어놓고
@@ -304,10 +305,12 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
   } 
   if (recruitStatus == PASS){
     frame    += '<hr>';
+    frame    += '면접 결과 <br> ';
     frame    += 'Pass 입니다. 함께 일할 수 있게 되어 영광입니다.';
   } 
   if (recruitStatus == FAIL){
     frame    += '<hr>';
+    frame    += '면접 결과 <br> ';  
     frame    += '부득이한 사정으로 함께 일할 수 없게 되어 죄송합니다. ';
   }
 
@@ -324,6 +327,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
               //setJumboButton(number,"YELLOW");
               //가스 , 유재석, 최유정, 최유정개인키, 면접주소
               assignRecruitRequest(value, HARD_CODED_SCOUTER, HARD_CODED_ACCOUNT, HARD_CODED_ACCOUNT_PRIVATEKEY, recruitAddr);
+              setJumboButton(recruitAddr,ING);
               alertify.success('Ok');
             },
             function(){
@@ -335,7 +339,33 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
         })
 
       } else if (account == MYPROFILE.account && recruitStatus==ING){
-
+        //진행중이므로, 유재석인경우 PASS / FAIL 을 줄 수 있다.
+        
+        alertify.prompt('면접이 종료되었나요? 합격 또는 불합격을 입력해 주세요', "합격/불합격",
+        function(evt, value ){
+            if(value.includes('불')) {
+              frm = "결과 : 불합격";
+              ret = FAIL;
+            }
+            else{
+              ret = PASS;
+              frm = "결과 : 합격";
+            } 
+          alertify.confirm(frm+"<br> 확실한가요? 결과가 면접자에게 통보됩니다.",
+            function(){
+              //setJumboButton(number,"YELLOW");
+              //가스 , 유재석, 최유정, 최유정개인키, 면접주소
+              //assignRecruitRequest(value, HARD_CODED_SCOUTER, HARD_CODED_ACCOUNT, HARD_CODED_ACCOUNT_PRIVATEKEY, recruitAddr);
+              alertify.success('진행이 완료됩니다.');
+              setJumboButton(recruitAddr,ret);
+            },
+            function(){
+              alertify.error('Cancel');
+            }).set('labels', {ok:'Confirm', cancel:'Cancel'});;
+        },
+        function(){
+          alertify.error('Cancel');
+        })
 
       }
   },
@@ -357,6 +387,7 @@ function secondConfirm(addr) {
           if (e) {
               //Done
               alertify.error("면접을 취소했습니다.");
+              setJumboButton(G_recruitAddr,QUIT);
               tmp = null;
           } else {
               // user clicked "cancel"
@@ -447,10 +478,11 @@ function setJumboButton(number,color){
      document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
   }else if (color == "BLUE"){
     //<div class="lds-heart"><div></div></div>
+    //<div class="lds-ripple"><div></div><div></div></div>
     //<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     //<div class="lds-facebook"><div></div><div></div><div></div></div>
     document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
-  }else if(color == "GRAY" || color ==WAIT){
+  }else if(color == "GRAY"){
     document.getElementById('load_'+number).innerHTML = '';
   }else if(color == ING){
     document.getElementById('load_'+number).innerHTML = '<div class="lds-facebook"><div></div><div></div><div></div></div>';
@@ -464,11 +496,14 @@ function setJumboButton(number,color){
 // //SCOUTER ONLY
 // var PASS=3; FAIL=4;
   }else if(color == QUIT){
-
+    document.getElementById('jumbotron_'+number).className = 'jumbotron blured';
   }else if (color == FAIL){
 
   }else if (color == PASS){
-
+    document.getElementById('load_'+number).innerHTML = '<div class="lds-heart"><div></div></div>';
+    
+  }else if (color == WAIT){
+    document.getElementById('load_'+number).innerHTML = '<div class="lds-ripple"><div></div><div></div></div>';
   }
 }
 
