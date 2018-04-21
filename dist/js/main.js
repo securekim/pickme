@@ -1049,7 +1049,7 @@ function iNeedYou(number){
   //    companyDetailContainer = web3.eth.contract(userHideAppendInfoAbi).at(userHideAppendInfoContractAddress);
 //      return companyDetailContainer.getUserHideAppendInfo(_addr);
 
-      pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
+      pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(pmTokenContractAddress);
       return pmcTokenContract.getUserHideAppend(_addr);
     }
 
