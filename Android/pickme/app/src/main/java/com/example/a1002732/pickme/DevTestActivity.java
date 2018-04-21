@@ -15,7 +15,7 @@ public class DevTestActivity extends Activity implements View.OnClickListener{
 
     Button scouterBtn;
     Button userBtn;
-
+    Button userBtn2;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,10 +23,10 @@ public class DevTestActivity extends Activity implements View.OnClickListener{
 
         scouterBtn = (Button) findViewById(R.id.btn_scouter);
         userBtn = (Button) findViewById(R.id.btn_user);
-
+        userBtn2 = (Button) findViewById(R.id.btn_user2);
         scouterBtn.setOnClickListener(this);
         userBtn.setOnClickListener(this);
-
+        userBtn2.setOnClickListener(this);
     }
 
     @Override
@@ -44,6 +44,11 @@ public class DevTestActivity extends Activity implements View.OnClickListener{
                 account = "0x731A765DFF550d11B7C880Af145066BC1bDD3127";
                 priKey = "2269b98525af6803b23779eefee1d1ee7293547cca8cb14f1ca12df9bfbfb7f5";
                 id = "yoojung";
+                break;
+            case R.id.btn_user2:
+                account = "0x2D35e596B46b69F13a98cb3B05f06Cb58D7Fda23";
+                priKey = "1b8edf20fbe0854e78249c2e053c4e35ef766f69d04e46a76ecd6b0db72ad891";
+                id = "madongsuk";
                 break;
             default:
         }

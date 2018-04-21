@@ -1143,7 +1143,7 @@ function iNeedYou(number){
 
 		var resList = new Array() ;
     
-    	var item = new Object() ;
+
       	recruitChkContract = web3.eth.contract(recruitChkAbi).at(recruitChkContractAddress);
       	pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
       	companyMainInfo = web3.eth.contract(companyMainAbi).at(companyMainContractAddress);
@@ -1154,7 +1154,7 @@ function iNeedYou(number){
 
 	      for(i = 0; i<data.length; i++){
 			recruitAppointmentContract = web3.eth.contract(recruitAppointmentAbi).at(data[i]);
-
+    		var item = new Object() ;
 			var subData = recruitAppointmentContract.getRecruitInfo()
 			
 			item.recruitAddr = data[i] ;
