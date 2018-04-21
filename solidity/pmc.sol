@@ -264,6 +264,9 @@ contract TokenERC20 {
         scouterYn[_addr] = true;
         scouterCompany[_addr] = company;
     }
+    function getScouterInfo(address _addr) constant returns (address ){
+        return scouterCompany[_addr];
+    }
     function deleteScouter(address _addr) onlyOwner{
         scouterYn[_addr] = false;
     }
@@ -339,7 +342,23 @@ contract RecruitChk {
     mapping (address => uint256) recruitIndex;
     mapping(address => RecruitAppointments[]) recruitRequestChk;
     
-    
+     mapping(address => TokenERC20) userToken;
+     
+     
+     function assignRecruit(){
+         
+     }
+     
+     function setToken(TokenERC20 _token, address _scouter, address _user) constant returns(uint256){
+         
+         TokenERC20 token = TokenERC20(_token);
+         
+         token.balanceOf(_scouter);
+         
+         
+         return token.balanceOf(_scouter);
+     }
+     
     
     function makeRecruit(uint _recruitReward, address _scouter, address _user, string _meetingDate, string _meetingPlace, string _emergencyPhoneNumber){
         mapItem[_scouter] = RecruitAppointments(_scouter);
@@ -381,13 +400,12 @@ contract RecruitChk {
 
 contract RecruitAppointments{
     
-    
+
     
     address private scouter;
     address private user;
     address private companyRecruitAddr;
-    
-    
+
     uint private recruitReward;
     string private meetingDate;
     string private meetingPlace;
@@ -395,7 +413,7 @@ contract RecruitAppointments{
     string private emergencyPhoneNumber;
     
     bool private appointMentYn;
-    uint private recruitStatus = 0;
+    uint256 private recruitStatus;
     // 0-wait,  1 - ing, 2 - quit, 2 - yes, 3 - sorry
     
     bool private createYn;
@@ -427,8 +445,8 @@ contract RecruitAppointments{
     }
     
     
-    function getRecruitInfo() constant returns(uint , address, address, string , string, string){
-        return (recruitReward, scouter, user, meetingDate, meetingPlace, emergencyPhoneNumber);
+    function getRecruitInfo() constant returns(uint , address, address, string , string, string, uint256){
+        return (recruitReward, scouter, user, meetingDate, meetingPlace, emergencyPhoneNumber,recruitStatus);
     }
 }
 
