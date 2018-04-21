@@ -799,6 +799,16 @@ function iNeedYou(number){
     
     var count = web3.eth.getTransactionCount(_from);
     const gasPriceHex = web3.toHex(gas*1000000000);
+
+   	
+    var sendItemData = pmcTokenContract.trasferOpenHideInfo.getData(_from,_to, value);
+
+   	var estimateGasResult = web3.eth.estimateGas({
+			"to": recruitChkContractAddress,
+			"data" : sendItemData
+	})
+
+
     gasLimitHex = web3.toHex(244769);
     var rawTransaction = {
       "from": _from,
@@ -807,7 +817,7 @@ function iNeedYou(number){
       "gasLimit": gasLimitHex,
       "to": contractAddress,
       "value": "0x00",
-      "data": pmcTokenContract.trasferOpenHideInfo.getData(_from,_to, value),
+      "data": sendItemData,
       "chainId": "0x03"
     };
 
@@ -1040,10 +1050,14 @@ function iNeedYou(number){
 	    
 	    var count = web3.eth.getTransactionCount(_from);
 	    const gasPriceHex = web3.toHex(gas*1000000000);
-	    gasLimitHex = web3.toHex(800000);
+	    
+	    var sendItemData = recruitChkContract.makeRecruit.getData(_recruitReward, _from, _to,_meetingDate, _meetingPlace, _emergencyPhoneNumber);
+	    var estimateGasResult = web3.eth.estimateGas({
+			"to": recruitChkContractAddress,
+			"data" : sendItemData
+		})
 
-
-
+	    gasLimitHex = web3.toHex(estimateGasResult);
 
 	    var rawTransaction = {
 	      "from": _from,
@@ -1052,7 +1066,7 @@ function iNeedYou(number){
 	      "gasLimit": gasLimitHex,
 	      "to": recruitChkContractAddress,
 	      "value": "0x00",
-	      "data": recruitChkContract.makeRecruit.getData(_recruitReward,_from, _to, _meetingDate, _meetingPlace, _emergencyPhoneNumber),
+	      "data": sendItemData,
 	      "chainId": "0x03"
 	    };
 
