@@ -815,7 +815,7 @@ function iNeedYou(number){
     pmTokenContractAddress = "0x4abf34571dd79585f704dfca616b129eed04a52b";
 
     //면접진행 관련
-    recruitChkContractAddress = "0x763d1f92536a9245d779c43a60a37338f8e43129";
+    recruitChkContractAddress = "0x1a96565b1cc9f64c5a20fc24cc2623bce9a9172d";
 
 
     //회사 관련 
