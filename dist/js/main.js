@@ -1,12 +1,30 @@
 
 var PEOPLES="";
 var PEOPLESDETAIL=[];
+var MYPROFILE="";
+
+var MYACCOUNT;
+var MYPRIVATEKEY;
+
+
 var HARD_CODED_ACCOUNT = "0x731a765dff550d11b7c880af145066bc1bdd3127";
-var HARD_CODED_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
+var HARD_CODED_ACCOUNT_PRIVATEKEY = "2269b98525af6803b23779eefee1d1ee7293547cca8cb14f1ca12df9bfbfb7f5";
+
 var HARD_CODED_SCOUTER = "0x6f213a598be7058a4248eaf0a2593210fa8b71c3";
+var HARD_CODED_SCOUTER_PRIVATEKEY = "d816e5e0eab23dc5573968edaed1443787b03a5dddf4b82e48818ad3634a894a";
+
 var HARD_CODED_SCOUTER_NUMBER =2 ;
 var HARD_CODED_ACCOUNT_NUMBER = 0;
 var ScouterAccessHideInfoYn = {};
+
+///////////INTERVIEW STATUS
+  var ING=1;                    //INTERVEWEE ONLY
+  var QUIT=2;                   //INTERVIEWER & SCOUTER  
+  var WAIT =0; PASS=3; FAIL=4;  //SCOUTER ONLY
+  
+    
+  
+
 ///////////////////////////////////////////////////
 // 모두 캐시 해야 됨
 // 이래가지고는 안된다.
@@ -101,7 +119,7 @@ function useGas(coin,number){
   function(evt, value ){
     alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " <br>Will be paid for private info.",
       function(){
-        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
+        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, MYACCOUNT, MYPRIVATEKEY)
         setJumboButton(number,"YELLOW");
         alertify.success('Ok');
       },
@@ -165,7 +183,7 @@ function addJumbotronToMain(name, context, imageURL, number, type){
 }
 
 function drawScout(){
-  list = getRecruitRequestList(HARD_CODED_ACCOUNT,1);
+  list = getRecruitRequestList(MYACCOUNT,1);
   list = list.replace(/'/g, '"');
   list = JSON.parse(list);
   //for(var i in list){}
@@ -186,12 +204,16 @@ function addScoutJumbotronToMain(myScoutersInfo){
   var account     = myScoutersInfo.scouterAddr;
   var name        = myScoutersInfo.company.name;
   var url         = myScoutersInfo.company.url;
-  var categoty    = myScoutersInfo.company.category;
+  var category    = myScoutersInfo.company.category;
   var expense     = myScoutersInfo.recruitReward;
   var place       = myScoutersInfo.meetingPlace;
   var contact     = myScoutersInfo.emergencyPhoneNumber;
-  var date        = myScoutersInfo.meetingDate
+  var date        = myScoutersInfo.meetingDate;
+  var recruitAddr = myScoutersInfo.recruitAddr;
+  var userName    = myScoutersInfo.userName;
+  var scouterName = myScoutersInfo.scouterName;
 
+  
   if(typeof url =='undefined') url = "https://i.pinimg.com/280x280_RS/90/b2/5c/90b25cf1d436d20b1ce2dcd7f48bd89d.jpg"
   if(typeof category == 'undefined') category = "unknwon";
   
@@ -203,6 +225,9 @@ function addScoutJumbotronToMain(myScoutersInfo){
   parameter    += ',"'+place+'"';
   parameter    += ',"'+contact+'"';
   parameter    += ',"'+date+'"';
+  parameter    += ',"'+recruitAddr+'"';
+  parameter    += ',"'+userName+'"';
+  parameter    += ',"'+scouterName+'"';
  
   var main = document.getElementById("main");
   
@@ -211,6 +236,8 @@ function addScoutJumbotronToMain(myScoutersInfo){
     jumbotron.style = "background-color: white; margin-bottom: 1rem;";
     jumbotron.href="#"
     jumbotron.id = "jumbotron_"+account;
+
+    //HASH값 필요
     jumbotron.setAttribute("onclick",'viewScouter(' +parameter+ ')');
     jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
     main.appendChild(jumbotron);
@@ -223,7 +250,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
     td1.style = "padding:20px";
     table.appendChild(td1);
 
-  var image = '<img src="'+url+'" alt="'+name+'" height="80" width="80" '
+  var image = '<img src="'+url+'" alt="'+name+'" height="70" '
     //image+='class="rounded-circle"'
     image+='></img>';
     td1.innerHTML=image;
@@ -232,17 +259,16 @@ function addScoutJumbotronToMain(myScoutersInfo){
     td2.style = "vertical-align:middle";
     table.appendChild(td2);
     
-  if(false){
     var td3 = document.createElement('td');
-    td3.id="load_"+number;
+    td3.id="load_"+account;
     td3.style = "vertical-align:middle; height:80px; width:80px";
     table.appendChild(td3);  
-  }
+  
 
   var h = document.createElement('h6');
     td2.appendChild(h);
-
-  var myContext = name+' <p class="lead">'+category+'</p>';
+  var myContext = name+' - '+category+' <p class="lead"><span class="glyphicon glyphicon-briefcase"></span> '+scouterName+'<br>'
+      myContext+= '<span class="glyphicon glyphicon-hand-right"></span> '+userName+''+'</p>';
     h.innerHTML=myContext;
 }
 
@@ -256,7 +282,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
 // parameter    += ',"'+place+'"';
 // parameter    += ',"'+contact+'"';
 // parameter    += ',"'+date+'"';
-function viewScouter(account,name,url,category,expense,place,contact,date){
+function viewScouter(account,name,url,category,expense,place,contact,date,recruitAddr,userName,scouterName){
 
   var frame = '<H4>'+name+' 에서</H4><br>'
   frame    += ' 친애하는 "' + PEOPLES[HARD_CODED_ACCOUNT_NUMBER].items.name + '" 님께<br>'
@@ -272,14 +298,27 @@ function viewScouter(account,name,url,category,expense,place,contact,date){
   
   alertify.confirm(frame,
   function(){
-     //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
-    alertify.success('Ok');
+     //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
+        alertify.prompt('It takes some time. <br> Speed is depend on GAS :', "50",
+        function(evt, value ){
+          alertify.confirm("Are you sure ? Gas :"+value+ " <br>Will be paid for interview.",
+            function(){
+              //setJumboButton(number,"YELLOW");
+              //가스 , 유재석, 최유정, 최유정개인키, 면접주소
+              assignRecruitRequest(value, HARD_CODED_SCOUTER, HARD_CODED_ACCOUNT, HARD_CODED_ACCOUNT_PRIVATEKEY, recruitAddr);
+              alertify.success('Ok');
+            },
+            function(){
+              alertify.error('Cancel');
+            });
+        },
+        function(){
+          alertify.error('Cancel');
+        })
   },
   function(){
     alertify.error('Cancel');
   });
-
-
 
 }
 
@@ -355,30 +394,20 @@ function removeAllJumbotrons(){
 
 function setJumboButton(number,color){
   jumbotron = document.getElementById("jumbotron_"+number);
+  
   if(color == "YELLOW"){
-    //myButton.innerHTML = "View"
-    //myButton.className = "btn btn btn-warning";
-
     //    border: solid rgb(23, 162, 184);
-    //myButton.style = "background-color:rgb(185, 147, 32);"
-    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
-    document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+     document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
   }else if (color == "BLUE"){
-    //myButton.innerHTML = "View All"
-    //myButton.className = "btn btn btn-primary";
     //<div class="lds-heart"><div></div></div>
     document.getElementById('load_'+number).innerHTML = '<div class="lds-heart"><div></div></div>';
-    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray; border-bottom-width: 1px;border-right-width: 0.7px; ";
-    //myButton.style = "background-color:#17a2b8"
   }else if(color == "GRAY"){
-    //myButton.innerHTML = "View"
-    //myButton.className = "btn btn btn-secondary";
     document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
-    jumbotron.style = "border-radius: 0px;margin-bottom: 10px;background-color: white;border-bottom: solid gray;border-bottom-width: 1px;border-right-width: 0.7px; ";
-    //myButton.style = "background-color:rgb(140, 146, 152);"
   }else if(color == "RED"){
-    //myButton.innerHTML = "View"
-    //myButton.className = "btn btn btn-error";
+
+
+  }else if(color == "RED"){
+
   }
 }
 
@@ -517,11 +546,21 @@ function dummyScout(){
 
 function updateModalI(){
 
-    number = HARD_CODED_SCOUTER_NUMBER;
-    var items = PEOPLES[HARD_CODED_SCOUTER_NUMBER].items
+    if(MYPROFILE==""){
+      profile = getMyProfile(HARD_CODED_ACCOUNT);
+      MYPROFILE.account = HARD_CODED_ACCOUNT;
+      MYPROFILE.picture = profile.basicInfo.picture;
+      MYPROFILE.name = profile.basicInfo.name;
+      MYPROFILE.interestItems = profile.basicInfo.interestItems;
+      MYPROFILE.mvp = profile.basicInfo.mvp.c[0];
+      MYPROFILE.peoplesDetail = profile.profileInfo;
+      MYPROFILE.peoplesDetail = MYPROFILE.peoplesDetail.replace(/'/g, '"');
+      MYPROFILE.peoplesDetail = JSON.parse(MYPROFILE.peoplesDetail);
+
+    } 
     
-    document.getElementById('modalIName').innerText=items.name;
-    document.getElementById('modalIImg').setAttribute("src",items.picture);
+    document.getElementById('modalIName').innerText=MYPROFILE.name;
+    document.getElementById('modalIImg').setAttribute("src",MYPROFILE.picture);
     var modalPeopleInfo = document.getElementById('modalIInfo');
     while (modalPeopleInfo.firstChild) {
       modalPeopleInfo.removeChild(modalPeopleInfo.firstChild);
@@ -530,13 +569,13 @@ function updateModalI(){
       h3.className = "media-heading";
       modalPeopleInfo.appendChild(h3);
   
-    var frm = 'Trust Power<span id="IPMC" class="glyphicon glyphicon-flash"></span>'+items.mvp
+    var frm = 'Trust Power<span id="IPMC" class="glyphicon glyphicon-flash"></span>'+MYPROFILE.mvp
       h3.innerHTML = frm;
   
-     for(var i in items.interestItems){
+     for(var i in MYPROFILE.interestItems){
        span = document.createElement('span');
        span.className = "badge badge-pill badge-info";
-       span.innerHTML = hexToString(items.interestItems[i]);
+       span.innerHTML = hexToString(MYPROFILE.interestItems[i]);
        modalPeopleInfo.appendChild(span);
      }
   
@@ -546,34 +585,34 @@ function updateModalI(){
     }
   
       frm = "<strong>Public Info : </strong><br>"
-      for (var i in PEOPLESDETAIL[number].profileInfo.educationHistory){
-        if(PEOPLESDETAIL[number].profileInfo.educationHistory[i]!="")
-          frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.educationHistory[i]+"<br>";
+      for (var i in MYPROFILE.peoplesDetail.profileInfo.educationHistory){
+        if(MYPROFILE.peoplesDetail.profileInfo.educationHistory[i]!="")
+          frm += "&nbsp;"+MYPROFILE.peoplesDetail.profileInfo.educationHistory[i]+"<br>";
       }
       frm+="<p></p>";
-      for (var i in PEOPLESDETAIL[number].profileInfo.careerHistory){
-        if(PEOPLESDETAIL[number].profileInfo.careerHistory[i]!="")
-        frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.careerHistory[i]+"<br>";
+      for (var i in MYPROFILE.peoplesDetail.profileInfo.careerHistory){
+        if(MYPROFILE.peoplesDetail.profileInfo.careerHistory[i]!="")
+        frm += "&nbsp;"+MYPROFILE.peoplesDetail.profileInfo.careerHistory[i]+"<br>";
       }
       frm+="<p></p>";
-      for (var i in PEOPLESDETAIL[number].profileInfo.achievements){
-        if(PEOPLESDETAIL[number].profileInfo.achievements[i]!="")
-        frm += "&nbsp;"+PEOPLESDETAIL[number].profileInfo.achievements[i]+"<br>";
+      for (var i in MYPROFILE.peoplesDetail.profileInfo.achievements){
+        if(MYPROFILE.peoplesDetail.profileInfo.achievements[i]!="")
+        frm += "&nbsp;"+MYPROFILE.peoplesDetail.profileInfo.achievements[i]+"<br>";
       }
       modalPeoplePublicInfo.innerHTML = frm;
   
-      document.getElementById('modalIBio').innerHTML = "<strong>Free Vision: </strong><br>" +PEOPLESDETAIL[number].freeVision;
+      document.getElementById('modalIBio').innerHTML = "<strong>Free Vision: </strong><br>" +MYPROFILE.peoplesDetail.freeVision;
   
       var modalPeoplePrivateInfo = document.getElementById("modalIPrivateInfo");
       frm = "<strong>Private Info : </strong><br>"
-      for (var i in PEOPLESDETAIL[number].hideInfo.hideInfoHint){
-        if(PEOPLESDETAIL[number].hideInfo.hideInfoHint[i]!="")
-        frm += "&nbsp;"+PEOPLESDETAIL[number].hideInfo.hideInfoHint[i]+"<br>";
+      for (var i in MYPROFILE.peoplesDetail.hideInfo.hideInfoHint){
+        if(MYPROFILE.peoplesDetail.hideInfo.hideInfoHint[i]!="")
+        frm += "&nbsp;"+MYPROFILE.peoplesDetail.hideInfo.hideInfoHint[i]+"<br>";
       }
       modalPeoplePrivateInfo.innerHTML = frm;
       //frm += &nbsp;
   
-  var files = getHideAppendFile(PEOPLES[HARD_CODED_SCOUTER_NUMBER].account);
+  var files = getHideAppendFile(MYPROFILE.account);
   frm = "";
 
   for (var i in files){
@@ -633,11 +672,7 @@ function iNeedYou(number){
           function(evt, value ){
             alertify.confirm("Are you sure ? EXPENSES :"+expenses+" Gas :"+value+ " <br>Will be paid for interview.",
               function(){
-                //sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY)
-                //setJumboButton(number,"YELLOW");
-                 //function requestRecruitUser(gas, _to, _from, priKey, _recruitReward,  _meetingDate,  _meetingPlace,  _emergencyPhoneNumber){
-                 
-                 requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_PRIVATEKEY, expenses, date, place, contact)
+                 requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
                 alertify.success('Ok');
               },
               function(){
@@ -677,7 +712,7 @@ function iNeedYou(number){
     pmTokenContractAddress = "0xdb719479b205cb5260f2d2e0411a1de82e1b7a98";
 
     //면접진행 관련
-    recruitChkContractAddress = "0x0535cae9af613c8bd2c44a6cbf8c4e30ae87225f";
+    recruitChkContractAddress = "0x4bd6c243551cbff7359f34ade8fb3502aa5d1186";
 
 
     //회사 관련 
@@ -1115,13 +1150,6 @@ function iNeedYou(number){
     }
 
 
-	// 유재석 , 최유정, 결과 (합 불만 3,4 중 하나), 유재석prikey, 면접주소
-    function noticeJobInterviewResult(gas, scouter, user, res, priKey, recruitAddr){
-    	recruitAppointmentContract = web3.eth.contract(recruitAppointmentAbi).at(recruitAddr);
-    	var sendItemData = recruitAppointmentContract.setResultRecruit.getData(pmTokenContractAddress,scouter,user,res);
-
-    	sendTransaction(gas, user, scouter, priKey, sendItemData, recruitAddr);
-    }
 
 
     //함수 통일
@@ -1165,7 +1193,7 @@ function iNeedYou(number){
 	            alertify
 	            .alert("Your transaction is posted ! <br>But It takes some time (1~3 min) <br>CONTRACT : "+hash, function(){
 	              //alertify.success('Success');
-	              localStorage.setItem("PAID_"+_to, "PAID");
+	              //localStorage.setItem("PAID_"+_to, "PAID");
 	            });
 	          }else{
 	            console.log(err);
@@ -1176,5 +1204,12 @@ function iNeedYou(number){
 
     //현재 로그인 해당 함수를 android에서 넘겨줌
     function setLoginInfo(priKey, account, id){
+
+    }
+
+    function setSCOUTER(){
+
+    }
+    function setINTERVIEE(){
 
     }
