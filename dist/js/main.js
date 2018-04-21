@@ -120,12 +120,13 @@ function useGas(coin,number){
     alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " <br>Will be paid for private info.",
       function(){
         sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, MYACCOUNT, MYPRIVATEKEY)
+        console.log(value, coin, PEOPLES[number].account, MYACCOUNT, MYPRIVATEKEY);
         setJumboButton(number,"YELLOW");
         alertify.success('Ok');
       },
       function(){
         alertify.error('Cancel');
-      });
+      }).set('labels', {ok:'Comfirm', cancel:'Cancel'});
   },
   function(){
     alertify.error('Cancel');
@@ -344,7 +345,7 @@ function secondConfirm(addr) {
               console.log("Cancel...");
               alertify.success("면접이 취소되지 않았습니다.");
           }
-      }).set('labels', {ok:'인터뷰를 취소 합니다.', cancel:'더 생각해 볼게요.'});
+      }).set('labels', {ok:'인터뷰를 취소 합니다.', cancel:'취소하지 않습니다.'});
   }, 500); // I went as low as 300 ms, but higher value is safer :)
   return true;
 }
@@ -719,7 +720,7 @@ function iNeedYou(number){
               },
               function(){
                 alertify.error('Cancel');
-              });
+              }).set('labels', {ok:'Comfirm', cancel:'Cancel'});;
           },
           function(){
             alertify.error('Cancel');
