@@ -118,8 +118,8 @@ function useGas(coin,number){
   function(evt, value ){
     alertify.confirm("Are you sure ? Coin :"+coin+" Gas :"+value+ " <br>Will be paid for private info.",
       function(){
-        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, MYACCOUNT, MYPRIVATEKEY)
-        console.log(value, coin, PEOPLES[number].account, MYACCOUNT, MYPRIVATEKEY);
+        sendPmcForOpenHideInfo(value, coin, PEOPLES[number].account, MYPROFILE.account, MYPROFILE.priKey)
+        console.log(value, coin, PEOPLES[number].account, MYPROFILE.account, MYPROFILE.priKey);
         setJumboButton(number,"YELLOW");
         alertify.success('Ok');
       },
@@ -183,7 +183,7 @@ function addJumbotronToMain(name, context, imageURL, number, type){
 }
 
 function drawScout(){
-  list = getRecruitRequestList(MYACCOUNT,1);
+  list = getRecruitRequestList(MYPROFILE.account,1);
   list = list.replace(/'/g, '"');
   list = JSON.parse(list);
   //for(var i in list){}
@@ -227,6 +227,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
   parameter    += ',"'+myScoutersInfo.userName+'"';
   parameter    += ',"'+myScoutersInfo.scouterName+'"';
   parameter    += ',"'+myScoutersInfo.recruitStatus+'"';
+  parameter    += ',"'+myScoutersInfo.userAddr+'"';
  
   var main = document.getElementById("main");
 
@@ -280,7 +281,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
 // parameter    += ',"'+place+'"';
 // parameter    += ',"'+contact+'"';
 // parameter    += ',"'+date+'"';
-function viewScouter(account,name,url,category,expense,place,contact,date,recruitAddr,userName,scouterName,recruitStatus){
+function viewScouter(account,name,url,category,expense,place,contact,date,recruitAddr,userName,scouterName,recruitStatus,userAddr){
 
   var frame = '<H4>'+name+' 에서</H4><br>'
   frame    += ' 친애하는 "' + userName + '" 님께<br><br>'
@@ -319,14 +320,13 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
   function myconfirm(){
     if(account != MYPROFILE.account && recruitStatus!=ING){
 
-     //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
         alertify.prompt('Your Contact will be posted for interview. <br>And It takes some time. <br> Speed is depend on GAS :', "50",
         function(evt, value ){
           alertify.confirm("Are you sure ? Gas :"+value+ " <br>Will be paid for interview.<br>And Your Contact will be posted for interview",
             function(){
               //setJumboButton(number,"YELLOW");
               //가스 , 유재석, 최유정, 최유정개인키, 면접주소
-              assignRecruitRequest(value, HARD_CODED_SCOUTER, HARD_CODED_ACCOUNT, HARD_CODED_ACCOUNT_PRIVATEKEY, recruitAddr);
+              assignRecruitRequest(value, account, MYPROFILE.account, MYPROFILE.priKey, recruitAddr);
               setJumboButton(recruitAddr,ING);
               alertify.success('Ok');
             },
@@ -341,9 +341,11 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
       } else if (account == MYPROFILE.account && recruitStatus==ING){
         //진행중이므로, 유재석인경우 PASS / FAIL 을 줄 수 있다.
         
-        alertify.prompt('면접이 종료되었나요? 합격 또는 불합격을 입력해 주세요', "합격/불합격",
+        alertify.prompt('면접이 종료되었나요? 결과와 가스를 입력해 주세요', "불합격/50",
         function(evt, value ){
-            if(value.includes('불')) {
+          gas = value.split("/")[1]
+          
+          if(value.includes('불')) {
               frm = "결과 : 불합격";
               ret = FAIL;
             }
@@ -351,11 +353,11 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
               ret = PASS;
               frm = "결과 : 합격";
             } 
-          alertify.confirm(frm+"<br> 확실한가요? 결과가 면접자에게 통보됩니다.",
+          alertify.confirm(frm+"<br> 확실한가요? 결과가 면접자에게 통보됩니다.<br> 이 작업은 Gas"+gas+" 를 소모합니다.",
             function(){
               //setJumboButton(number,"YELLOW");
               //가스 , 유재석, 최유정, 최유정개인키, 면접주소
-              //assignRecruitRequest(value, HARD_CODED_SCOUTER, HARD_CODED_ACCOUNT, HARD_CODED_ACCOUNT_PRIVATEKEY, recruitAddr);
+              noticeJobInterviewResult(gas, account, userAddr, ret, MYPROFILE.priKey, recruitAddr)
               alertify.success('진행이 완료됩니다.');
               setJumboButton(recruitAddr,ret);
             },
@@ -371,7 +373,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
   },
   function mycancel(){
     //SET FLAG FOR INFINITY LOOP...
-      if(FLAG){
+      if(FLAG && (recruitStatus==ING || recruitStatus==WAIT)){
         FLAG = 0;
         secondConfirm(recruitAddr);
       }
@@ -401,7 +403,7 @@ function secondConfirm(addr) {
 
 
 function drawAllItems(account,number){
-  account = HARD_CODED_SCOUTER
+  account = MYPROFILE.account
   var scouterPurchaseAccountList = getScouterPurchaseAccountList(account);
   var paid = false;
   for (var i in scouterPurchaseAccountList[0]){
@@ -428,7 +430,7 @@ function drawAllItems(account,number){
           frm = "<strong>Private Detail : </strong><br>";
           for (var i in files){
             if(files[i]!=""){
-              frm += "&nbsp;"+files[i]+"<br>";
+              frm += '&nbsp;<a href="'+files[i]+'">Private Data '+i+'</a><br>'; 
             }
           }
           document.getElementById("modalPeoplePrivateInfoDetail").innerHTML = frm;
@@ -498,7 +500,7 @@ function setJumboButton(number,color){
   }else if(color == QUIT){
     document.getElementById('jumbotron_'+number).className = 'jumbotron blured';
   }else if (color == FAIL){
-
+    document.getElementById('jumbotron_'+number).className = 'jumbotron darkness';
   }else if (color == PASS){
     document.getElementById('load_'+number).innerHTML = '<div class="lds-heart"><div></div></div>';
     
@@ -713,7 +715,7 @@ function updateModalI(){
 
   for (var i in files){
     if(files[i]!="")
-      frm += "&nbsp;"+files[i]+"<br>";
+      frm += '&nbsp;<a href="'+files[i]+'">Private Data '+i+'</a><br>'; 
   }
   document.getElementById("modalIPrivateInfoDetail").innerHTML = frm;
 }
@@ -768,7 +770,7 @@ function iNeedYou(number){
           function(evt, value ){
             alertify.confirm("Are you sure ? EXPENSES :"+expenses+" Gas :"+value+ " <br>Will be paid for interview.",
               function(){
-                 requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
+                 requestRecruitUser(value, PEOPLES[number].account, MYPROFILE.account, MYPROFILE.priKey, expenses, date, place, contact)
                 alertify.success('Ok');
               },
               function(){
@@ -1309,17 +1311,18 @@ function iNeedYou(number){
       MYACCOUNT = account;
       MYPRIVATEKEY = priKey;
 
-      setTimeout(function(){
+      //setTimeout(function(){
         //This is for non-block
         profile = getMyProfile(MYACCOUNT);
         MYPROFILE.account = MYACCOUNT;
+        MYPROFILE.priKey = priKey;
         MYPROFILE.picture = profile.basicInfo.picture;
         MYPROFILE.name = profile.basicInfo.name;
         MYPROFILE.interestItems = profile.basicInfo.interestItems;
         MYPROFILE.mvp = profile.basicInfo.mvp.c[0];
         tmp = profile.profileInfo.replace(/'/g, '"')
         MYPROFILE.peoplesDetail = JSON.parse(tmp);
-      },100);
+      //},100);
     }
 
     function setSCOUTER(){
