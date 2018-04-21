@@ -1,7 +1,7 @@
 
 var PEOPLES="";
 var PEOPLESDETAIL=[];
-var MYPROFILE="";
+var MYPROFILE={};
 
 var MYACCOUNT;
 var MYPRIVATEKEY;
@@ -286,7 +286,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
   frame    += ' 친애하는 "' + userName + '" 님께<br><br>'
   frame    += '"'+userName +'"님께서<br> 유로로 공개한 정보를 검토해 본 결과,<br>'
   frame    += '면접에 초대하고 싶어서 연락 드리게 되었습니다.<br>';
-  frame    += '"'+scouterName+'" 드림.<br><br>';
+  frame    += '<br>"'+scouterName+'" 드림.<br><br>';
   frame    += '<hr>';
   frame    += ' 면접 정보 요약 :<br>';
   frame    += '<span class="glyphicon glyphicon-time"></span> '+date+' <br>';
@@ -299,6 +299,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
   var FLAG = 1;
   alertify.confirm(frame,
   function myconfirm(){
+    if(account != MYPROFILE.account){
      //requestRecruitUser(value, PEOPLES[number].account, HARD_CODED_SCOUTER, HARD_CODED_SCOUTER_PRIVATEKEY, expenses, date, place, contact)
         alertify.prompt('It takes some time. <br> Speed is depend on GAS :', "50",
         function(evt, value ){
@@ -316,6 +317,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
         function(){
           alertify.error('Cancel');
         })
+      }
   },
   function mycancel(){
     //SET FLAG FOR INFINITY LOOP...
@@ -331,7 +333,7 @@ var G_recruitAddr
 function secondConfirm(addr) {
   G_recruitAddr = addr;
   var tmp = setTimeout(function myOtherCancel() {
-      alertify.confirm("<h5>Caution !</h5>정말로 이 면접을 취소하시겠습니까 ? <br> 되돌릴 수 없습니다.<br> 면접 번호 :<br>"+G_recruitAddr, function (e) {
+      alertify.confirm("<h5>Caution !</h5>이 면접을 취소하시겠습니까 ? <br> 되돌릴 수 없습니다.<br> 면접 번호 :<br>"+G_recruitAddr, function (e) {
           if (e) {
               //Done
               alertify.error("면접을 취소했습니다.");
@@ -423,15 +425,25 @@ function setJumboButton(number,color){
   if(color == "YELLOW"){
     //    border: solid rgb(23, 162, 184);
      document.getElementById('load_'+number).innerHTML = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
-  }else if (color == "BLUE"){
+  }else if (color == "BLUE" || color == "PASS"){
     //<div class="lds-heart"><div></div></div>
     document.getElementById('load_'+number).innerHTML = '<div class="lds-heart"><div></div></div>';
-  }else if(color == "GRAY"){
+  }else if(color == "GRAY" || color =="WAIT"){
     document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
-  }else if(color == "RED"){
+  }else if(color == "ING"){
+    document.getElementById('load_'+number).innerHTML = '<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>';
+    
+// //INTERVEWEE ONLY
+// ING=1; 
 
+// //INTERVIEWER / SCOUTER
+// QUIT=2; 
 
-  }else if(color == "RED"){
+// //SCOUTER ONLY
+// var PASS=3; FAIL=4;
+  }else if(color == "QUIT"){
+
+  }else if (color == "FAIL"){
 
   }
 }
@@ -571,16 +583,16 @@ function dummyScout(){
 
 function updateModalI(){
 
-    if(MYPROFILE==""){
-      profile = getMyProfile(HARD_CODED_ACCOUNT);
-      MYPROFILE.account = HARD_CODED_ACCOUNT;
+    if(typeof MYPROFILE.account =='undefined'){
+      //내 정보가 없는 경우에만 세팅
+      profile = getMyProfile(MYACCOUNT);
+      MYPROFILE.account = MYACCOUNT;
       MYPROFILE.picture = profile.basicInfo.picture;
       MYPROFILE.name = profile.basicInfo.name;
       MYPROFILE.interestItems = profile.basicInfo.interestItems;
       MYPROFILE.mvp = profile.basicInfo.mvp.c[0];
-      MYPROFILE.peoplesDetail = profile.profileInfo;
-      MYPROFILE.peoplesDetail = MYPROFILE.peoplesDetail.replace(/'/g, '"');
-      MYPROFILE.peoplesDetail = JSON.parse(MYPROFILE.peoplesDetail);
+      tmp = profile.profileInfo.replace(/'/g, '"')
+      MYPROFILE.peoplesDetail = JSON.parse(tmp);
 
     } 
     
@@ -1231,11 +1243,20 @@ function iNeedYou(number){
     function setLoginInfo(priKey, account, id){
       MYACCOUNT = account;
       MYPRIVATEKEY = priKey;
+
+      // profile = getMyProfile(MYACCOUNT);
+      // MYPROFILE.account = MYACCOUNT;
+      // MYPROFILE.picture = profile.basicInfo.picture;
+      // MYPROFILE.name = profile.basicInfo.name;
+      // MYPROFILE.interestItems = profile.basicInfo.interestItems;
+      // MYPROFILE.mvp = profile.basicInfo.mvp.c[0];
+      // tmp = profile.profileInfo.replace(/'/g, '"')
+      // MYPROFILE.peoplesDetail = JSON.parse(tmp);
     }
 
     function setSCOUTER(){
       setLoginInfo(HARD_CODED_SCOUTER_PRIVATEKEY,HARD_CODED_SCOUTER,"");
     }
     function setINTERVIEE(){
-      setLoginInfo(HARD_CODED_ACCOUNT,HARD_CODED_ACCOUNT_PRIVATEKEY,"");
+      setLoginInfo(HARD_CODED_ACCOUNT_PRIVATEKEY,HARD_CODED_ACCOUNT,"");
     }
