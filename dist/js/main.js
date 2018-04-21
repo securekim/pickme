@@ -262,7 +262,7 @@ function addScoutJumbotronToMain(myScoutersInfo){
     td1.style = "padding:20px";
     table.appendChild(td1);
 
-  var image = '<img src="'+myScoutersInfo.company.url+'" alt="'+myScoutersInfo.company.name+'" height="70" '
+  var image = '<img src="'+myScoutersInfo.company.url+'" alt="'+myScoutersInfo.company.name+'" height="45" '
     //image+='class="rounded-circle"'
     image+='></img>';
     td1.innerHTML=image;
@@ -330,7 +330,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
   var FLAG = 1;
   alertify.confirm(frame,
   function myconfirm(){
-    if(account != MYPROFILE.account && recruitStatus!=ING){
+    if(account != MYPROFILE.account && recruitStatus==WAIT){
 
         alertify.prompt('Your Contact will be posted for interview. <br>And It takes some time. <br> Speed is depend on GAS :', "50",
         function(evt, value ){
@@ -389,7 +389,7 @@ function viewScouter(account,name,url,category,expense,place,contact,date,recrui
         FLAG = 0;
         secondConfirm(recruitAddr);
       }
-  }).set('labels', {ok:'알겠습니다.', cancel:'인터뷰 취소'});
+  }).set('labels', {ok:'알겠습니다.', cancel:'취소'});
 
 }
 
@@ -1179,7 +1179,7 @@ function iNeedYou(number){
     
 
       	recruitChkContract = web3.eth.contract(recruitChkAbi).at(recruitChkContractAddress);
-      	pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
+      	pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(pmTokenContractAddress);
       	companyMainInfo = web3.eth.contract(companyMainAbi).at(companyMainContractAddress);
       	userBasicInfo = web3.eth.contract(userMainAbi).at(userBasicInfoContractAddress);
 
