@@ -707,7 +707,7 @@ function iNeedYou(number){
     pmTokenContractAddress = "0xdb719479b205cb5260f2d2e0411a1de82e1b7a98";
 
     //면접진행 관련
-    recruitChkContractAddress = "0x4bd6c243551cbff7359f34ade8fb3502aa5d1186";
+    recruitChkContractAddress = "0x0535cae9af613c8bd2c44a6cbf8c4e30ae87225f";
 
 
     //회사 관련 
@@ -1137,6 +1137,13 @@ function iNeedYou(number){
     }
 
 
+	// 유재석 , 최유정, 결과 (합 불만 3,4 중 하나), 유재석prikey, 면접주소
+    function noticeJobInterviewResult(gas, scouter, user, res, priKey, recruitAddr){
+    	recruitAppointmentContract = web3.eth.contract(recruitAppointmentAbi).at(recruitAddr);
+    	var sendItemData = recruitAppointmentContract.setResultRecruit.getData(pmTokenContractAddress,scouter,user,res);
+
+    	sendTransaction(gas, user, scouter, priKey, sendItemData, recruitAddr);
+    }
 
 
     //함수 통일

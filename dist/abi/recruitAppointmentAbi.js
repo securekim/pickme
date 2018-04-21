@@ -52,6 +52,32 @@ recruitAppointmentAbi =[
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_token",
+				"type": "address"
+			},
+			{
+				"name": "_scouter",
+				"type": "address"
+			},
+			{
+				"name": "_user",
+				"type": "address"
+			},
+			{
+				"name": "result",
+				"type": "uint256"
+			}
+		],
+		"name": "setResultRecruit",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"name": "_recruitReward",
